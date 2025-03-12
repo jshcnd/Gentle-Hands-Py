@@ -2,10 +2,18 @@
 <html>
 <head>
     <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Welcome to the Homepage</h1>
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'register' %}">Register</a>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <div class="p-8">
+            <h1 class="text-4xl font-bold text-center mb-6">Gentle Hands Orphanage</h1>
+            <p class="text-lg text-gray-700 text-center mb-8">Your trusted partner in care and support.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="{% url 'login' %}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Login</a>
+                <a href="{% url 'register' %}" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Register</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
