@@ -1,6 +1,16 @@
 # Gentle Hands Project
 
-This is a Django-based web application for user registration, login, and homepage functionality. The project is configured to use a PostgreSQL database.
+This is a Django-based web application for user registration, login, and homepage functionality. The project is configured to use a PostgreSQL database. This project is a collaborative effort developed during our on-the-job training (OJT) to meet the requirements of our client.
+
+## Group Members
+
+- **Andrea** - UX/UI Designer
+- **Elmar** - Lead Developer
+- **Hanns** - Database Administrator
+- **Jessie** - Frontend Developer
+- **Justin** - QA Engineer
+- **Kim** - Frontend Developer
+- **Rhoen** - Project Manager
 
 ## Project Structure
 
