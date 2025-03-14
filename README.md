@@ -8,7 +8,7 @@ This is a Django-based web application for user registration, login, and homepag
 - **Elmar** - Lead Developer
 - **Hanns** - Database Administrator
 - **Jessie** - Frontend Developer
-- **Justin** - QA Engineer
+- **Justin** - Quality Assurance
 - **Kim** - Frontend Developer
 - **Rhoen** - Project Manager
 
