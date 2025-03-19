@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-center mb-4">Admin Dashboard</h2>
+
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input type="text" id="search" placeholder="Search..." 
+                class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-pink-500 text-white">
+                        <th class="p-3 border border-gray-300">First Name</th>
+                        <th class="p-3 border border-gray-300">Last Name</th>
+                        <th class="p-3 border border-gray-300">Category</th>
+                        <th class="p-3 border border-gray-300">Age</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr class="bg-gray-100 text-center">
+                        <td class="p-3 border border-gray-300">John</td>
+                        <td class="p-3 border border-gray-300">Doe</td>
+                        <td class="p-3 border border-gray-300">Pre-School</td>
+                        <td class="p-3 border border-gray-300">5</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td class="p-3 border border-gray-300">Jane</td>
+                        <td class="p-3 border border-gray-300">Smith</td>
+                        <td class="p-3 border border-gray-300">Nursery 2</td>
+                        <td class="p-3 border border-gray-300">4</td>
+                    </tr>
+                    <tr class="bg-gray-100 text-center">
+                        <td class="p-3 border border-gray-300">Mark</td>
+                        <td class="p-3 border border-gray-300">Lee</td>
+                        <td class="p-3 border border-gray-300">Big Boys</td>
+                        <td class="p-3 border border-gray-300">7</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Search Functionality
+        document.getElementById('search').addEventListener('input', function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#table-body tr");
+
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>
