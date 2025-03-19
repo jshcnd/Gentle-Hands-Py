@@ -3,77 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
-        <h2 class="text-2xl font-bold text-center mb-4">Register</h2>
-        <form method="post" class="space-y-4">
-            {% csrf_token %}
-            <div class="mb-2">
-                <label class="block text-gray-600">First Name</label>
-                <input type="text" name="first_name" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-6">
+
+    <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg p-8">
+        <h2 class="text-3xl font-bold text-center mb-6">Register</h2>
+
+        <form class="space-y-5">
+            <!-- First Name & Last Name -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-700 text-lg font-semibold">First Name</label>
+                    <input type="text" class="w-full border p-3 rounded-md text-base">
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-lg font-semibold">Last Name</label>
+                    <input type="text" class="w-full border p-3 rounded-md text-base">
+                </div>
             </div>
 
-            <div class="mb-2">
-                <label class="block text-gray-600">Last Name</label>
-                <input type="text" name="last_name" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
+            <!-- Middle Name -->
+            <div>
+                <label class="block text-gray-700 text-lg font-semibold">Middle Name</label>
+                <input type="text" class="w-full border p-3 rounded-md text-base">
             </div>
 
-            <div class="mb-2">
-                <label class="block text-gray-600">Middle Name</label>
-                <input type="text" name="middle_name" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
-            </div>
-
-            <div class="mb-2">
-                <label class="block text-gray-600">Category/Group</label>
-                <select name="category" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
-                    <option value="">Select Category</option>
-                    <option value="Upstairs">Upstairs</option>
-                    <option value="Nursery 1">Nursery 1</option>
-                    <option value="Nursery 2">Nursery 2</option>
-                    <option value="Toddlers">Toddlers</option>
-                    <option value="Pre-School">Pre-School</option>
-                    <option value="Big Boys">Big Boys</option>
-                    <option value="Bigger Boys">Bigger Boys</option>
-                    <option value="Big Girls">Big Girls</option>
-                    <option value="Bigger Girls">Bigger Girls</option>
-                    <option value="Unassigned">Unassigned</option>
+            <!-- Category/Group -->
+            <div>
+                <label class="block text-gray-700 text-lg font-semibold">Category/Group</label>
+                <select class="w-full border p-3 rounded-md text-base">
+                    <option>Select Category</option>
+                    <option>Pre-School</option>
+                    <option>Nursery</option>
+                    <option>Big Boys</option>
                 </select>
             </div>
 
-            <div class="mb-2">
-                <label class="block text-gray-600">Gender</label>
-                <select name="gender" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+            <!-- Gender -->
+            <div>
+                <label class="block text-gray-700 text-lg font-semibold">Gender</label>
+                <select class="w-full border p-3 rounded-md text-base">
+                    <option>Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
                 </select>
             </div>
 
-            <div class="mb-2">
-                <label class="block text-gray-600">Date of Birth</label>
-                <input type="date" name="dob" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
+            <!-- Date of Birth & Age -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-700 text-lg font-semibold">Date of Birth</label>
+                    <input type="date" class="w-full border p-3 rounded-md text-base">
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-lg font-semibold">Current Age</label>
+                    <input type="number" class="w-full border p-3 rounded-md text-base">
+                </div>
             </div>
 
-            <div class="mb-2">
-                <label class="block text-gray-600">Current Age</label>
-                <input type="number" name="current_age" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
+            <!-- Date of Admission & Age of Admission -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-700 text-lg font-semibold">Date of Admission</label>
+                    <input type="date" class="w-full border p-3 rounded-md text-base">
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-lg font-semibold">Age of Admission</label>
+                    <input type="number" class="w-full border p-3 rounded-md text-base">
+                </div>
             </div>
 
-            <div class="mb-2">
-                <label class="block text-gray-600">Date of Admission</label>
-                <input type="date" name="admission_date" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
-            </div>
-
-            <div class="mb-2">
-                <label class="block text-gray-600">Age of Admission</label>
-                <input type="number" name="admission_age" class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
-            </div>
-
-            <button type="submit" class="w-full bg-pink-500 text-white p-2 rounded-md hover:bg-pink-600">Register</button>
+            <!-- Register Button -->
+            <button class="w-full bg-pink-500 text-white px-4 py-3 rounded-lg hover:bg-pink-600 text-xl font-bold">Register</button>
         </form>
     </div>
+
 </body>
 </html>
