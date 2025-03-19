@@ -3,51 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Child Records Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<body class="bg-gray-100 flex flex-col items-center min-h-screen p-6">
+
+    <!-- Dashboard Header -->
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-6 text-center">
+        <h2 class="text-3xl font-bold text-gray-800">Child Records Dashboard</h2>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="w-full max-w-3xl mb-4">
+        <input type="text" id="search" placeholder="Search Children by Name/ID" 
+            class="w-full border p-3 rounded-md focus:ring-2 focus:ring-pink-400">
+    </div>
+
+    <!-- Child List Table -->
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
-        <h2 class="text-2xl font-bold text-center mb-4">Admin Dashboard</h2>
+        <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Child List</h3>
 
-        <!-- Search Bar -->
-        <div class="mb-4">
-            <input type="text" id="search" placeholder="Search..." 
-                class="w-full border p-2 rounded-md focus:ring-2 focus:ring-pink-400">
-        </div>
+        <table class="w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-pink-500 text-white">
+                    <th class="p-3 border border-gray-300">ID</th>
+                    <th class="p-3 border border-gray-300">First Name</th>
+                    <th class="p-3 border border-gray-300">Last Name</th>
+                    <th class="p-3 border border-gray-300">Category</th>
+                    <th class="p-3 border border-gray-300">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr class="bg-gray-100 text-center">
+                    <td class="p-3 border border-gray-300">001</td>
+                    <td class="p-3 border border-gray-300">John</td>
+                    <td class="p-3 border border-gray-300">Doe</td>
+                    <td class="p-3 border border-gray-300">Pre-School</td>
+                    <td class="p-3 border border-gray-300 flex justify-center gap-2">
+                        <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 edit-btn">Edit</button>
+                        <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 remove-btn">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-        <!-- Table -->
-        <div class="overflow-x-auto">
-            <table class="w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr class="bg-pink-500 text-white">
-                        <th class="p-3 border border-gray-300">First Name</th>
-                        <th class="p-3 border border-gray-300">Last Name</th>
-                        <th class="p-3 border border-gray-300">Category</th>
-                        <th class="p-3 border border-gray-300">Age</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">John</td>
-                        <td class="p-3 border border-gray-300">Doe</td>
-                        <td class="p-3 border border-gray-300">Pre-School</td>
-                        <td class="p-3 border border-gray-300">5</td>
-                    </tr>
-                    <tr class="text-center">
-                        <td class="p-3 border border-gray-300">Jane</td>
-                        <td class="p-3 border border-gray-300">Smith</td>
-                        <td class="p-3 border border-gray-300">Nursery 2</td>
-                        <td class="p-3 border border-gray-300">4</td>
-                    </tr>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">Mark</td>
-                        <td class="p-3 border border-gray-300">Lee</td>
-                        <td class="p-3 border border-gray-300">Big Boys</td>
-                        <td class="p-3 border border-gray-300">7</td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- Register New Child Button -->
+    <div class="mt-6">
+        <button id="registerBtn" class="bg-pink-500 text-white px-6 py-3 rounded hover:bg-pink-600">Register New Child</button>
+    </div>
+
+    <!-- Edit Modal (Hidden by Default) -->
+    <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Edit Child Information</h2>
+
+            <input type="hidden" id="editingRowIndex">
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-gray-600 font-semibold">First Name</label>
+                    <input type="text" id="editFirstName" class="w-full border p-3 rounded-md">
+                </div>
+
+                <div>
+                    <label class="block text-gray-600 font-semibold">Last Name</label>
+                    <input type="text" id="editLastName" class="w-full border p-3 rounded-md">
+                </div>
+
+                <div>
+                    <label class="block text-gray-600 font-semibold">Category/Group</label>
+                    <input type="text" id="editCategory" class="w-full border p-3 rounded-md">
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-4 flex justify-between">
+                <button id="saveEdit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Save</button>
+                <button id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -62,6 +95,57 @@
                 row.style.display = text.includes(filter) ? "" : "none";
             });
         });
+
+        // Edit Functionality
+        document.querySelectorAll('.edit-btn').forEach((button, index) => {
+            button.addEventListener('click', function () {
+                let row = this.closest("tr");
+                document.getElementById("editFirstName").value = row.children[1].textContent;
+                document.getElementById("editLastName").value = row.children[2].textContent;
+                document.getElementById("editCategory").value = row.children[3].textContent;
+
+                // Store row index
+                document.getElementById("editingRowIndex").value = index;
+
+                // Show modal
+                document.getElementById("editModal").classList.remove("hidden");
+            });
+        });
+
+        // Save Edited Data
+        document.getElementById("saveEdit").addEventListener("click", function () {
+            let index = document.getElementById("editingRowIndex").value;
+            let tableRows = document.querySelectorAll("#table-body tr");
+            let row = tableRows[index];
+
+            // Update table with new values
+            row.children[1].textContent = document.getElementById("editFirstName").value;
+            row.children[2].textContent = document.getElementById("editLastName").value;
+            row.children[3].textContent = document.getElementById("editCategory").value;
+
+            // Hide edit modal
+            document.getElementById("editModal").classList.add("hidden");
+        });
+
+        // Cancel Edit
+        document.getElementById("cancelEdit").addEventListener("click", function () {
+            document.getElementById("editModal").classList.add("hidden");
+        });
+
+        // Remove Functionality
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                if (confirm("Are you sure you want to remove this child?")) {
+                    this.closest("tr").remove();
+                }
+            });
+        });
+
+        // Register New Child - Open Form
+        document.getElementById("registerBtn").addEventListener("click", function () {
+            alert("Registration form can be implemented here.");
+        });
     </script>
+
 </body>
 </html>
