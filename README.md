@@ -12,45 +12,6 @@ This is a Django-based web application for user registration, login, and homepag
 - **Kim** - Frontend Developer
 - **Rhoen** - Project Manager
 
-## Project Structure
-
-```
-myproject/
-    db.sqlite3
-    manage.py
-    accounts/
-        __init__.py
-        admin.py
-        apps.py
-        models.py
-        tests.py
-        views.py
-        __pycache__/
-            __init__.cpython-311.pyc
-            admin.cpython-311.pyc
-            apps.cpython-311.pyc
-            models.cpython-311.pyc
-            views.cpython-311.pyc
-        migrations/
-            __init__.py
-            __pycache__/
-                ...
-        templates/
-            dashboard.html
-            home.html
-            login.html
-            logout.html
-            register.html
-    myproject/
-        __init__.py
-        asgi.py
-        settings.py
-        urls.py
-        wsgi.py
-        __pycache__/
-            ...
-```
-
 ## Features
 
 - User Registration
@@ -100,14 +61,6 @@ myproject/
 7. **Access the application:**
 
     Open your web browser and go to `http://localhost:8000`.
-
-## Application URLs
-
-- **Homepage:** `/`
-- **Register:** `/register/`
-- **Login:** `/login/`
-- **Dashboard:** `/dashboard/`
-- **Logout:** `/logout/`
 
 ## Custom User Model
 
