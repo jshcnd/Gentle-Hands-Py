@@ -35,3 +35,7 @@ def login_view(request):
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+@login_required
+def dashboard_view(request):
+    return redirect('childrecord')
