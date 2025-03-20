@@ -6,135 +6,52 @@
     <title>Child Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex flex-col items-center min-h-screen p-4">
+<body class="bg-gray-100 flex flex-col items-center min-h-screen p-8">
 
-    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h2 class="text-2xl font-bold text-center mb-4">Child Profile</h2>
+    <!-- Child Profile Section -->
+    <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-10">
+        <!-- Profile Header -->
+        <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
+            
+            <!-- Profile Image -->
+            <img src="https://via.placeholder.com/100" alt="Profile Pic" 
+                class="rounded-lg w-32 h-32 border-4 border-pink-500 object-cover">
 
-        <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-4">
-                <img id="profilePic" src="https://via.placeholder.com/80" alt="Profile Pic" class="rounded-full w-20 h-20 border-2 border-pink-500">
-                <div>
-                    <p class="text-lg font-semibold" id="childName">John Doe</p>
-                    <p class="text-gray-600" id="childCategory">Pre-School | Age: <span id="childAge">5</span></p>
-                </div>
+            <!-- Child Info -->
+            <div class="flex-1 text-center md:text-left mt-4 md:mt-0 md:ml-6">
+                <h2 class="text-4xl font-extrabold">JUAN BATUMBAKAL JR.</h2>
+                <p class="text-xl text-gray-700 mt-2">Category: Big Girl</p>
+                <p class="text-xl text-gray-700">Age: 10 years old</p>
             </div>
-            <div>
-                <button id="editBtn" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
-                <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 remove-btn">Remove</button>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <button class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600">EDIT</button>
+                <button class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600">REMOVE</button>
             </div>
         </div>
 
-        <div class="flex justify-center gap-4">
-            <button id="viewMedicalRecords" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
-                View Medical Records
+        <!-- Health Profile Button -->
+        <div class="mt-6 text-center md:text-left">
+            <button class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600">
+                HEALTH PROFILE
             </button>
         </div>
-    </div>
 
-    <div id="medicalRecords" class="hidden w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h2 class="text-2xl font-bold text-center mb-4">Medical Records</h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="p-4 border rounded-lg">
-                <h3 class="text-lg font-semibold">Growth Data</h3>
-                <p class="text-gray-600">Height: 110 cm | Weight: 20 kg</p>
-            </div>
-            <div class="p-4 border rounded-lg">
-                <h3 class="text-lg font-semibold">Immunizations</h3>
-                <p class="text-gray-600">Completed: DTP, Polio, MMR</p>
-            </div>
-            <div class="p-4 border rounded-lg">
-                <h3 class="text-lg font-semibold">Medical Appointments</h3>
-                <p class="text-gray-600">Last Checkup: Jan 2024</p>
-            </div>
-            <div class="p-4 border rounded-lg">
-                <h3 class="text-lg font-semibold">Illness Record</h3>
-                <p class="text-gray-600">No major illnesses</p>
-            </div>
+        <!-- Profile Description -->
+        <div class="mt-6 text-lg text-gray-800 leading-relaxed">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
+                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+            <p class="mt-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
+                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
         </div>
     </div>
- 
-    <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold text-center mb-4">Edit Profile</h2>
-       
-            <div class="flex flex-col items-center mb-4">
-                <label for="uploadProfilePic" class="cursor-pointer">
-                    <img id="editProfilePic" src="https://via.placeholder.com/100" alt="Profile Picture" 
-                        class="w-24 h-24 rounded-full border-2 border-pink-500 object-cover">
-                </label>
-                <input type="file" id="uploadProfilePic" accept="image/*" class="hidden">
-            </div>
-        
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-gray-600 font-semibold">First Name</label>
-                    <input type="text" id="editFirstName" class="w-full border p-2 rounded-md">
-                </div>
-
-                <div>
-                    <label class="block text-gray-600 font-semibold">Last Name</label>
-                    <input type="text" id="editLastName" class="w-full border p-2 rounded-md">
-                </div>
-
-                <div>
-                    <label class="block text-gray-600 font-semibold">Category/Group</label>
-                    <input type="text" id="editCategory" class="w-full border p-2 rounded-md">
-                </div>
-
-                <div>
-                    <label class="block text-gray-600 font-semibold">Age</label>
-                    <input type="number" id="editAge" class="w-full border p-2 rounded-md">
-                </div>
-            </div>
-
-            <div class="mt-4 flex justify-between">
-                <button id="saveEdit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save</button>
-                <button id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <script> 
-        document.getElementById("viewMedicalRecords").addEventListener("click", function () {
-            document.getElementById("medicalRecords").classList.toggle("hidden");
-        });
-
-        document.getElementById("editBtn").addEventListener("click", function () {
-            document.getElementById("editModal").classList.remove("hidden");
-
-            let fullName = document.getElementById("childName").textContent.split(" ");
-            document.getElementById("editFirstName").value = fullName[0];
-            document.getElementById("editLastName").value = fullName[1];
-            document.getElementById("editCategory").value = document.getElementById("childCategory").textContent.split("|")[0].trim();
-            document.getElementById("editAge").value = document.getElementById("childAge").textContent;
-            document.getElementById("editProfilePic").src = document.getElementById("profilePic").src;
-        });
- 
-        document.getElementById("saveEdit").addEventListener("click", function () {
-            let firstName = document.getElementById("editFirstName").value;
-            let lastName = document.getElementById("editLastName").value;
-            let category = document.getElementById("editCategory").value;
-            let age = document.getElementById("editAge").value;
-       
-            document.getElementById("childName").textContent = `${firstName} ${lastName}`;
-            document.getElementById("childCategory").textContent = `${category} | Age: ${age}`;
-            document.getElementById("profilePic").src = document.getElementById("editProfilePic").src;
-   
-            document.getElementById("editModal").classList.add("hidden");
-        });
-
-        document.getElementById("cancelEdit").addEventListener("click", function () {
-            document.getElementById("editModal").classList.add("hidden");
-        });
-
-        document.querySelector(".remove-btn").addEventListener("click", function () {
-            if (confirm("Are you sure you want to remove this child?")) {
-                document.querySelector(".w-full.max-w-4xl").remove();
-            }
-        });
-    </script>
 
 </body>
 </html>
