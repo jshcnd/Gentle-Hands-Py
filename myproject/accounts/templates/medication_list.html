@@ -8,7 +8,6 @@
 </head>
 <body class="bg-gray-100 flex h-screen">
 
-    <!-- Sidebar -->
     <aside class="w-64 bg-white shadow-lg h-screen p-4 hidden md:block fixed">
         <div class="flex flex-col items-center">
             <img src="https://via.placeholder.com/100" alt="Logo" class="w-20">
@@ -22,13 +21,11 @@
         </nav>
     </aside>
 
-    <!-- Main Content -->
     <div class="flex-1 p-6 ml-64">
         <div class="w-full bg-white shadow-lg rounded-lg p-6 text-center">
             <h2 class="text-3xl font-bold text-gray-800">Current Medication List</h2>
         </div>
 
-        <!-- Search Bar & Add Button -->
         <div class="flex flex-col md:flex-row justify-between items-center mt-4 gap-3">
             <input type="text" id="search" placeholder="Search by Name or ID" 
                 class="border p-3 rounded-md focus:ring-2 focus:ring-pink-400 w-full md:w-3/4">
@@ -37,7 +34,6 @@
             </button>
         </div>
 
-        <!-- Medication Table -->
         <div class="w-full bg-white shadow-lg rounded-lg p-6 mt-6 overflow-x-auto">
             <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Medication List</h3>
             <table class="w-full border-collapse border border-gray-300 min-w-max">
@@ -143,16 +139,13 @@
         </div>
     </div>
 
-    <!-- Add Medication Modal -->
     <div id="registerModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
             <h2 class="text-3xl font-bold text-center mb-4">Add Medication</h2>
             
-            <!-- Search Bar -->
             <input type="text" id="modalSearch" placeholder="Search for a patient..." 
                 class="border p-3 rounded-md focus:ring-2 focus:ring-pink-400 w-full mb-3">
             
-            <!-- Form Fields -->
             <div class="space-y-3">
                 <label class="block text-gray-600 font-semibold">Group</label>
                 <select id="groupSelect" class="w-full border p-3 rounded-md">
@@ -201,7 +194,6 @@
                 </div>
             </div>
 
-            <!-- Buttons -->
             <div class="mt-4 flex justify-between">
                 <button id="registerBtn" class="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600">Add</button>
                 <button id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancel</button>
