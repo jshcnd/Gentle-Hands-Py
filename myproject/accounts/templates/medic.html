@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find a Medic</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
 </head>
 <body class="bg-gray-200 flex justify-center items-center min-h-screen p-4">
     <div class="w-full max-w-7xl bg-white p-8 rounded-lg shadow-lg">
         <div class="flex items-center justify-between pb-4 border-b">
             <div class="flex items-center gap-4">
                 <button class="text-3xl md:text-4xl">&#9776;</button>
-                <img src="logo.jpg" alt="Gentle Hands Logo" class="h-16 md:h-20">
+                <img src="{% static 'logo.jpg' %}" alt="Gentle Hands Logo" class="h-16 md:h-20">
             </div>
         </div>
 

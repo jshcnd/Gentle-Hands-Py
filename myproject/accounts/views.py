@@ -50,3 +50,6 @@ def appointment_list(request):
 
 def immunization_list(request):
     return render(request, 'immunization.html')
+
+def medic(request):
+    return render(request, 'medic.html')
