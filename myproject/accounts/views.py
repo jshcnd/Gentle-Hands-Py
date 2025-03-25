@@ -47,3 +47,6 @@ def illness_list(request):
 
 def appointment_list(request):
     return render(request, 'appointment_list.html')
+
+def immunization_list(request):
+    return render(request, 'immunization.html')
