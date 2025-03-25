@@ -8,4 +8,6 @@ urlpatterns = [
     path('childrecord/', TemplateView.as_view(template_name='childrecord.html'), name='childrecord'),
     path('registerchild/', TemplateView.as_view(template_name='registerchild.html'), name='registerchild'),
     path('medication/', views.medication_view, name='medication'),
+    path('illness/', views.illness_list, name='illness_list'),
+    path('appointment/', views.appointment_list, name='appointment_list'),
 ]

@@ -41,3 +41,9 @@ def dashboard_view(request):
 
 def medication_view(request):
     return render(request, 'medication.html')
+
+def illness_list(request):
+    return render(request, 'illness_list.html')
+
+def appointment_list(request):
+    return render(request, 'appointment_list.html')
