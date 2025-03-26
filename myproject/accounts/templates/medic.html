@@ -19,57 +19,57 @@
         <div class="mt-4 flex justify-between items-center gap-4">
             <input type="text" id="searchBar" placeholder="Search..." class="border px-4 py-2 w-full md:w-2/3 text-lg rounded-lg border-pink-500">
             <div class="flex gap-2">
-                <button id="backBtn" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold text-lg">Back</button>
+                <button id="backBtn" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold text-lg" onclick="window.location.href='{% url 'medication' %}'">Back</button>
                 <button id="filterBtn" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold text-lg">Filter</button>
             </div>
         </div>
 
         <h2 class="text-3xl font-bold text-center mt-4">Find a Medic</h2>
 
-<div class="mt-6 overflow-x-auto">
-    <table class="w-full border-collapse border border-gray-400 text-left text-lg">
-        <thead class="bg-gray-400 text-white">
-            <tr>
-                <th class="border border-gray-600 px-4 py-2 font-semibold">Medic</th>
-                <th class="border border-gray-600 px-4 py-2 font-semibold">Specialty</th>
-                <th class="border border-gray-600 px-4 py-2 font-semibold">Hospital</th>
-                <th class="border border-gray-600 px-4 py-2 font-semibold">Department</th>
-            </tr>
-        </thead>
-        <tbody id="medicTableBody">
-            <tr>
-                <td class="border border-gray-600 px-4 py-2">Dr. John Smith</td>
-                <td class="border border-gray-600 px-4 py-2">Plastics</td>
-                <td class="border border-gray-600 px-4 py-2">PCMC</td>
-                <td class="border border-gray-600 px-4 py-2">Surgery</td>
-            </tr>
-            <tr>
-                <td class="border border-gray-600 px-4 py-2">Dr. Sarah Johnson</td>
-                <td class="border border-gray-600 px-4 py-2">ENT</td>
-                <td class="border border-gray-600 px-4 py-2">Med Mom</td>
-                <td class="border border-gray-600 px-4 py-2">Otolaryngology</td>
-            </tr>
-            <tr>
-                <td class="border border-gray-600 px-4 py-2">Dr. Mark Lee</td>
-                <td class="border border-gray-600 px-4 py-2">Plastics</td>
-                <td class="border border-gray-600 px-4 py-2">PCMC</td>
-                <td class="border border-gray-600 px-4 py-2">Aesthetics</td>
-            </tr>
-            <tr>
-                <td class="border border-gray-600 px-4 py-2">Dr. Anna Kim</td>
-                <td class="border border-gray-600 px-4 py-2">Pediatrics</td>
-                <td class="border border-gray-600 px-4 py-2">Children's Care</td>
-                <td class="border border-gray-600 px-4 py-2">Pediatrics</td>
-            </tr>
-            <tr>
-                <td class="border border-gray-600 px-4 py-2">Dr. David Gomez</td>
-                <td class="border border-gray-600 px-4 py-2">Cardiology</td>
-                <td class="border border-gray-600 px-4 py-2">Heart Center</td>
-                <td class="border border-gray-600 px-4 py-2">Cardiology</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+        <div class="mt-6 overflow-x-auto">
+            <table class="w-full border-collapse border border-gray-400 text-left text-lg">
+                <thead class="bg-gray-400 text-white">
+                    <tr>
+                        <th class="border border-gray-600 px-4 py-2 font-semibold">Medic</th>
+                        <th class="border border-gray-600 px-4 py-2 font-semibold">Specialty</th>
+                        <th class="border border-gray-600 px-4 py-2 font-semibold">Hospital</th>
+                        <th class="border border-gray-600 px-4 py-2 font-semibold">Department</th>
+                    </tr>
+                </thead>
+                <tbody id="medicTableBody">
+                    <tr>
+                        <td class="border border-gray-600 px-4 py-2">Dr. John Smith</td>
+                        <td class="border border-gray-600 px-4 py-2">Plastics</td>
+                        <td class="border border-gray-600 px-4 py-2">PCMC</td>
+                        <td class="border border-gray-600 px-4 py-2">Surgery</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-600 px-4 py-2">Dr. Sarah Johnson</td>
+                        <td class="border border-gray-600 px-4 py-2">ENT</td>
+                        <td class="border border-gray-600 px-4 py-2">Med Mom</td>
+                        <td class="border border-gray-600 px-4 py-2">Otolaryngology</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-600 px-4 py-2">Dr. Mark Lee</td>
+                        <td class="border border-gray-600 px-4 py-2">Plastics</td>
+                        <td class="border border-gray-600 px-4 py-2">PCMC</td>
+                        <td class="border border-gray-600 px-4 py-2">Aesthetics</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-600 px-4 py-2">Dr. Anna Kim</td>
+                        <td class="border border-gray-600 px-4 py-2">Pediatrics</td>
+                        <td class="border border-gray-600 px-4 py-2">Children's Care</td>
+                        <td class="border border-gray-600 px-4 py-2">Pediatrics</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-600 px-4 py-2">Dr. David Gomez</td>
+                        <td class="border border-gray-600 px-4 py-2">Cardiology</td>
+                        <td class="border border-gray-600 px-4 py-2">Heart Center</td>
+                        <td class="border border-gray-600 px-4 py-2">Cardiology</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
