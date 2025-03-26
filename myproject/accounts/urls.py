@@ -12,4 +12,5 @@ urlpatterns = [
     path('appointment/', views.appointment_list, name='appointment_list'),
     path('immunization/', views.immunization_list, name='immunization_list'),
     path('medic/', views.medic, name='medic'),
+    path('growth_data/', views.growth_data, name='growth_data'),
 ]

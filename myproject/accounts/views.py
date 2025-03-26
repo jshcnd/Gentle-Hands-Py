@@ -53,3 +53,6 @@ def immunization_list(request):
 
 def medic(request):
     return render(request, 'medic.html')
+
+def growth_data(request):
+    return render(request, 'growth_data.html')
