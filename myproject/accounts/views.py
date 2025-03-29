@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm
 
 def home(request):
@@ -77,3 +80,50 @@ def growth_record(request):
 @login_required
 def change_user(request):
     return render(request, 'changeuser.html')
+
+@login_required
+def change_username(request):
+    if request.method == 'POST':
+        new_username = request.POST.get('username')
+        if new_username:
+            if User.objects.filter(username=new_username).exists():
+                messages.error(request, 'Username already taken.')
+            else:
+                request.user.username = new_username
+                request.user.save()
+                messages.success(request, 'Username updated successfully.')
+        else:
+            messages.error(request, 'Please provide a valid username.')
+    return redirect('changeuser')
+
+@login_required
+def change_email(request):
+    if request.method == 'POST':
+        new_email = request.POST.get('email')
+        if new_email:
+            if User.objects.filter(email=new_email).exists():
+                messages.error(request, 'Email already in use.')
+            else:
+                request.user.email = new_email
+                request.user.save()
+                messages.success(request, 'Email updated successfully.')
+        else:
+            messages.error(request, 'Please provide a valid email address.')
+    return redirect('changeuser')
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 and password2:
+            if password1 == password2:
+                request.user.set_password(password1)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                messages.success(request, 'Password updated successfully.')
+            else:
+                messages.error(request, 'Passwords do not match.')
+        else:
+            messages.error(request, 'Please fill out both password fields.')
+    return redirect('changeuser')
