@@ -15,4 +15,5 @@ urlpatterns = [
     path('growth_data/', views.growth_data, name='growth_data'),
     path('changeuser/', views.change_user, name='changeuser'),
     path('medication-list/', views.medication_list, name='medication_list'),
+    path('growth-record/', views.growth_record, name='growth_record'),
 ]
