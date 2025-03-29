@@ -47,6 +47,10 @@ def medication_view(request):
     return render(request, 'medication.html')
 
 @login_required
+def medication_list(request):
+    return render(request, 'medication_list.html')
+
+@login_required
 def illness_list(request):
     return render(request, 'illness_list.html')
 
