@@ -60,6 +60,21 @@
         <div id="overlay" class="fixed hidden inset-0 bg-black bg-opacity-50 z-40"></div>
     </div>
 
+    <div id="childRecordsModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Child Records</h2>
+            <p class="text-gray-600 text-center mb-6">View and manage child records from here.</p>
+            <div class="flex justify-center gap-4">
+                <button id="viewChildRecords" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    View Records
+                </button>
+                <button id="closeChildRecordsModal" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const menuToggle = document.getElementById("menu-toggle");
         const sidebar = document.getElementById("sidebar");
@@ -80,6 +95,20 @@
                 sidebar.classList.add("-translate-x-full");
                 overlay.classList.add("hidden");
             }
+        });
+        const childRecordsButton = document.querySelector("a[href='{% url 'childrecord' %}']");
+        const childRecordsModal = document.getElementById("childRecordsModal");
+        const closeChildRecordsModal = document.getElementById("closeChildRecordsModal");
+        const viewChildRecords = document.getElementById("viewChildRecords");
+        childRecordsButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            childRecordsModal.classList.remove("hidden");
+        });
+        closeChildRecordsModal.addEventListener("click", () => {
+            childRecordsModal.classList.add("hidden");
+        });
+        viewChildRecords.addEventListener("click", () => {
+            window.location.href = "{% url 'childrecord' %}";
         });
     </script>
 </body>
