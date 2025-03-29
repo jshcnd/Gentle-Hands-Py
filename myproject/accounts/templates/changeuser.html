@@ -17,7 +17,6 @@
         <div class="p-8">
             <h1 class="text-2xl font-bold text-center mb-4">Change User Information</h1>
             
-            <!-- Change Username Form -->
             <form method="post" class="space-y-4">
                 {% csrf_token %}
                 <div>
@@ -29,7 +28,6 @@
                 </div>
             </form>
 
-            <!-- Change Email Form -->
             <form method="post" class="space-y-4 mt-6">
                 {% csrf_token %}
                 <div>
@@ -41,12 +39,10 @@
                 </div>
             </form>
 
-            <!-- Toggle Password Change Form -->
             <div class="flex justify-center mt-6">
                 <button type="button" onclick="togglePasswordForm()" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300">Change Password</button>
             </div>
 
-            <!-- Change Password Form -->
             <form method="post" id="password-form" class="space-y-4 mt-6 hidden">
                 {% csrf_token %}
                 <div>
@@ -62,7 +58,6 @@
                 </div>
             </form>
 
-            <!-- Back to Dashboard -->
             <div class="flex justify-center mt-4">
                 <a href="{% url 'dashboard' %}" class="w-full px-4 py-2 bg-gray-500 text-white text-center rounded hover:bg-gray-600 transition duration-300">Back to Dashboard</a>
             </div>
