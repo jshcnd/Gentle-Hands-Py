@@ -65,3 +65,7 @@ def medic(request):
 @login_required
 def growth_data(request):
     return render(request, 'growth_data.html')
+
+@login_required
+def change_user(request):
+    return render(request, 'changeuser.html')

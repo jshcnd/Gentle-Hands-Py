@@ -13,4 +13,5 @@ urlpatterns = [
     path('immunization/', views.immunization_list, name='immunization_list'),
     path('medic/', views.medic, name='medic'),
     path('growth_data/', views.growth_data, name='growth_data'),
+    path('changeuser/', views.change_user, name='changeuser'),
 ]
