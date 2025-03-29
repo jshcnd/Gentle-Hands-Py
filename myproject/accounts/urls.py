@@ -16,4 +16,7 @@ urlpatterns = [
     path('changeuser/', views.change_user, name='changeuser'),
     path('medication-list/', views.medication_list, name='medication_list'),
     path('growth-record/', views.growth_record, name='growth_record'),
+    path('change-username/', views.change_username, name='change_username'),
+    path('change-email/', views.change_email, name='change_email'),
+    path('change-password/', views.change_password, name='change_password'),
 ]

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Record</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-start min-h-screen p-0">
+    <div class="w-full h-screen bg-white p-8 rounded-lg shadow-lg">
+        <div class="flex flex-col items-center">
+            <img src="logo.jpg" alt="Logo" class="h-16 mb-2">
+            <h2 class="text-2xl font-bold text-gray-800">BMI FOR: <span class="text-pink-500">JUAN BATUMBAKAL JR.</span></h2>
+            <p class="text-gray-600 text-lg">AGE: <span class="font-semibold">8 YEARS OLD</span></p>
+        </div>
+        
+        <div class="mt-6 overflow-x-auto">
+            <table class="w-full border-collapse border border-pink-500 text-lg">
+                <thead>
+                    <tr class="bg-pink-500 text-white-500">
+                        <th class="border border-gray-400 text-white">HEIGHT</th>
+                        <th class="border border-gray-400 text-white">WEIGHT</th>
+                        <th class="border border-gray-400 text-white">BMI</th>
+                        <th class="border border-gray-400 text-white">STATUS</th>
+                        <th class="border border-gray-400 text-white">DATE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white text-gray-700">
+                        <td class="border border-gray-300 px-4 py-3">
+                            <input type="date" class="w-full border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-pink-400">
+                        </td>
+                        <td class="border border-gray-300 px-4 py-3">
+                            <input type="number" value="127" class="w-20 border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-pink-400"> cm
+                        </td>
+                        <td class="border border-gray-300 px-4 py-3">
+                            <input type="number" value="24.4" class="w-20 border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-pink-400"> kg
+                        </td>
+                        <td class="border border-gray-300 px-4 py-3">15.7</td>
+                        <td class="border border-gray-300 px-4 py-3">
+                            <select class="border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-pink-400">
+                                <option value="underweight">Underweight</option>
+                                <option value="normal">Normal</option>
+                                <option value="overweight">Overweight</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
