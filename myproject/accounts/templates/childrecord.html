@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,19 +7,30 @@
     <title>Child Records Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex flex-col items-center min-h-screen p-6">
-    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-6 text-center">
-        <h2 class="text-3xl font-bold text-gray-800">Child Records Dashboard</h2>
+<body class="bg-white-100 flex flex-col items-center min-h-screen p-6 w-full">
+    <div class="w-full p-6">
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center">
+                <img src="{% static 'logo.jpg' %}" alt="Logo" class="h-16 mr-4">
+                <input type="text" id="search" placeholder="Search by Name or ID"
+                    class="border border-pink-500 p-3 rounded-md text-gray-700 flex-grow w-1/2 focus:outline-none focus:ring-2 focus:ring-pink-500">
+            </div>
+            <div class="flex items-center">
+                <button onclick="window.location.href='{% url 'dashboard' %}'" 
+                    class="bg-pink-500 text-white px-6 py-3 rounded hover:bg-pink-600">
+                    Back
+                </button>  
+                <button id="registerBtn" class="bg-pink-500 text-white px-6 py-3 rounded hover:bg-pink-600 ml-4">
+                    Register New Child
+                </button>
+            </div>
+        </div>
+        <h3 class="text-2xl font-bold mt-4 text-center text-gray-800 text-3xl">
+            Child Records Dashboard
+        </h3>
     </div>
-
-    <div class="w-full max-w-3xl mb-4">
-        <input type="text" id="search" placeholder="Search Children by Name/ID" 
-            class="w-full border p-3 rounded-md focus:ring-2 focus:ring-pink-400">
-    </div>
-
-    <div class="w-full bg-white shadow-lg rounded-lg p-6">
-        <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Child List</h3>
-
+    
+    <div class="w-full bg-white p-6">
         <table class="w-full border-collapse border border-gray-300">
             <thead>
                 <tr class="bg-pink-500 text-white">
@@ -47,21 +59,13 @@
                     <td class="p-3 border border-gray-300">5</td>
                     <td class="p-3 border border-gray-300 flex justify-center gap-2">
                         <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 edit-btn">Edit</button>
-                        <button onclick="window.location.href='{% url 'growth_data' %}'" 
+                        <button onclick="window.location.href=''" 
                                 class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">View</button>
                         <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 remove-btn">Remove</button>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </div>
-
-    <div class="mt-6">
-            <button onclick="window.location.href='{% url 'dashboard' %}'" 
-                class="bg-pink-500 text-white px-6 py-3 rounded hover:bg-pink-600">
-                Back
-            </button>  
-        <button id="registerBtn" class="bg-pink-500 text-white px-6 py-3 rounded hover:bg-pink-600">Register New Child</button>
     </div>
 
     <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
