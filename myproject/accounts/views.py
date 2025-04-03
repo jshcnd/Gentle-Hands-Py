@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from .forms import RegisterForm
+from .forms import RegisterForm, ChildRegistrationForm
 
 def home(request):
     return render(request, 'index.html')
@@ -127,3 +127,13 @@ def change_password(request):
         else:
             messages.error(request, 'Please fill out both password fields.')
     return redirect('changeuser')
+
+def register_child(request):
+    if request.method == 'POST':
+        form = ChildRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('childrecord')
+    else:
+        form = ChildRegistrationForm()
+    return render(request, 'registerChild.html', {'form': form})
