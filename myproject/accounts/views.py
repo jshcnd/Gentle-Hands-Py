@@ -71,8 +71,9 @@ def medic(request):
     return render(request, 'medic.html')
 
 @login_required
-def growth_data(request):
-    return render(request, 'growth_data.html')
+def growth_data(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+    return render(request, 'growth_data.html', {'child': child})
 
 @login_required
 def growth_record(request):
