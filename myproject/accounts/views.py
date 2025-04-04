@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -164,3 +164,20 @@ def child_record(request):
     # Fetch all child records from the database
     children = Child.objects.all()
     return render(request, 'childrecord.html', {'children': children})
+
+def edit_child(request):
+    if request.method == 'POST':
+        child_id = request.POST.get('child_id')
+        child = get_object_or_404(Child, id=child_id)
+
+        # Update child information
+        child.first_name = request.POST.get('first_name')
+        child.middle_name = request.POST.get('middle_name')
+        child.last_name = request.POST.get('last_name')
+        child.category = request.POST.get('category')
+        child.gender = request.POST.get('gender')
+        child.date_of_birth = request.POST.get('date_of_birth')
+        child.date_of_admission = request.POST.get('date_of_admission')
+        child.save()
+
+        return redirect('childrecord')  # Redirect back to the child records page
