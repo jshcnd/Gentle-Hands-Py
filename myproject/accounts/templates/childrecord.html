@@ -41,6 +41,7 @@
                     <th class="p-3 border border-gray-300">Category</th>
                     <th class="p-3 border border-gray-300">Gender</th>
                     <th class="p-3 border border-gray-300">Date of Birth</th>
+                    <th class="p-3 border border-gray-300">Current Age</th>
                     <th class="p-3 border border-gray-300">Date of Admission</th>
                     <th class="p-3 border border-gray-300">Age of Admission</th>
                     <th class="p-3 border border-gray-300">Actions</th>
@@ -56,6 +57,7 @@
                     <td class="p-3 border border-gray-300">{{ child.category }}</td>
                     <td class="p-3 border border-gray-300">{{ child.gender }}</td>
                     <td class="p-3 border border-gray-300">{{ child.date_of_birth }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.current_age }}</td>
                     <td class="p-3 border border-gray-300">{{ child.date_of_admission }}</td>
                     <td class="p-3 border border-gray-300">{{ child.age_of_admission }}</td>
                     <td class="p-3 border border-gray-300 flex justify-center gap-2">
@@ -67,7 +69,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="10" class="p-3 border border-gray-300 text-center text-gray-500">No records found.</td>
+                    <td colspan="11" class="p-3 border border-gray-300 text-center text-gray-500">No records found.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -84,15 +86,37 @@
                     <label class="block text-gray-600 font-semibold">First Name</label>
                     <input type="text" id="editFirstName" class="w-full border p-3 rounded-md">
                 </div>
-
+                <div>
+                    <label class="block text-gray-600 font-semibold">Middle Name</label>
+                    <input type="text" id="editMiddleName" class="w-full border p-3 rounded-md">
+                </div>
                 <div>
                     <label class="block text-gray-600 font-semibold">Last Name</label>
                     <input type="text" id="editLastName" class="w-full border p-3 rounded-md">
                 </div>
-
                 <div>
                     <label class="block text-gray-600 font-semibold">Category/Group</label>
-                    <input type="text" id="editCategory" class="w-full border p-3 rounded-md">
+                    <select id="editCategory" class="w-full border p-3 rounded-md">
+                        <option>Select Category</option>
+                        <option value="Pre-School">Pre-School</option>
+                        <option value="Nursery">Nursery</option>
+                        <option value="Big Boys">Big Boys</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold">Gender</label>
+                    <select id="editGender" class="w-full border p-3 rounded-md">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold">Date of Birth</label>
+                    <input type="date" id="editDateOfBirth" class="w-full border p-3 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold">Date of Admission</label>
+                    <input type="date" id="editDateOfAdmission" class="w-full border p-3 rounded-md">
                 </div>
             </div>
 
@@ -113,28 +137,48 @@
                 row.style.display = text.includes(filter) ? "" : "none";
             });
         });
+
         document.querySelectorAll('.edit-btn').forEach((button, index) => {
             button.addEventListener('click', function () {
                 let row = this.closest("tr");
                 document.getElementById("editFirstName").value = row.children[1].textContent;
-                document.getElementById("editLastName").value = row.children[2].textContent;
-                document.getElementById("editCategory").value = row.children[3].textContent;
+                document.getElementById("editMiddleName").value = row.children[2].textContent;
+                document.getElementById("editLastName").value = row.children[3].textContent;
+
+                const categoryDropdown = document.getElementById("editCategory");
+                const categoryValue = row.children[4].textContent;
+                Array.from(categoryDropdown.options).forEach(option => {
+                    option.selected = option.value === categoryValue;
+                });
+
+                document.getElementById("editGender").value = row.children[5].textContent;
+                document.getElementById("editDateOfBirth").value = row.children[6].textContent;
+                document.getElementById("editDateOfAdmission").value = row.children[8].textContent;
                 document.getElementById("editingRowIndex").value = index;
                 document.getElementById("editModal").classList.remove("hidden");
             });
         });
+
         document.getElementById("saveEdit").addEventListener("click", function () {
             let index = document.getElementById("editingRowIndex").value;
             let tableRows = document.querySelectorAll("#table-body tr");
             let row = tableRows[index];
+
             row.children[1].textContent = document.getElementById("editFirstName").value;
-            row.children[2].textContent = document.getElementById("editLastName").value;
-            row.children[3].textContent = document.getElementById("editCategory").value;
+            row.children[2].textContent = document.getElementById("editMiddleName").value;
+            row.children[3].textContent = document.getElementById("editLastName").value;
+            row.children[4].textContent = document.getElementById("editCategory").value;
+            row.children[5].textContent = document.getElementById("editGender").value;
+            row.children[6].textContent = document.getElementById("editDateOfBirth").value;
+            row.children[8].textContent = document.getElementById("editDateOfAdmission").value;
+
             document.getElementById("editModal").classList.add("hidden");
         });
+
         document.getElementById("cancelEdit").addEventListener("click", function () {
             document.getElementById("editModal").classList.add("hidden");
         });
+
         document.querySelectorAll('.remove-btn').forEach(button => {
             button.addEventListener('click', function () {
                 if (confirm("Are you sure you want to remove this child?")) {
@@ -142,6 +186,7 @@
                 }
             });
         });
+
         document.getElementById("registerBtn").addEventListener("click", function () {
             window.location.href = "{% url 'registerchild' %}";
         });
