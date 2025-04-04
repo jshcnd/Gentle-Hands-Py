@@ -131,18 +131,18 @@ def change_password(request):
 
 def register_child(request):
     if request.method == 'POST':
-        # Handle form submission
+        # Get form data
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         middle_name = request.POST.get('middle_name')
         category = request.POST.get('category')
         gender = request.POST.get('gender')
         date_of_birth = request.POST.get('date_of_birth')
+        current_age = request.POST.get('current_age')
         date_of_admission = request.POST.get('date_of_admission')
         age_of_admission = request.POST.get('age_of_admission')
-        current_age = request.POST.get('current_age')
 
-        # Save the data to the database
+        # Save data to the database
         Child.objects.create(
             first_name=first_name,
             last_name=last_name,
@@ -150,10 +150,17 @@ def register_child(request):
             category=category,
             gender=gender,
             date_of_birth=date_of_birth,
+            current_age=current_age,
             date_of_admission=date_of_admission,
-            age_of_admission=age_of_admission,
-            current_age=current_age
+            age_of_admission=age_of_admission
         )
-        return redirect('childrecord')
+
+        # Redirect to the child records page
+        return redirect('childrecord')  # Replace 'childrecord' with the correct URL name
 
     return render(request, 'registerChild.html')
+
+def child_record(request):
+    # Fetch all child records from the database
+    children = Child.objects.all()
+    return render(request, 'childrecord.html', {'children': children})

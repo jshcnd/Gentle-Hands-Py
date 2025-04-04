@@ -47,16 +47,17 @@
                 </tr>
             </thead>
             <tbody id="table-body">
+                {% for child in children %}
                 <tr class="bg-gray-100 text-center">
-                    <td class="p-3 border border-gray-300">001</td>
-                    <td class="p-3 border border-gray-300">John</td>
-                    <td class="p-3 border border-gray-300">Dih</td>
-                    <td class="p-3 border border-gray-300">Doe</td>
-                    <td class="p-3 border border-gray-300">Pre-School</td>
-                    <td class="p-3 border border-gray-300">Male</td>
-                    <td class="p-3 border border-gray-300">01/01/2018</td>
-                    <td class="p-3 border border-gray-300">01/01/2023</td>
-                    <td class="p-3 border border-gray-300">5</td>
+                    <td class="p-3 border border-gray-300">{{ child.id }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.first_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.middle_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.last_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.category }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.gender }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.date_of_birth }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.date_of_admission }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.age_of_admission }}</td>
                     <td class="p-3 border border-gray-300 flex justify-center gap-2">
                         <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 edit-btn">Edit</button>
                         <button onclick="window.location.href=''" 
@@ -64,6 +65,11 @@
                         <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 remove-btn">Remove</button>
                     </td>
                 </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="p-3 border border-gray-300 text-center text-gray-500">No records found.</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

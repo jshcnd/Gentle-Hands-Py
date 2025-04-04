@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
-    path('childrecord/', TemplateView.as_view(template_name='childrecord.html'), name='childrecord'),
+    path('childrecord/', views.child_record, name='childrecord'),
     path('registerchild/', views.register_child, name='registerchild'),
     path('medication/', views.medication_view, name='medication'),
     path('illness/', views.illness_list, name='illness_list'),
