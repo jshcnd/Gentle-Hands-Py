@@ -117,8 +117,16 @@
                         <input type="date" id="editDateOfBirth" name="date_of_birth" class="w-full border p-3 rounded-md">
                     </div>
                     <div>
+                        <label class="block text-gray-600 font-semibold">Current Age</label>
+                        <input type="text" id="editCurrentAge" name="current_age" class="w-full border p-3 rounded-md" readonly>
+                    </div>
+                    <div>
                         <label class="block text-gray-600 font-semibold">Date of Admission</label>
                         <input type="date" id="editDateOfAdmission" name="date_of_admission" class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Age of Admission</label>
+                        <input type="text" id="editAgeOfAdmission" name="age_of_admission" class="w-full border p-3 rounded-md" readonly>
                     </div>
                 </div>
 
@@ -141,24 +149,82 @@
             });
         });
 
+        // Function to calculate age
+        function calculateAge(dateOfBirth, referenceDate) {
+            const birthDate = new Date(dateOfBirth);
+            const refDate = new Date(referenceDate);
+            let age = refDate.getFullYear() - birthDate.getFullYear();
+            const monthDiff = refDate.getMonth() - birthDate.getMonth();
+            const dayDiff = refDate.getDate() - birthDate.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+            return age;
+        }
+
+        // Function to format date to YYYY-MM-DD
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Event listener for Date of Birth in the edit modal
+        document.getElementById("editDateOfBirth").addEventListener("change", function () {
+            const dob = this.value;
+            const today = new Date().toISOString().split("T")[0];
+            const age = calculateAge(dob, today);
+            document.getElementById("editCurrentAge").value = age >= 0 ? age : '';
+        });
+
+        // Event listener for Date of Admission in the edit modal
+        document.getElementById("editDateOfAdmission").addEventListener("change", function () {
+            const dob = document.getElementById("editDateOfBirth").value;
+            const doa = this.value;
+            if (dob) {
+                const ageAtAdmission = calculateAge(dob, doa);
+                document.getElementById("editAgeOfAdmission").value = ageAtAdmission >= 0 ? ageAtAdmission : '';
+            }
+        });
+
+        // Populate modal fields when editing
         document.querySelectorAll('.edit-btn').forEach((button, index) => {
             button.addEventListener('click', function () {
                 let row = this.closest("tr");
-                document.getElementById("editFirstName").value = row.children[1].textContent;
-                document.getElementById("editMiddleName").value = row.children[2].textContent;
-                document.getElementById("editLastName").value = row.children[3].textContent;
 
+                // Populate text fields
+                document.getElementById("editFirstName").value = row.children[1].textContent.trim();
+                document.getElementById("editMiddleName").value = row.children[2].textContent.trim();
+                document.getElementById("editLastName").value = row.children[3].textContent.trim();
+
+                // Populate dropdown for Category
                 const categoryDropdown = document.getElementById("editCategory");
-                const categoryValue = row.children[4].textContent;
+                const categoryValue = row.children[4].textContent.trim();
                 Array.from(categoryDropdown.options).forEach(option => {
                     option.selected = option.value === categoryValue;
                 });
 
-                document.getElementById("editGender").value = row.children[5].textContent;
-                document.getElementById("editDateOfBirth").value = row.children[6].textContent;
-                document.getElementById("editDateOfAdmission").value = row.children[8].textContent;
+                // Populate dropdown for Gender
+                document.getElementById("editGender").value = row.children[5].textContent.trim();
+
+                // Populate Date of Birth and Date of Admission
+                const dob = row.children[6].textContent.trim();
+                const doa = row.children[8].textContent.trim();
+                document.getElementById("editDateOfBirth").value = formatDate(dob);
+                document.getElementById("editDateOfAdmission").value = formatDate(doa);
+
+                // Populate Current Age and Age of Admission
+                document.getElementById("editCurrentAge").value = row.children[7].textContent.trim();
+                document.getElementById("editAgeOfAdmission").value = row.children[9].textContent.trim();
+
+                // Store the row index and child ID
                 document.getElementById("editingRowIndex").value = index;
-                document.getElementById("childId").value = row.children[0].textContent;
+                document.getElementById("childId").value = row.children[0].textContent.trim();
+
+                // Show the modal
                 document.getElementById("editModal").classList.remove("hidden");
             });
         });

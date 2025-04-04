@@ -178,6 +178,8 @@ def edit_child(request):
         child.gender = request.POST.get('gender')
         child.date_of_birth = request.POST.get('date_of_birth')
         child.date_of_admission = request.POST.get('date_of_admission')
+        child.current_age = request.POST.get('current_age')
+        child.age_of_admission = request.POST.get('age_of_admission')
         child.save()
 
         return redirect('childrecord')  # Redirect back to the child records page
