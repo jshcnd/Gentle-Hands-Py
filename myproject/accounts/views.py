@@ -52,11 +52,11 @@ def medication_view(request):
 
 @login_required
 def medication_list(request):
-    return render(request, 'medication_list.html')
+    return render(request, 'accounts/medication_list.html')
 
 @login_required
 def illness_list(request):
-    return render(request, 'illness_list.html')
+    return render(request, 'accounts/illness_list.html')
 
 @login_required
 def appointment_list(request):
@@ -132,7 +132,6 @@ def change_password(request):
 
 def register_child(request):
     if request.method == 'POST':
-        # Get form data
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         middle_name = request.POST.get('middle_name')
@@ -143,7 +142,6 @@ def register_child(request):
         date_of_admission = request.POST.get('date_of_admission')
         age_of_admission = request.POST.get('age_of_admission')
 
-        # Save data to the database
         Child.objects.create(
             first_name=first_name,
             last_name=last_name,
@@ -156,13 +154,11 @@ def register_child(request):
             age_of_admission=age_of_admission
         )
 
-        # Redirect to the child records page
-        return redirect('childrecord')  # Replace 'childrecord' with the correct URL name
+        return redirect('childrecord')
 
     return render(request, 'registerChild.html')
 
 def child_record(request):
-    # Fetch all child records from the database
     children = Child.objects.all()
     return render(request, 'childrecord.html', {'children': children})
 
@@ -171,7 +167,6 @@ def edit_child(request):
         child_id = request.POST.get('child_id')
         child = get_object_or_404(Child, id=child_id)
 
-        # Update child information
         child.first_name = request.POST.get('first_name')
         child.middle_name = request.POST.get('middle_name')
         child.last_name = request.POST.get('last_name')
@@ -183,4 +178,7 @@ def edit_child(request):
         child.age_of_admission = request.POST.get('age_of_admission')
         child.save()
 
-        return redirect('childrecord')  # Redirect back to the child records page
+        return redirect('childrecord')
+
+def dental_record(request, child_id):
+    return render(request, 'accounts/dental_record.html', {'child_id': child_id})
