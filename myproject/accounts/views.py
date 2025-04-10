@@ -52,11 +52,11 @@ def medication_view(request):
 
 @login_required
 def medication_list(request):
-    return render(request, 'accounts/medication_list.html')
+    return render(request, 'medication_list.html')
 
 @login_required
 def illness_list(request):
-    return render(request, 'accounts/illness_list.html')
+    return render(request, 'illness_list.html')
 
 @login_required
 def appointment_list(request):
@@ -82,6 +82,10 @@ def growth_record(request):
 @login_required
 def change_user(request):
     return render(request, 'changeuser.html')
+
+@login_required
+def dental_record(request):
+    return render(request, 'dental_record.html')
 
 @login_required
 def change_username(request):
@@ -179,6 +183,3 @@ def edit_child(request):
         child.save()
 
         return redirect('childrecord')
-
-def dental_record(request, child_id):
-    return render(request, 'accounts/dental_record.html', {'child_id': child_id})
