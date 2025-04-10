@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from .forms import RegisterForm
+from .forms import RegisterForm, ChildRegistrationForm
+from .models import Child
 
 def home(request):
     return render(request, 'index.html')
@@ -51,11 +52,11 @@ def medication_view(request):
 
 @login_required
 def medication_list(request):
-    return render(request, 'medication_list.html')
+    return render(request, 'accounts/medication_list.html')
 
 @login_required
 def illness_list(request):
-    return render(request, 'illness_list.html')
+    return render(request, 'accounts/illness_list.html')
 
 @login_required
 def appointment_list(request):
@@ -70,8 +71,9 @@ def medic(request):
     return render(request, 'medic.html')
 
 @login_required
-def growth_data(request):
-    return render(request, 'growth_data.html')
+def growth_data(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+    return render(request, 'growth_data.html', {'child': child})
 
 @login_required
 def growth_record(request):
@@ -127,3 +129,56 @@ def change_password(request):
         else:
             messages.error(request, 'Please fill out both password fields.')
     return redirect('changeuser')
+
+def register_child(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        middle_name = request.POST.get('middle_name')
+        category = request.POST.get('category')
+        gender = request.POST.get('gender')
+        date_of_birth = request.POST.get('date_of_birth')
+        current_age = request.POST.get('current_age')
+        date_of_admission = request.POST.get('date_of_admission')
+        age_of_admission = request.POST.get('age_of_admission')
+
+        Child.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            middle_name=middle_name,
+            category=category,
+            gender=gender,
+            date_of_birth=date_of_birth,
+            current_age=current_age,
+            date_of_admission=date_of_admission,
+            age_of_admission=age_of_admission
+        )
+
+        return redirect('childrecord')
+
+    return render(request, 'registerChild.html')
+
+def child_record(request):
+    children = Child.objects.all()
+    return render(request, 'childrecord.html', {'children': children})
+
+def edit_child(request):
+    if request.method == 'POST':
+        child_id = request.POST.get('child_id')
+        child = get_object_or_404(Child, id=child_id)
+
+        child.first_name = request.POST.get('first_name')
+        child.middle_name = request.POST.get('middle_name')
+        child.last_name = request.POST.get('last_name')
+        child.category = request.POST.get('category')
+        child.gender = request.POST.get('gender')
+        child.date_of_birth = request.POST.get('date_of_birth')
+        child.date_of_admission = request.POST.get('date_of_admission')
+        child.current_age = request.POST.get('current_age')
+        child.age_of_admission = request.POST.get('age_of_admission')
+        child.save()
+
+        return redirect('childrecord')
+
+def dental_record(request, child_id):
+    return render(request, 'accounts/dental_record.html', {'child_id': child_id})

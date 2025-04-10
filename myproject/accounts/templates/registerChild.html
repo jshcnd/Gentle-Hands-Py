@@ -11,26 +11,27 @@
     <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg p-8">
         <h2 class="text-3xl font-bold text-center mb-6">Register</h2>
 
-        <form class="space-y-5">
+        <form method="post" class="space-y-5">
+            {% csrf_token %}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-gray-700 text-lg font-semibold">First Name</label>
-                    <input type="text" class="w-full border p-3 rounded-md text-base">
+                    <input type="text" name="first_name" class="w-full border p-3 rounded-md text-base">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-lg font-semibold">Last Name</label>
-                    <input type="text" class="w-full border p-3 rounded-md text-base">
+                    <input type="text" name="last_name" class="w-full border p-3 rounded-md text-base">
                 </div>
             </div>
 
             <div>
                 <label class="block text-gray-700 text-lg font-semibold">Middle Name</label>
-                <input type="text" class="w-full border p-3 rounded-md text-base">
+                <input type="text" name="middle_name" class="w-full border p-3 rounded-md text-base">
             </div>
 
             <div>
                 <label class="block text-gray-700 text-lg font-semibold">Category/Group</label>
-                <select class="w-full border p-3 rounded-md text-base">
+                <select name="category" class="w-full border p-3 rounded-md text-base">
                     <option>Select Category</option>
                     <option>Pre-School</option>
                     <option>Nursery</option>
@@ -40,7 +41,7 @@
 
             <div>
                 <label class="block text-gray-700 text-lg font-semibold">Gender</label>
-                <select class="w-full border p-3 rounded-md text-base">
+                <select name="gender" class="w-full border p-3 rounded-md text-base">
                     <option>Select Gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -50,22 +51,22 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-gray-700 text-lg font-semibold">Date of Birth</label>
-                    <input type="date" class="w-full border p-3 rounded-md text-base">
+                    <input type="date" id="date_of_birth" name="date_of_birth" class="w-full border p-3 rounded-md text-base">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-lg font-semibold">Current Age</label>
-                    <input type="number" class="w-full border p-3 rounded-md text-base">
+                    <input type="text" id="current_age" name="current_age" class="w-full border p-3 rounded-md text-base" readonly>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-gray-700 text-lg font-semibold">Date of Admission</label>
-                    <input type="date" class="w-full border p-3 rounded-md text-base">
+                    <input type="date" id="date_of_admission" name="date_of_admission" class="w-full border p-3 rounded-md text-base">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-lg font-semibold">Age of Admission</label>
-                    <input type="number" class="w-full border p-3 rounded-md text-base">
+                    <input type="text" id="age_of_admission" name="age_of_admission" class="w-full border p-3 rounded-md text-base" readonly>
                 </div>
             </div>
 
@@ -73,5 +74,36 @@
             <a href="{% url 'childrecord' %}" class="w-full bg-pink-500 text-white px-4 py-3 rounded-lg hover:bg-pink-600 text-xl font-bold text-center block">Back</a>
         </form>
     </div>
+
+    <script>
+        function calculateAge(dateOfBirth, referenceDate) {
+            const birthDate = new Date(dateOfBirth);
+            const refDate = new Date(referenceDate);
+            let age = refDate.getFullYear() - birthDate.getFullYear();
+            const monthDiff = refDate.getMonth() - birthDate.getMonth();
+            const dayDiff = refDate.getDate() - birthDate.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+            return age;
+        }
+
+        document.getElementById("date_of_birth").addEventListener("change", function () {
+            const dob = this.value;
+            const today = new Date().toISOString().split("T")[0];
+            const age = calculateAge(dob, today);
+            document.getElementById("current_age").value = age >= 0 ? age : '';
+        });
+
+        document.getElementById("date_of_admission").addEventListener("change", function () {
+            const dob = document.getElementById("date_of_birth").value;
+            const doa = this.value;
+            if (dob) {
+                const ageAtAdmission = calculateAge(dob, doa);
+                document.getElementById("age_of_admission").value = ageAtAdmission >= 0 ? ageAtAdmission : '';
+            }
+        });
+    </script>
 </body>
 </html>

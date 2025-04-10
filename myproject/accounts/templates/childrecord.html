@@ -41,59 +41,102 @@
                     <th class="p-3 border border-gray-300">Category</th>
                     <th class="p-3 border border-gray-300">Gender</th>
                     <th class="p-3 border border-gray-300">Date of Birth</th>
+                    <th class="p-3 border border-gray-300">Current Age</th>
                     <th class="p-3 border border-gray-300">Date of Admission</th>
                     <th class="p-3 border border-gray-300">Age of Admission</th>
                     <th class="p-3 border border-gray-300">Actions</th>
                 </tr>
             </thead>
             <tbody id="table-body">
+                {% for child in children %}
                 <tr class="bg-gray-100 text-center">
-                    <td class="p-3 border border-gray-300">001</td>
-                    <td class="p-3 border border-gray-300">John</td>
-                    <td class="p-3 border border-gray-300">Dih</td>
-                    <td class="p-3 border border-gray-300">Doe</td>
-                    <td class="p-3 border border-gray-300">Pre-School</td>
-                    <td class="p-3 border border-gray-300">Male</td>
-                    <td class="p-3 border border-gray-300">01/01/2018</td>
-                    <td class="p-3 border border-gray-300">01/01/2023</td>
-                    <td class="p-3 border border-gray-300">5</td>
+                    <td class="p-3 border border-gray-300">{{ child.id }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.first_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.middle_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.last_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.category }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.gender }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.date_of_birth }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.current_age }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.date_of_admission }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.age_of_admission }}</td>
                     <td class="p-3 border border-gray-300 flex justify-center gap-2">
                         <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 edit-btn">Edit</button>
-                        <button onclick="window.location.href=''" 
-                                class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">View</button>
+                        <button onclick="window.location.href='{% url 'growth_data' child.id %}'" 
+                                class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                            View
+                        </button>
                         <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 remove-btn">Remove</button>
                     </td>
                 </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="11" class="p-3 border border-gray-300 text-center text-gray-500">No records found.</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
     <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md" style="max-height: 90vh; overflow-y: auto;">
             <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Edit Child Information</h2>
 
-            <input type="hidden" id="editingRowIndex">
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-gray-600 font-semibold">First Name</label>
-                    <input type="text" id="editFirstName" class="w-full border p-3 rounded-md">
+            <form id="editForm" method="post" action="{% url 'edit_child' %}">
+                {% csrf_token %}
+                <input type="hidden" id="editingRowIndex" name="editingRowIndex">
+                <input type="hidden" id="childId" name="child_id">
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-gray-600 font-semibold">First Name</label>
+                        <input type="text" id="editFirstName" name="first_name" class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Middle Name</label>
+                        <input type="text" id="editMiddleName" name="middle_name" class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Last Name</label>
+                        <input type="text" id="editLastName" name="last_name" class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Category/Group</label>
+                        <select id="editCategory" name="category" class="w-full border p-3 rounded-md">
+                            <option value="Pre-School">Pre-School</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="Big Boys">Big Boys</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Gender</label>
+                        <select id="editGender" name="gender" class="w-full border p-3 rounded-md">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Date of Birth</label>
+                        <input type="date" id="editDateOfBirth" name="date_of_birth" class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Current Age</label>
+                        <input type="text" id="editCurrentAge" name="current_age" class="w-full border p-3 rounded-md" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Date of Admission</label>
+                        <input type="date" id="editDateOfAdmission" name="date_of_admission" class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold">Age of Admission</label>
+                        <input type="text" id="editAgeOfAdmission" name="age_of_admission" class="w-full border p-3 rounded-md" readonly>
+                    </div>
                 </div>
 
-                <div>
-                    <label class="block text-gray-600 font-semibold">Last Name</label>
-                    <input type="text" id="editLastName" class="w-full border p-3 rounded-md">
+                <div class="mt-4 flex justify-between">
+                    <button type="submit" id="saveEdit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Save</button>
+                    <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
                 </div>
-
-                <div>
-                    <label class="block text-gray-600 font-semibold">Category/Group</label>
-                    <input type="text" id="editCategory" class="w-full border p-3 rounded-md">
-                </div>
-            </div>
-
-            <div class="mt-4 flex justify-between">
-                <button id="saveEdit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Save</button>
-                <button id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -107,28 +150,72 @@
                 row.style.display = text.includes(filter) ? "" : "none";
             });
         });
+        function calculateAge(dateOfBirth, referenceDate) {
+            const birthDate = new Date(dateOfBirth);
+            const refDate = new Date(referenceDate);
+            let age = refDate.getFullYear() - birthDate.getFullYear();
+            const monthDiff = refDate.getMonth() - birthDate.getMonth();
+            const dayDiff = refDate.getDate() - birthDate.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+            return age;
+        }
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        document.getElementById("editDateOfBirth").addEventListener("change", function () {
+            const dob = this.value;
+            const today = new Date().toISOString().split("T")[0];
+            const age = calculateAge(dob, today);
+            document.getElementById("editCurrentAge").value = age >= 0 ? age : '';
+        });
+        document.getElementById("editDateOfAdmission").addEventListener("change", function () {
+            const dob = document.getElementById("editDateOfBirth").value;
+            const doa = this.value;
+            if (dob) {
+                const ageAtAdmission = calculateAge(dob, doa);
+                document.getElementById("editAgeOfAdmission").value = ageAtAdmission >= 0 ? ageAtAdmission : '';
+            }
+        });
         document.querySelectorAll('.edit-btn').forEach((button, index) => {
             button.addEventListener('click', function () {
                 let row = this.closest("tr");
-                document.getElementById("editFirstName").value = row.children[1].textContent;
-                document.getElementById("editLastName").value = row.children[2].textContent;
-                document.getElementById("editCategory").value = row.children[3].textContent;
+
+                document.getElementById("editFirstName").value = row.children[1].textContent.trim();
+                document.getElementById("editMiddleName").value = row.children[2].textContent.trim();
+                document.getElementById("editLastName").value = row.children[3].textContent.trim();
+
+                const categoryDropdown = document.getElementById("editCategory");
+                const categoryValue = row.children[4].textContent.trim();
+                Array.from(categoryDropdown.options).forEach(option => {
+                    option.selected = option.value === categoryValue;
+                });
+                document.getElementById("editGender").value = row.children[5].textContent.trim();
+
+                const dob = row.children[6].textContent.trim();
+                const doa = row.children[8].textContent.trim();
+                document.getElementById("editDateOfBirth").value = formatDate(dob);
+                document.getElementById("editDateOfAdmission").value = formatDate(doa);
+                document.getElementById("editCurrentAge").value = row.children[7].textContent.trim();
+                document.getElementById("editAgeOfAdmission").value = row.children[9].textContent.trim();
+
                 document.getElementById("editingRowIndex").value = index;
+                document.getElementById("childId").value = row.children[0].textContent.trim();
+
                 document.getElementById("editModal").classList.remove("hidden");
             });
         });
-        document.getElementById("saveEdit").addEventListener("click", function () {
-            let index = document.getElementById("editingRowIndex").value;
-            let tableRows = document.querySelectorAll("#table-body tr");
-            let row = tableRows[index];
-            row.children[1].textContent = document.getElementById("editFirstName").value;
-            row.children[2].textContent = document.getElementById("editLastName").value;
-            row.children[3].textContent = document.getElementById("editCategory").value;
-            document.getElementById("editModal").classList.add("hidden");
-        });
+
         document.getElementById("cancelEdit").addEventListener("click", function () {
             document.getElementById("editModal").classList.add("hidden");
         });
+
         document.querySelectorAll('.remove-btn').forEach(button => {
             button.addEventListener('click', function () {
                 if (confirm("Are you sure you want to remove this child?")) {
@@ -136,6 +223,7 @@
                 }
             });
         });
+
         document.getElementById("registerBtn").addEventListener("click", function () {
             window.location.href = "{% url 'registerchild' %}";
         });

@@ -15,9 +15,9 @@
                 class="rounded-lg w-32 h-32 border-4 border-pink-500 object-cover">
 
             <div class="flex-1 text-center md:text-left mt-4 md:mt-0 md:ml-6">
-                <h2 class="text-4xl font-extrabold">JUAN BATUMBAKAL JR.</h2>
-                <p class="text-xl text-gray-700 mt-2">Category: Big Girl</p>
-                <p class="text-xl text-gray-700">Age: 10 years old</p>
+                <h2 class="text-4xl font-extrabold">{{ child.first_name }} {{ child.last_name }}</h2>
+                <p class="text-xl text-gray-700 mt-2">Category: {{ child.category }}</p>
+                <p class="text-xl text-gray-700">Age: {{ child.current_age }} years old</p>
             </div>
 
             <div class="flex gap-4 mt-4 md:mt-0">
@@ -27,24 +27,62 @@
         </div>
 
         <div class="mt-6 text-center md:text-left">
-            <!-- Redirect to growth_record.html -->
             <a href="{% url 'growth_record' %}" class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600">
                 HEALTH PROFILE
             </a>
+            <a href="javascript:void(0);" id="medicalRecordsBtn" class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600 ml-4">
+                MEDICAL RECORDS
+            </a>
+        </div>
+
+        <div id="medicalRecordsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Medical Records</h2>
+                <div class="flex flex-col gap-4">
+                    <button onclick="window.location.href='{% url 'dental_record' child.id %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
+                        Dental Records
+                    </button>
+                    <button onclick="window.location.href='{% url 'medication_list' %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
+                        Medication List
+                    </button>
+                    <button onclick="window.location.href='{% url 'illness_list' %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
+                        Illness List
+                    </button>
+                </div>
+                <button id="closeModal" class=""></button>
+            </div>
         </div>
 
         <div class="mt-6 text-lg text-gray-800 leading-relaxed">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                laboris nisi ut aliquip ex ea commodo consequat.
+                Date of Birth: {{ child.date_of_birth }}
             </p>
             <p class="mt-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                laboris nisi ut aliquip ex ea commodo consequat.
+                Date of Admission: {{ child.date_of_admission }}
+            </p>
+            <p class="mt-4">
+                Age of Admission: {{ child.age_of_admission }}
             </p>
         </div>
     </div>
+
+    <script>
+        const medicalRecordsBtn = document.getElementById("medicalRecordsBtn");
+        const medicalRecordsModal = document.getElementById("medicalRecordsModal");
+        const closeModal = document.getElementById("closeModal");
+
+        medicalRecordsBtn.addEventListener("click", () => {
+            medicalRecordsModal.classList.remove("hidden");
+        });
+
+        closeModal.addEventListener("click", () => {
+            medicalRecordsModal.classList.add("hidden");
+        });
+        window.addEventListener("click", (event) => {
+            if (event.target === medicalRecordsModal) {
+                medicalRecordsModal.classList.add("hidden");
+            }
+        });
+    </script>
 </body>
 </html>
