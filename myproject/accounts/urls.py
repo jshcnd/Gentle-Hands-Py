@@ -23,5 +23,5 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('edit_child/', views.edit_child, name='edit_child'),
     path('illness-list/', views.illness_list, name='illness_list'),
-    path('dental-record/', views.dental_record_view, name='dental_record'),
+    path('dental-record/<int:child_id>/', views.dental_record_view, name='dental_record'),
 ]

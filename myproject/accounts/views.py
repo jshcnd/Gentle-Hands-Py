@@ -88,16 +88,19 @@ def dental_record(request):
     return render(request, 'dental_record.html')
 
 @login_required
-def dental_record_view(request):
+def dental_record_view(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
     if request.method == 'POST':
         form = DentalRecordForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('dental_record')
+            dental_record = form.save(commit=False)
+            dental_record.child = child  # Associate the record with the child
+            dental_record.save()
+            return redirect('dental_record', child_id=child.id)
     else:
         form = DentalRecordForm()
-        records = DentalRecord.objects.all()
-    return render(request, 'dental_record.html', {'form': form, 'records': records})
+        records = DentalRecord.objects.filter(child=child)  # Filter records by child
+    return render(request, 'dental_record.html', {'form': form, 'records': records, 'child': child})
 
 @login_required
 def change_username(request):

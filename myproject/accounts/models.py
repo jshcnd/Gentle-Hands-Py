@@ -15,6 +15,7 @@ class Child(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 class DentalRecord(models.Model):
+    child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name='dental_records')
     record_date = models.DateField()
     dental_center = models.CharField(max_length=255)
     reason = models.TextField()
@@ -22,4 +23,4 @@ class DentalRecord(models.Model):
     outcome = models.TextField()
 
     def __str__(self):
-        return f"Dental Record on {self.record_date}"
+        return f"Dental Record for {self.child.first_name} on {self.record_date}"

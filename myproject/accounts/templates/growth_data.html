@@ -39,7 +39,7 @@
             <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
                 <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Medical Records</h2>
                 <div class="flex flex-col gap-4">
-                    <button onclick="window.location.href='{% url 'dental_record' %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
+                    <button onclick="window.location.href='{% url 'dental_record' child.id %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
                         Dental Records
                     </button>
                     <button onclick="window.location.href='{% url 'medication_list' %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
