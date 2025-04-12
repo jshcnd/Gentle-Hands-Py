@@ -28,7 +28,7 @@
                     </svg>
                     Back
                 </button>
-                <button class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600">EDIT</button>
+                <button class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600 edit-btn">EDIT</button>
                 <button class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600">REMOVE</button>
             </div>
         </div>
@@ -57,6 +57,51 @@
                     </button>
                 </div>
                 <button id="closeModal" class=""></button>
+            </div>
+        </div>
+
+        <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md" style="max-height: 90vh; overflow-y: auto;">
+                <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Edit Child Information</h2>
+
+                <form id="editForm" method="post" action="{% url 'edit_child' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="childId" name="child_id">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-gray-600 font-semibold">First Name</label>
+                            <input type="text" id="editFirstName" name="first_name" class="w-full border p-3 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-semibold">Last Name</label>
+                            <input type="text" id="editLastName" name="last_name" class="w-full border p-3 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-semibold">Category</label>
+                            <select id="editCategory" name="category" class="w-full border p-3 rounded-md">
+                                <option value="Pre-School">Pre-School</option>
+                                <option value="Nursery">Nursery</option>
+                                <option value="Big Boys">Big Boys</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-semibold">Gender</label>
+                            <select id="editGender" name="gender" class="w-full border p-3 rounded-md">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-semibold">Date of Birth</label>
+                            <input type="date" id="editDateOfBirth" name="date_of_birth" class="w-full border p-3 rounded-md">
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex justify-between">
+                        <button type="submit" id="saveEdit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Save</button>
+                        <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -89,6 +134,30 @@
             if (event.target === medicalRecordsModal) {
                 medicalRecordsModal.classList.add("hidden");
             }
+        });
+
+        document.querySelectorAll('.edit-btn').forEach((button) => {
+            button.addEventListener('click', function () {
+                const childData = {
+                    firstName: "{{ child.first_name }}",
+                    lastName: "{{ child.last_name }}",
+                    category: "{{ child.category }}",
+                    gender: "{{ child.gender }}",
+                    dateOfBirth: "{{ child.date_of_birth }}"
+                };
+
+                document.getElementById("editFirstName").value = childData.firstName;
+                document.getElementById("editLastName").value = childData.lastName;
+                document.getElementById("editCategory").value = childData.category;
+                document.getElementById("editGender").value = childData.gender;
+                document.getElementById("editDateOfBirth").value = childData.dateOfBirth;
+
+                document.getElementById("editModal").classList.remove("hidden");
+            });
+        });
+
+        document.getElementById("cancelEdit").addEventListener("click", function () {
+            document.getElementById("editModal").classList.add("hidden");
         });
     </script>
 </body>
