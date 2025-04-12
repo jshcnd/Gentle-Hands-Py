@@ -20,4 +20,4 @@ class ChildRegistrationForm(forms.ModelForm):
 class DentalRecordForm(forms.ModelForm):
     class Meta:
         model = DentalRecord
-        fields = ['birth_date', 'record_date', 'dental_center', 'reason', 'investigations', 'outcome']
+        fields = ['record_date', 'dental_center', 'reason', 'investigations', 'outcome']

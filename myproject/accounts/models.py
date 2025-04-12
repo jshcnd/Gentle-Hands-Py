@@ -15,7 +15,6 @@ class Child(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 class DentalRecord(models.Model):
-    birth_date = models.DateField()
     record_date = models.DateField()
     dental_center = models.CharField(max_length=255)
     reason = models.TextField()
