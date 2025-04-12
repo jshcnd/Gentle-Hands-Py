@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from .forms import RegisterForm, ChildRegistrationForm
-from .models import Child
+from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
+from .models import Child, DentalRecord
 
 def home(request):
     return render(request, 'index.html')
@@ -86,6 +86,18 @@ def change_user(request):
 @login_required
 def dental_record(request):
     return render(request, 'dental_record.html')
+
+@login_required
+def dental_record_view(request):
+    if request.method == 'POST':
+        form = DentalRecordForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dental_record')
+    else:
+        form = DentalRecordForm()
+        records = DentalRecord.objects.all()
+    return render(request, 'dental_record.html', {'form': form, 'records': records})
 
 @login_required
 def change_username(request):

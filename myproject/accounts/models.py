@@ -13,3 +13,14 @@ class Child(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+class DentalRecord(models.Model):
+    birth_date = models.DateField()
+    record_date = models.DateField()
+    dental_center = models.CharField(max_length=255)
+    reason = models.TextField()
+    investigations = models.TextField()
+    outcome = models.TextField()
+
+    def __str__(self):
+        return f"Dental Record on {self.record_date}"

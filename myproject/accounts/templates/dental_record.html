@@ -14,8 +14,9 @@
             <h2 class="text-2xl font-bold text-gray-800 text-3xl">DENTAL RECORD</h2>
         </div>
 
-        <div class="flex justify-end mt-4">
+        <div class="flex justify-between items-center mt-4">
             <button id="filterBtn" class="bg-pink-500 text-white px-6 py-2 rounded-lg font-semibold">FILTER</button>
+            <button id="addRecordBtn" class="bg-pink-500 text-white px-6 py-2 rounded-lg font-semibold">Add Record</button>
         </div>
 
         <div class="mt-6 overflow-x-auto">
@@ -31,13 +32,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for record in records %}
                     <tr>
-                        <td class="border border-gray-500 px-6 py-4">03/29/25</td>
-                        <td class="border border-gray-500 px-6 py-4">03/29/19</td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.birth_date }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.record_date }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.dental_center }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.reason }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.investigations }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.outcome }}</td>
                     </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No records found.</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -76,6 +84,43 @@
         </div>
     </div>
 
+    <div id="addRecordModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Add Dental Record</h2>
+            <form method="POST" id="addRecordForm">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-gray-600 font-semibold">Birth Date</label>
+                    <input type="date" name="birth_date" class="w-full border p-3 rounded-md" required>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold">Date</label>
+                    <input type="date" name="record_date" class="w-full border p-3 rounded-md" required>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold">Dental Center & Dept/Medic</label>
+                    <input type="text" name="dental_center" class="w-full border p-3 rounded-md" required>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold">Reason</label>
+                    <input type="text" name="reason" class="w-full border p-3 rounded-md" required>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold">Investigations</label>
+                    <input type="text" name="investigations" class="w-full border p-3 rounded-md" required>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold">Outcome</label>
+                    <input type="text" name="outcome" class="w-full border p-3 rounded-md" required>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="closeAddModal" class="bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
+                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         document.getElementById("filterBtn").addEventListener("click", function() {
             document.getElementById("filterModal").classList.remove("hidden");
@@ -83,6 +128,42 @@
         
         document.getElementById("closeModal").addEventListener("click", function() {
             document.getElementById("filterModal").classList.add("hidden");
+        });
+
+        document.getElementById("addRecordBtn").addEventListener("click", function () {
+            document.getElementById("addRecordModal").classList.remove("hidden");
+        });
+
+        document.getElementById("closeAddModal").addEventListener("click", function () {
+            document.getElementById("addRecordModal").classList.add("hidden");
+        });
+
+        document.getElementById("saveRecord").addEventListener("click", function () {
+            const birthDate = document.getElementById("birthDate").value;
+            const recordDate = document.getElementById("recordDate").value;
+            const dentalCenter = document.getElementById("dentalCenter").value;
+            const reason = document.getElementById("reason").value;
+            const investigations = document.getElementById("investigations").value;
+            const outcome = document.getElementById("outcome").value;
+
+            if (!birthDate || !recordDate) {
+                alert("Birth Date and Date are required.");
+                return;
+            }
+
+            const newRow = `
+                <tr>
+                    <td class="border border-gray-500 px-6 py-4">${birthDate}</td>
+                    <td class="border border-gray-500 px-6 py-4">${recordDate}</td>
+                    <td class="border border-gray-500 px-6 py-4">${dentalCenter}</td>
+                    <td class="border border-gray-500 px-6 py-4">${reason}</td>
+                    <td class="border border-gray-500 px-6 py-4">${investigations}</td>
+                    <td class="border border-gray-500 px-6 py-4">${outcome}</td>
+                </tr>
+            `;
+
+            document.querySelector("tbody").innerHTML += newRow;
+            document.getElementById("addRecordModal").classList.add("hidden");
         });
     </script>
 </body>
