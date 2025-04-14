@@ -64,3 +64,15 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.patient_name} - {self.medical_type}"
+
+class Immunization(models.Model):
+    group_name = models.CharField(max_length=100)
+    patient_name = models.ForeignKey(Child, on_delete=models.CASCADE) 
+    vaccine = models.CharField(max_length=100)
+    dose_no = models.IntegerField()
+    date_due = models.DateField()
+    age_when_due = models.CharField(max_length=50)
+    comments = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.patient_name} - {self.vaccine}"

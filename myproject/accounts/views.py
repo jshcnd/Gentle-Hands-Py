@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
-from .models import Child, DentalRecord, Medication, Illness, Appointment
+from .models import Child, DentalRecord, Medication, Illness, Appointment, Immunization
 
 def home(request):
     return render(request, 'index.html')
@@ -112,24 +112,24 @@ def illness_list(request, child_id=None):
 
 @login_required
 def appointment_list(request):
-    category = request.GET.get('category', '')  # Get the selected category from the query string
+    category = request.GET.get('category', '')
     if category:
         appointments = Appointment.objects.filter(medical_type=category)
     else:
         appointments = Appointment.objects.all()
 
-    children = Child.objects.all()  # Fetch all registered children
+    children = Child.objects.all() 
 
     if request.method == 'POST':
         Appointment.objects.create(
-            patient_name_id=request.POST.get('patient_name'),  # Use the selected child ID
+            patient_name_id=request.POST.get('patient_name'),
             medical_type=request.POST.get('medical_type'),
             appointment_date=request.POST.get('appointment_date'),
             hospital_name=request.POST.get('hospital_name'),
             medic_name=request.POST.get('medic_name'),
             reason=request.POST.get('reason'),
         )
-        return redirect('appointment_list')  # Redirect to refresh the page
+        return redirect('appointment_list') 
 
     return render(request, 'appointment_list.html', {
         'appointments': appointments,
@@ -139,7 +139,25 @@ def appointment_list(request):
 
 @login_required
 def immunization_list(request):
-    return render(request, 'immunization.html')
+    immunizations = Immunization.objects.all() 
+    children = Child.objects.all() 
+
+    if request.method == 'POST':
+        Immunization.objects.create(
+            patient_name_id=request.POST.get('patient_name'),  
+            group_name=request.POST.get('group_name'),
+            vaccine=request.POST.get('vaccine'),
+            dose_no=request.POST.get('dose_no'),
+            date_due=request.POST.get('date_due'),
+            age_when_due=request.POST.get('age_when_due'),
+            comments=request.POST.get('comments'),
+        )
+        return redirect('immunization_list')  
+
+    return render(request, 'immunization.html', {
+        'immunizations': immunizations,
+        'children': children,
+    })
 
 @login_required
 def medic(request):

@@ -46,24 +46,21 @@
                     </tr>
                 </thead>
                 <tbody id="immunisationTableBody">
+                    {% for immunization in immunizations %}
                     <tr>
-                        <td class="border border-gray-500 px-6 py-4">Infants</td>
-                        <td class="border border-gray-500 px-6 py-4">John Doe</td>
-                        <td class="border border-gray-500 px-6 py-4">Hepatitis B</td>
-                        <td class="border border-gray-500 px-6 py-4">1</td>
-                        <td class="border border-gray-500 px-6 py-4">2025-04-10</td>
-                        <td class="border border-gray-500 px-6 py-4">At Birth</td>
-                        <td class="border border-gray-500 px-6 py-4">First dose</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ immunization.group_name }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ immunization.patient_name.first_name }} {{ immunization.patient_name.last_name }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ immunization.vaccine }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ immunization.dose_no }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ immunization.date_due }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ immunization.age_when_due }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ immunization.comments }}</td>
                     </tr>
+                    {% empty %}
                     <tr>
-                        <td class="border border-gray-500 px-6 py-4">Toddlers</td>
-                        <td class="border border-gray-500 px-6 py-4">Emma Watson</td>
-                        <td class="border border-gray-500 px-6 py-4">MMR</td>
-                        <td class="border border-gray-500 px-6 py-4">1</td>
-                        <td class="border border-gray-500 px-6 py-4">2025-06-15</td>
-                        <td class="border border-gray-500 px-6 py-4">12 months</td>
-                        <td class="border border-gray-500 px-6 py-4">To prevent measles</td>
+                        <td colspan="7" class="border border-gray-500 px-6 py-4 text-center text-gray-500">No immunizations found.</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -72,17 +69,44 @@
     <div id="immunisationModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
             <h2 class="text-xl font-bold mb-4">Add Immunization</h2>
-            <input type="text" id="groupName" placeholder="Group Name" class="border w-full px-4 py-2 mb-2 rounded-lg">
-            <input type="text" id="patientName" placeholder="Patient Name" class="border w-full px-4 py-2 mb-2 rounded-lg">
-            <input type="text" id="vaccine" placeholder="Vaccine" class="border w-full px-4 py-2 mb-2 rounded-lg">
-            <input type="number" id="doseNo" placeholder="Dose No." class="border w-full px-4 py-2 mb-2 rounded-lg">
-            <input type="date" id="dateDue" class="border w-full px-4 py-2 mb-2 rounded-lg">
-            <input type="text" id="ageWhenDue" placeholder="Age When Due" class="border w-full px-4 py-2 mb-2 rounded-lg">
-            <input type="text" id="comments" placeholder="Comments" class="border w-full px-4 py-2 mb-2 rounded-lg">
-            <div class="flex justify-end gap-2">
-                <button id="closeModal" class="bg-gray-400 text-white px-4 py-2 rounded-lg">Cancel</button>
-                <button id="saveImmunisation" class="bg-green-500 text-white px-4 py-2 rounded-lg">Save</button>
-            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="group_name" class="block text-gray-600 font-semibold mb-2">Group Name</label>
+                <select name="group_name" id="group_name" class="border w-full px-4 py-2 mb-2 rounded-lg" required>
+                    <option value="" disabled selected>Select Group</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+
+                <label for="patient_name" class="block text-gray-600 font-semibold mb-2">Patient Name</label>
+                <select name="patient_name" id="patient_name" class="border w-full px-4 py-2 mb-2 rounded-lg" required>
+                    <option value="" disabled selected>Select Patient</option>
+                    {% for child in children %}
+                    <option value="{{ child.id }}" data-dob="{{ child.date_of_birth }}">{{ child.first_name }} {{ child.last_name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="vaccine" class="block text-gray-600 font-semibold mb-2">Vaccine</label>
+                <input type="text" name="vaccine" id="vaccine" placeholder="Vaccine" class="border w-full px-4 py-2 mb-2 rounded-lg" required>
+
+                <label for="dose_no" class="block text-gray-600 font-semibold mb-2">Dose No.</label>
+                <input type="number" name="dose_no" id="dose_no" placeholder="Dose No." class="border w-full px-4 py-2 mb-2 rounded-lg" required>
+
+                <label for="date_due" class="block text-gray-600 font-semibold mb-2">Date Due</label>
+                <input type="date" name="date_due" id="date_due" class="border w-full px-4 py-2 mb-2 rounded-lg" required>
+
+                <label for="age_when_due" class="block text-gray-600 font-semibold mb-2">Age When Due</label>
+                <input type="text" name="age_when_due" id="age_when_due" placeholder="Age When Due" class="border w-full px-4 py-2 mb-2 rounded-lg" readonly>
+
+                <label for="comments" class="block text-gray-600 font-semibold mb-2">Comments</label>
+                <input type="text" name="comments" id="comments" placeholder="Comments" class="border w-full px-4 py-2 mb-2 rounded-lg">
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="closeModal" class="bg-gray-400 text-white px-4 py-2 rounded-lg">Cancel</button>
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -90,32 +114,58 @@
         document.getElementById("addImmunisationBtn").addEventListener("click", function() {
             document.getElementById("immunisationModal").classList.remove("hidden");
         });
-        
+
         document.getElementById("closeModal").addEventListener("click", function() {
             document.getElementById("immunisationModal").classList.add("hidden");
         });
 
-        document.getElementById("saveImmunisation").addEventListener("click", function() {
-            let groupName = document.getElementById("groupName").value;
-            let patientName = document.getElementById("patientName").value;
-            let vaccine = document.getElementById("vaccine").value;
-            let doseNo = document.getElementById("doseNo").value;
-            let dateDue = document.getElementById("dateDue").value;
-            let ageWhenDue = document.getElementById("ageWhenDue").value;
-            let comments = document.getElementById("comments").value;
-            
-            let newRow = `<tr>
-                <td class='border border-gray-500 px-6 py-4'>${groupName}</td>
-                <td class='border border-gray-500 px-6 py-4'>${patientName}</td>
-                <td class='border border-gray-500 px-6 py-4'>${vaccine}</td>
-                <td class='border border-gray-500 px-6 py-4'>${doseNo}</td>
-                <td class='border border-gray-500 px-6 py-4'>${dateDue}</td>
-                <td class='border border-gray-500 px-6 py-4'>${ageWhenDue}</td>
-                <td class='border border-gray-500 px-6 py-4'>${comments}</td>
-            </tr>`;
-            
-            document.getElementById("immunisationTableBody").innerHTML += newRow;
-            document.getElementById("immunisationModal").classList.add("hidden");
+        document.getElementById("searchBar").addEventListener("input", function () {
+            let searchValue = this.value.toLowerCase();
+            let tableRows = document.querySelectorAll("#immunisationTableBody tr");
+
+            tableRows.forEach(row => {
+                let patientName = row.children[1].textContent.toLowerCase();
+                if (patientName.includes(searchValue)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+
+        const patientSelect = document.getElementById("patient_name");
+        const dateDueInput = document.getElementById("date_due");
+        const ageWhenDueInput = document.getElementById("age_when_due");
+
+        function calculateAgeWhenDue(dob, dateDue) {
+            const dobDate = new Date(dob);
+            const dueDate = new Date(dateDue);
+
+            if (isNaN(dobDate) || isNaN(dueDate)) {
+                return "";
+            }
+
+            const diffInMonths = (dueDate.getFullYear() - dobDate.getFullYear()) * 12 + (dueDate.getMonth() - dobDate.getMonth());
+            const years = Math.floor(diffInMonths / 12);
+            const months = diffInMonths % 12;
+
+            return `${years} years, ${months} months`;
+        }
+
+        patientSelect.addEventListener("change", function() {
+            const selectedOption = patientSelect.options[patientSelect.selectedIndex];
+            const dob = selectedOption.getAttribute("data-dob");
+            const dateDue = dateDueInput.value;
+
+            ageWhenDueInput.value = calculateAgeWhenDue(dob, dateDue);
+        });
+
+        dateDueInput.addEventListener("input", function() {
+            const selectedOption = patientSelect.options[patientSelect.selectedIndex];
+            const dob = selectedOption.getAttribute("data-dob");
+            const dateDue = dateDueInput.value;
+
+            ageWhenDueInput.value = calculateAgeWhenDue(dob, dateDue);
         });
     </script>
 </body>
