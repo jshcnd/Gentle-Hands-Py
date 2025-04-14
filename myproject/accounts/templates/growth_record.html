@@ -38,6 +38,7 @@
                         <th class="border border-gray-500 px-6 py-4 font-semibold text-center">HC</th>
                         <th class="border border-gray-500 px-6 py-4 font-semibold text-center">CCT</th>
                         <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Teeth</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,10 +52,17 @@
                         <td class="border border-gray-500 px-6 py-4 text-center">{{ record.head_circumference }}</td>
                         <td class="border border-gray-500 px-6 py-4 text-center">{{ record.chest_circumference }}</td>
                         <td class="border border-gray-500 px-6 py-4 text-center">{{ record.teeth_upper }}/{{ record.teeth_lower }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">
+                            <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 view-chart-btn" 
+                                data-child-id="{{ record.child.id }}" 
+                                data-child-name="{{ record.child.first_name }} {{ record.child.last_name }}">
+                                View Growth Chart
+                            </button>
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="8" class="border border-gray-500 px-6 py-4 text-center text-gray-500">No records found.</td>
+                        <td colspan="9" class="border border-gray-500 px-6 py-4 text-center text-gray-500">No records found.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -104,6 +112,18 @@
         </div>
     </div>
 
+    <!-- Modal for Growth Chart -->
+    <div id="growthChartModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-2/3">
+            <h2 id="growthChartTitle" class="text-2xl font-bold mb-4 text-center">Growth Chart</h2>
+            <canvas id="growthChart" class="w-full h-64"></canvas>
+            <div class="flex justify-end mt-4">
+                <button id="closeGrowthChartModal" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const childSelect = document.getElementById("child_id");
         const ageInput = document.getElementById("age");
@@ -139,6 +159,81 @@
 
         document.getElementById("backBtn").addEventListener("click", function () {
             window.history.back();
+        });
+
+        const viewChartButtons = document.querySelectorAll('.view-chart-btn');
+        const growthChartModal = document.getElementById('growthChartModal');
+        const growthChartTitle = document.getElementById('growthChartTitle');
+        const closeGrowthChartModal = document.getElementById('closeGrowthChartModal');
+        const growthChartCanvas = document.getElementById('growthChart');
+        let growthChart;
+
+        viewChartButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const childId = this.getAttribute('data-child-id');
+                const childName = this.getAttribute('data-child-name');
+
+                // Update modal title
+                growthChartTitle.textContent = `Growth Chart for ${childName}`;
+
+                // Fetch growth data (replace with actual API or backend call)
+                const growthData = {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], // Example months
+                    bmi: [15, 16, 17, 18, 19], // Example BMI data
+                };
+
+                // Destroy existing chart if it exists
+                if (growthChart) {
+                    growthChart.destroy();
+                }
+
+                // Create new chart
+                growthChart = new Chart(growthChartCanvas, {
+                    type: 'line',
+                    data: {
+                        labels: growthData.labels,
+                        datasets: [{
+                            label: 'BMI',
+                            data: growthData.bmi,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Months',
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'BMI',
+                                },
+                                beginAtZero: true,
+                            },
+                        },
+                    },
+                });
+
+                // Show modal
+                growthChartModal.classList.remove('hidden');
+            });
+        });
+
+        closeGrowthChartModal.addEventListener('click', () => {
+            growthChartModal.classList.add('hidden');
         });
     </script>
 </body>
