@@ -6,161 +6,69 @@
     <title>Child Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex flex-col items-center min-h-screen p-8">
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-8">
 
-    <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-10">
-        <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
-            
-            <img src="https://via.placeholder.com/100" alt="Profile Pic" 
-                class="rounded-lg w-32 h-32 border-4 border-pink-500 object-cover">
+    <div class="w-full max-w-7xl bg-white shadow-lg rounded-lg p-12 relative">
+        <div class="absolute top-6 right-6 flex gap-6">
+            <button onclick="window.location.href='{% url 'childrecord' %}'" 
+                    class="bg-gray-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-gray-600">
+                Back
+            </button>
+            <button class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600 edit-btn">
+                Edit
+            </button>
+            <button class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
+                Remove
+            </button>
+        </div>
 
-            <div class="flex-1 text-center md:text-left mt-4 md:mt-0 md:ml-6">
-                <h2 class="text-4xl font-extrabold">{{ child.first_name }} {{ child.last_name }}</h2>
-                <p class="text-xl text-gray-700 mt-2">Category: {{ child.category }}</p>
-                <p class="text-xl text-gray-700">Age: {{ child.current_age }} years old</p>
-            </div>
-
-            <div class="flex gap-4 mt-4 md:mt-0">
-                <button onclick="window.location.href='{% url 'childrecord' %}'" 
-                        class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Back
-                </button>
-                <button class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600 edit-btn">EDIT</button>
-                <button class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600">REMOVE</button>
+        <div class="flex items-center gap-12 border-b pb-8">
+            <img src="https://via.placeholder.com/200" alt="Profile Pic" 
+                class="rounded-lg w-48 h-48 border-4 border-pink-500 object-cover">
+            <div>
+                <h1 class="text-5xl font-bold text-gray-800">{{ child.first_name }} {{ child.last_name }}</h1>
+                <p class="text-xl text-gray-600 mt-4">{{ child.bio }}</p>
             </div>
         </div>
 
-        <div class="mt-6 text-center md:text-left">
-            <a href="{% url 'growth_record_child' child.id %}" class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600">
-                HEALTH PROFILE
-            </a>
-            <a href="javascript:void(0);" id="medicalRecordsBtn" class="bg-pink-500 text-white px-6 py-3 text-lg rounded-lg hover:bg-pink-600 ml-4">
-                MEDICAL RECORDS
-            </a>
-        </div>
+        <div class="grid grid-cols-2 gap-12 mt-12">
 
-        <div id="medicalRecordsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Medical Records</h2>
-                <div class="flex flex-col gap-4">
-                    <button onclick="window.location.href='{% url 'dental_record' child.id %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
-                        Dental Records
-                    </button>
-                    <button onclick="window.location.href='{% url 'child_medication_list' child.id %}'" 
-                            class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
-                        Medication List
-                    </button>
-                    <button onclick="window.location.href='{% url 'child_illness_list' child.id %}'" 
-                            class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
-                        Illness List
-                    </button>
-                </div>
-                <button id="closeModal" class=""></button>
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Demographics</h2>
+                <ul class="space-y-4 text-gray-700 text-lg">
+                    <li><strong>Age:</strong> {{ child.current_age }}</li>
+                    <li><strong>Gender:</strong> {{ child.gender }}</li>
+                    <li><strong>Category:</strong> {{ child.category }}</li>
+                    <li><strong>Date of Birth:</strong> {{ child.date_of_birth }}</li>
+                    <li><strong>Date of Admission:</strong> {{ child.date_of_admission }}</li>
+                    <li><strong>Age of Admission:</strong> {{ child.age_of_admission }}</li>
+                </ul>
             </div>
-        </div>
 
-        <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md" style="max-height: 90vh; overflow-y: auto;">
-                <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Edit Child Information</h2>
-
-                <form id="editForm" method="post" action="{% url 'edit_child' %}">
-                    {% csrf_token %}
-                    <input type="hidden" id="childId" name="child_id">
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-gray-600 font-semibold">First Name</label>
-                            <input type="text" id="editFirstName" name="first_name" class="w-full border p-3 rounded-md">
-                        </div>
-                        <div>
-                            <label class="block text-gray-600 font-semibold">Last Name</label>
-                            <input type="text" id="editLastName" name="last_name" class="w-full border p-3 rounded-md">
-                        </div>
-                        <div>
-                            <label class="block text-gray-600 font-semibold">Category</label>
-                            <select id="editCategory" name="category" class="w-full border p-3 rounded-md">
-                                <option value="Pre-School">Pre-School</option>
-                                <option value="Nursery">Nursery</option>
-                                <option value="Big Boys">Big Boys</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-gray-600 font-semibold">Gender</label>
-                            <select id="editGender" name="gender" class="w-full border p-3 rounded-md">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-gray-600 font-semibold">Date of Birth</label>
-                            <input type="date" id="editDateOfBirth" name="date_of_birth" class="w-full border p-3 rounded-md">
-                        </div>
-                    </div>
-
-                    <div class="mt-4 flex justify-between">
-                        <button type="submit" id="saveEdit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Save</button>
-                        <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-                    </div>
-                </form>
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Medical Records</h2>
+                <ul class="flex flex-col gap-4">
+                    <li>
+                        <button onclick="window.location.href='{% url 'dental_record' child.id %}'" 
+                                class="bg-pink-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-pink-600">
+                            Dental Records
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="window.location.href='{% url 'child_medication_list' child.id %}'" 
+                                class="bg-pink-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-pink-600">
+                            Medication List
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="window.location.href='{% url 'child_illness_list' child.id %}'" 
+                                class="bg-pink-500 text-white px-11 py-3 rounded-lg text-lg hover:bg-pink-600">
+                            Illness List
+                        </button>
+                    </li>
+                </ul>
             </div>
-        </div>
-
-        <div class="mt-6 text-lg text-gray-800 leading-relaxed">
-            <p>
-                Date of Birth: {{ child.date_of_birth }}
-            </p>
-            <p class="mt-4">
-                Date of Admission: {{ child.date_of_admission }}
-            </p>
-            <p class="mt-4">
-                Age of Admission: {{ child.age_of_admission }}
-            </p>
         </div>
     </div>
-
-    <script>
-        const medicalRecordsBtn = document.getElementById("medicalRecordsBtn");
-        const medicalRecordsModal = document.getElementById("medicalRecordsModal");
-        const closeModal = document.getElementById("closeModal");
-
-        medicalRecordsBtn.addEventListener("click", () => {
-            medicalRecordsModal.classList.remove("hidden");
-        });
-
-        closeModal.addEventListener("click", () => {
-            medicalRecordsModal.classList.add("hidden");
-        });
-        window.addEventListener("click", (event) => {
-            if (event.target === medicalRecordsModal) {
-                medicalRecordsModal.classList.add("hidden");
-            }
-        });
-
-        document.querySelectorAll('.edit-btn').forEach((button) => {
-            button.addEventListener('click', function () {
-                const childData = {
-                    firstName: "{{ child.first_name }}",
-                    lastName: "{{ child.last_name }}",
-                    category: "{{ child.category }}",
-                    gender: "{{ child.gender }}",
-                    dateOfBirth: "{{ child.date_of_birth }}"
-                };
-
-                document.getElementById("editFirstName").value = childData.firstName;
-                document.getElementById("editLastName").value = childData.lastName;
-                document.getElementById("editCategory").value = childData.category;
-                document.getElementById("editGender").value = childData.gender;
-                document.getElementById("editDateOfBirth").value = childData.dateOfBirth;
-
-                document.getElementById("editModal").classList.remove("hidden");
-            });
-        });
-
-        document.getElementById("cancelEdit").addEventListener("click", function () {
-            document.getElementById("editModal").classList.add("hidden");
-        });
-    </script>
 </body>
 </html>
