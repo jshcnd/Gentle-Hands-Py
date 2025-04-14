@@ -30,29 +30,31 @@
             <table class="w-full border border-pink-500 text-lg md:text-xl">
                 <thead class="bg-pink-500 text-black">
                     <tr>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Date</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Age</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Weight</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Height</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">HC</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">CCT</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Teeth</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Date</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Child Name</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Age</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Weight</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Height</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">HC</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">CCT</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Teeth</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for record in growth_records %}
                     <tr>
-                        <td class="border border-gray-500 px-6 py-4">{{ record.date_recorded }}</td>
-                        <td class="border border-gray-500 px-6 py-4">{{ record.age }}</td>
-                        <td class="border border-gray-500 px-6 py-4">{{ record.weight }}</td>
-                        <td class="border border-gray-500 px-6 py-4">{{ record.height }}</td>
-                        <td class="border border-gray-500 px-6 py-4">{{ record.head_circumference }}</td>
-                        <td class="border border-gray-500 px-6 py-4">{{ record.chest_circumference }}</td>
-                        <td class="border border-gray-500 px-6 py-4">{{ record.teeth_upper }}/{{ record.teeth_lower }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.date_recorded }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.child.first_name }} {{ record.child.last_name }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.age }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.weight }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.height }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.head_circumference }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.chest_circumference }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.teeth_upper }}/{{ record.teeth_lower }}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="7" class="border border-gray-500 px-6 py-4 text-center text-gray-500">No records found.</td>
+                        <td colspan="8" class="border border-gray-500 px-6 py-4 text-center text-gray-500">No records found.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
