@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
-from .models import Child, DentalRecord, Medication, Illness, Appointment, Immunization
+from .models import Child, DentalRecord, Medication, Illness, Appointment, Immunization, GrowthRecord
 
 def home(request):
     return render(request, 'index.html')
@@ -170,7 +170,26 @@ def growth_data(request, child_id):
 
 @login_required
 def growth_record(request):
-    return render(request, 'growth_record.html')
+    children = Child.objects.all()  # Fetch all registered children
+    growth_records = GrowthRecord.objects.all()  # Fetch all growth records
+
+    if request.method == 'POST':
+        GrowthRecord.objects.create(
+            child_id=request.POST.get('child_id'),  # Use the selected child ID
+            age=request.POST.get('age'),
+            weight=request.POST.get('weight'),
+            height=request.POST.get('height'),
+            head_circumference=request.POST.get('head_circumference') or None,
+            chest_circumference=request.POST.get('chest_circumference') or None,
+            teeth_upper=request.POST.get('teeth_upper') or None,
+            teeth_lower=request.POST.get('teeth_lower') or None,
+        )
+        return redirect('growth_record')  # Redirect to refresh the page
+
+    return render(request, 'growth_record.html', {
+        'children': children,
+        'growth_records': growth_records,
+    })
 
 @login_required
 def change_user(request):

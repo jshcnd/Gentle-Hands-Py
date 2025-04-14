@@ -14,6 +14,20 @@ class Child(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+class GrowthRecord(models.Model):
+    child = models.ForeignKey(Child, on_delete=models.CASCADE)
+    age = models.PositiveIntegerField()
+    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    height = models.DecimalField(max_digits=5, decimal_places=2)
+    head_circumference = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    chest_circumference = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    teeth_upper = models.PositiveIntegerField(blank=True, null=True)
+    teeth_lower = models.PositiveIntegerField(blank=True, null=True)
+    date_recorded = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Growth Record for {self.child} at age {self.age}"
+
 class DentalRecord(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name='dental_records')
     record_date = models.DateField()

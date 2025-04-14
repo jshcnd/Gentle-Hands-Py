@@ -18,13 +18,13 @@
                 <button id="backBtn" class="bg-pink-500 text-white px-6 py-3 rounded-xl text-lg font-semibold">
                     Back
                 </button>
-                <button id="openFilter" class="bg-pink-500 text-white px-6 py-3 rounded-xl text-lg font-semibold">
-                    Filter
+                <button id="openAddModal" class="bg-pink-500 text-white px-6 py-3 rounded-xl text-lg font-semibold">
+                    Add
                 </button>
             </div>
         </div>
         <h2 class="text-3xl md:text-4xl font-bold text-center py-6">
-            Growth Record for: <span class="text-black">Juan Batumbakal Jr.</span>
+            Growth Record
         </h2>
         <div class="overflow-x-auto">
             <table class="w-full border border-pink-500 text-lg md:text-xl">
@@ -40,82 +40,93 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for record in growth_records %}
                     <tr>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.date_recorded }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.age }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.weight }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.height }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.head_circumference }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.chest_circumference }}</td>
+                        <td class="border border-gray-500 px-6 py-4">{{ record.teeth_upper }}/{{ record.teeth_lower }}</td>
                     </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="border border-gray-500 px-6 py-4 text-center text-gray-500">No records found.</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
 
     </div>
-    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div id="addGrowthRecordModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/3">
-            <h2 class="text-2xl font-bold mb-4 text-center">Growth Data Form</h2>
-            
-            <label class="block mb-2">Group Name:</label>
-            <select class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500"></select>
-            
-            <label class="block mb-2">First Name:</label>
-            <input type="text" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
-            
-            <label class="block mb-2">Last Name:</label>
-            <input type="text" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+            <h2 class="text-2xl font-bold mb-4 text-center">Add Growth Record</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="child_id" class="block mb-2">Child:</label>
+                <select name="child_id" id="child_id" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500" required>
+                    <option value="" disabled selected>Select Child</option>
+                    {% for child in children %}
+                    <option value="{{ child.id }}">{{ child.first_name }} {{ child.last_name }}</option>
+                    {% endfor %}
+                </select>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block mb-2">Age:</label>
-                    <input type="number" min="0" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Weight (kg):</label>
-                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Height (cm):</label>
-                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Head (cm):</label>
-                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Chest (cm):</label>
-                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Teeth:</label>
-                    <div class="flex gap-2">
-                        <input type="number" min="0" max="32" class="border w-1/2 px-4 py-2 rounded-lg border-pink-500" placeholder="Upper">
-                        <input type="number" min="0" max="32" class="border w-1/2 px-4 py-2 rounded-lg border-pink-500" placeholder="Lower">
-                    </div>
-                </div>
-            </div>
+                <label for="age" class="block mb-2">Age:</label>
+                <input type="number" name="age" id="age" min="0" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500" required>
 
-            <div class="flex justify-center mt-6">
-                <button id="closeFilter" class="bg-pink-500 text-white px-8 py-3 rounded-lg font-semibold text-lg">Add</button>
-            </div>
+                <label for="weight" class="block mb-2">Weight (kg):</label>
+                <input type="number" name="weight" id="weight" min="0" step="0.1" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500" required>
+
+                <label for="height" class="block mb-2">Height (cm):</label>
+                <input type="number" name="height" id="height" min="0" step="0.1" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500" required>
+
+                <label for="head_circumference" class="block mb-2">Head Circumference (cm):</label>
+                <input type="number" name="head_circumference" id="head_circumference" min="0" step="0.1" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+                <label for="chest_circumference" class="block mb-2">Chest Circumference (cm):</label>
+                <input type="number" name="chest_circumference" id="chest_circumference" min="0" step="0.1" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+                <label for="teeth_upper" class="block mb-2">Teeth (Upper):</label>
+                <input type="number" name="teeth_upper" id="teeth_upper" min="0" max="32" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+                <label for="teeth_lower" class="block mb-2">Teeth (Lower):</label>
+                <input type="number" name="teeth_lower" id="teeth_lower" min="0" max="32" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" id="closeAddModal" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Cancel</button>
+                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-lg">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        document.getElementById("openFilter").addEventListener("click", function() {
-            document.getElementById("filterModal").classList.remove("hidden");
+        document.getElementById("openAddModal").addEventListener("click", function () {
+            const dateOfBirth = "{{ child.date_of_birth }}";
+            const ageInput = document.getElementById("age");
+
+            const calculateAge = (dob) => {
+                const dobDate = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - dobDate.getFullYear();
+                const monthDiff = today.getMonth() - dobDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                    age--;
+                }
+                return age;
+            };
+            ageInput.value = calculateAge(dateOfBirth);
+
+            document.getElementById("addGrowthRecordModal").classList.remove("hidden");
         });
-        document.getElementById("closeFilter").addEventListener("click", function() {
-            document.getElementById("filterModal").classList.add("hidden");
+
+        document.getElementById("closeAddModal").addEventListener("click", function () {
+            document.getElementById("addGrowthRecordModal").classList.add("hidden");
         });
-        document.getElementById("filterModal").addEventListener("click", function(event) {
-            if (event.target === this) {
-                this.classList.add("hidden");
-            }
-        });
-        document.getElementById("backBtn").addEventListener("click", function() {
+
+        document.getElementById("backBtn").addEventListener("click", function () {
             window.history.back();
         });
     </script>
