@@ -39,3 +39,13 @@ class Medication(models.Model):
 
     def __str__(self):
         return f"{self.patient_name} - {self.medicine_name}"
+
+class Illness(models.Model):
+    group = models.CharField(max_length=1, choices=[('A', 'A'), ('B', 'B'), ('C', 'C')])
+    patient_name = models.ForeignKey(Child, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=255)
+    treatment = models.CharField(max_length=255)
+    date_logged = models.DateField()
+
+    def __str__(self):
+        return f"{self.patient_name} - {self.reason}"

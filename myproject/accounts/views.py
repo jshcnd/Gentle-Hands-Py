@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
-from .models import Child, DentalRecord, Medication
+from .models import Child, DentalRecord, Medication, Illness
 
 def home(request):
     return render(request, 'index.html')
@@ -84,7 +84,25 @@ def medication_list(request, child_id=None):
 
 @login_required
 def illness_list(request):
-    return render(request, 'illness_list.html')
+    illnesses = Illness.objects.all() 
+    children = Child.objects.all() 
+    groups = ['A', 'B', 'C']  
+
+    if request.method == 'POST':
+        Illness.objects.create(
+            group=request.POST.get('group'),
+            patient_name_id=request.POST.get('patient_name'),
+            reason=request.POST.get('reason'),
+            treatment=request.POST.get('treatment'),
+            date_logged=request.POST.get('date_logged'),
+        )
+        return redirect('illness_list')  
+
+    return render(request, 'illness_list.html', {
+        'illnesses': illnesses,
+        'children': children,
+        'groups': groups
+    })
 
 @login_required
 def appointment_list(request):

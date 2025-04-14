@@ -21,8 +21,8 @@ urlpatterns = [
     path('change-password/', views.change_password, name='change_password'),
     path('register/', views.register, name='register'),
     path('edit_child/', views.edit_child, name='edit_child'),
-    path('illness-list/', views.illness_list, name='illness_list'),
     path('dental-record/<int:child_id>/', views.dental_record_view, name='dental_record'),
     path("medication_list/", views.medication_list, name="medication_list"),
     path('medication_list/<int:child_id>/', views.medication_list, name='child_medication_list'),
+    path('illness_list/', views.illness_list, name='illness_list'),
 ]
