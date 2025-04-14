@@ -42,146 +42,73 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for medication in medications %}
                     <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Hanns De Guzman</td>
-                        <td class="p-3 border border-gray-300">Dr. Elmar</td>
-                        <td class="p-3 border border-gray-300">Amoxicillin</td>
-                        <td class="p-3 border border-gray-300">500mg</td>
-                        <td class="p-3 border border-gray-300">20mg</td>
-                        <td class="p-3 border border-gray-300">1 tablet</td>
-                        <td class="p-3 border border-gray-300">2x a day</td>
-                        <td class="p-3 border border-gray-300">7 days</td>
-                        <td class="p-3 border border-gray-300">D</td>
+                        <td class="p-3 border border-gray-300">{{ medication.group }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.patient_name.first_name }} {{ medication.patient_name.last_name }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.prescribed_by }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.medicine_name }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.strength }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.mg_per_kg_per_day }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.dose }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.frequency }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.duration }}</td>
+                        <td class="p-3 border border-gray-300">{{ medication.dwm }}</td>
                     </tr>
-                </tbody>
-                <tbody>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Rhoen Bernadas</td>
-                        <td class="p-3 border border-gray-300">Dr. Stone</td>
-                        <td class="p-3 border border-gray-300">Amoxicillin</td>
-                        <td class="p-3 border border-gray-300">500mg</td>
-                        <td class="p-3 border border-gray-300">20mg</td>
-                        <td class="p-3 border border-gray-300">1 tablet</td>
-                        <td class="p-3 border border-gray-300">2x a day</td>
-                        <td class="p-3 border border-gray-300">7 days</td>
-                        <td class="p-3 border border-gray-300">D</td>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="p-3 border border-gray-300 text-center text-gray-500">No medications found.</td>
                     </tr>
-                </tbody>
-                <tbody>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Kim Grijalde</td>
-                        <td class="p-3 border border-gray-300">Dr. Johnny</td>
-                        <td class="p-3 border border-gray-300">Amoxicillin</td>
-                        <td class="p-3 border border-gray-300">500mg</td>
-                        <td class="p-3 border border-gray-300">20mg</td>
-                        <td class="p-3 border border-gray-300">1 tablet</td>
-                        <td class="p-3 border border-gray-300">2x a day</td>
-                        <td class="p-3 border border-gray-300">7 days</td>
-                        <td class="p-3 border border-gray-300">D</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Jessie Besa</td>
-                        <td class="p-3 border border-gray-300">Dr. Kwakwak</td>
-                        <td class="p-3 border border-gray-300">Amoxicillin</td>
-                        <td class="p-3 border border-gray-300">500mg</td>
-                        <td class="p-3 border border-gray-300">20mg</td>
-                        <td class="p-3 border border-gray-300">1 tablet</td>
-                        <td class="p-3 border border-gray-300">2x a day</td>
-                        <td class="p-3 border border-gray-300">7 days</td>
-                        <td class="p-3 border border-gray-300">D</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Justin Taneo</td>
-                        <td class="p-3 border border-gray-300">Dr. Mark</td>
-                        <td class="p-3 border border-gray-300">Amoxicillin</td>
-                        <td class="p-3 border border-gray-300">500mg</td>
-                        <td class="p-3 border border-gray-300">20mg</td>
-                        <td class="p-3 border border-gray-300">1 tablet</td>
-                        <td class="p-3 border border-gray-300">2x a day</td>
-                        <td class="p-3 border border-gray-300">7 days</td>
-                        <td class="p-3 border border-gray-300">D</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">John Doe</td>
-                        <td class="p-3 border border-gray-300">Dr. Smith</td>
-                        <td class="p-3 border border-gray-300">Amoxicillin</td>
-                        <td class="p-3 border border-gray-300">500mg</td>
-                        <td class="p-3 border border-gray-300">20mg</td>
-                        <td class="p-3 border border-gray-300">1 tablet</td>
-                        <td class="p-3 border border-gray-300">2x a day</td>
-                        <td class="p-3 border border-gray-300">7 days</td>
-                        <td class="p-3 border border-gray-300">D</td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div id="registerModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 class="text-3xl font-bold text-center mb-4">Add Medication</h2>
-            
-            <input type="text" id="modalSearch" placeholder="Search for a patient..." 
-                class="border p-3 rounded-md focus:ring-2 focus:ring-pink-400 w-full mb-3">
-            
-            <div class="space-y-3">
-                <label class="block text-gray-600 font-semibold">Group</label>
-                <select id="groupSelect" class="w-full border p-3 rounded-md">
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
-
+    <div id="addMedicationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Add New Medication</h2>
+            <form method="POST">
+                {% csrf_token %}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Patient Name</label>
-                        <input type="text" id="patientName" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Prescribed By</label>
-                        <input type="text" id="prescribedBy" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Medicine Name</label>
-                        <input type="text" id="medicineName" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Strength</label>
-                        <input type="text" id="strength" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">mg/kg/day</label>
-                        <input type="text" id="mgPerKgPerDay" class="w-full border p-3 rounded-md">
-                    </div>
-                </div>
-            </div>
 
-            <div class="mt-4 flex justify-between">
-                <button id="registerBtn" class="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600">Add</button>
-                <button id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancel</button>
-            </div>
+                    <select name="group" class="border p-3 rounded-md">
+                        <option value="" disabled selected>Select Group</option>
+                        {% for group in groups %}
+                        <option value="{{ group }}">{{ group }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="patient_name" class="border p-3 rounded-md">
+                        <option value="" disabled selected>Select Patient</option>
+                        {% for child in children %}
+                        <option value="{{ child.id }}">{{ child.first_name }} {{ child.last_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input type="text" name="prescribed_by" placeholder="Prescribed By" class="border p-3 rounded-md">
+                    <input type="text" name="medicine_name" placeholder="Medicine Name" class="border p-3 rounded-md">
+                    <input type="text" name="strength" placeholder="Strength" class="border p-3 rounded-md">
+                    <input type="text" name="mg_per_kg_per_day" placeholder="mg/kg/day" class="border p-3 rounded-md">
+                    <input type="text" name="dose" placeholder="Dose" class="border p-3 rounded-md">
+                    <input type="text" name="frequency" placeholder="Frequency" class="border p-3 rounded-md">
+                    <input type="text" name="duration" placeholder="Duration" class="border p-3 rounded-md">
+                    <input type="text" name="dwm" placeholder="D/W/M" class="border p-3 rounded-md">
+                </div>
+                <div class="mt-4 flex justify-between">
+                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600">Add</button>
+                    <button type="button" id="cancelAddMedication" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
         document.getElementById("addChildBtn").addEventListener("click", function () {
-            document.getElementById("registerModal").classList.remove("hidden");
+            document.getElementById("addMedicationModal").classList.remove("hidden");
         });
-
-        document.getElementById("closeModal").addEventListener("click", function () {
-            document.getElementById("registerModal").classList.add("hidden");
+        document.getElementById("cancelAddMedication").addEventListener("click", function () {
+            document.getElementById("addMedicationModal").classList.add("hidden");
         });
     </script>
 </body>

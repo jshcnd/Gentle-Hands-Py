@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
-from .models import Child, DentalRecord
+from .models import Child, DentalRecord, Medication
 
 def home(request):
     return render(request, 'index.html')
@@ -52,7 +52,30 @@ def medication_view(request):
 
 @login_required
 def medication_list(request):
-    return render(request, 'medication_list.html')
+    children = Child.objects.all() 
+    groups = ['A', 'B', 'C'] 
+    medications = Medication.objects.all() 
+
+    if request.method == 'POST':
+        Medication.objects.create(
+            group=request.POST.get('group'),
+            patient_name_id=request.POST.get('patient_name'),
+            prescribed_by=request.POST.get('prescribed_by'),
+            medicine_name=request.POST.get('medicine_name'),
+            strength=request.POST.get('strength'),
+            mg_per_kg_per_day=request.POST.get('mg_per_kg_per_day'),
+            dose=request.POST.get('dose'),
+            frequency=request.POST.get('frequency'),
+            duration=request.POST.get('duration'),
+            dwm=request.POST.get('dwm'),
+        )
+        return redirect('medication_list') 
+
+    return render(request, 'medication_list.html', {
+        'children': children,
+        'groups': groups,
+        'medications': medications
+    })
 
 @login_required
 def illness_list(request):
@@ -94,12 +117,12 @@ def dental_record_view(request, child_id):
         form = DentalRecordForm(request.POST)
         if form.is_valid():
             dental_record = form.save(commit=False)
-            dental_record.child = child  # Associate the record with the child
+            dental_record.child = child
             dental_record.save()
             return redirect('dental_record', child_id=child.id)
     else:
         form = DentalRecordForm()
-        records = DentalRecord.objects.filter(child=child)  # Filter records by child
+        records = DentalRecord.objects.filter(child=child)
     return render(request, 'dental_record.html', {'form': form, 'records': records, 'child': child})
 
 @login_required

@@ -15,7 +15,6 @@ urlpatterns = [
     path('growth_data/', views.growth_data, name='growth_data'),
     path('growth_data/<int:child_id>/', views.growth_data, name='growth_data'),
     path('changeuser/', views.change_user, name='changeuser'),
-    path('medication-list/', views.medication_list, name='medication_list'),
     path('growth-record/', views.growth_record, name='growth_record'),
     path('change-username/', views.change_username, name='change_username'),
     path('change-email/', views.change_email, name='change_email'),
@@ -24,4 +23,5 @@ urlpatterns = [
     path('edit_child/', views.edit_child, name='edit_child'),
     path('illness-list/', views.illness_list, name='illness_list'),
     path('dental-record/<int:child_id>/', views.dental_record_view, name='dental_record'),
+    path("medication_list/", views.medication_list, name="medication_list"),
 ]
