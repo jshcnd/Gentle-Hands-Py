@@ -9,7 +9,11 @@
 <body class="bg-gray-200 flex justify-center items-center min-h-screen p-0">
     <div class="w-full h-screen bg-white p-8 rounded-lg shadow-lg">
         <div class="text-center mb-6">
-            <h2 class="text-3xl font-bold text-gray-800">Current Medication List</h2>
+            {% if child_id %}
+                <h2 class="text-3xl font-bold text-gray-800">Medication List for {{ medications.first.patient_name.first_name }} {{ medications.first.patient_name.last_name }}</h2>
+            {% else %}
+                <h2 class="text-3xl font-bold text-gray-800">Current Medication List</h2>
+            {% endif %}
         </div>
 
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">

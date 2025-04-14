@@ -51,10 +51,14 @@ def medication_view(request):
     return render(request, 'medication.html')
 
 @login_required
-def medication_list(request):
-    children = Child.objects.all() 
-    groups = ['A', 'B', 'C'] 
-    medications = Medication.objects.all() 
+def medication_list(request, child_id=None):
+    children = Child.objects.all()
+    groups = ['A', 'B', 'C']
+    medications = Medication.objects.all()
+
+    if child_id:
+        child = get_object_or_404(Child, id=child_id)
+        medications = medications.filter(patient_name=child)
 
     if request.method == 'POST':
         Medication.objects.create(
@@ -69,12 +73,13 @@ def medication_list(request):
             duration=request.POST.get('duration'),
             dwm=request.POST.get('dwm'),
         )
-        return redirect('medication_list') 
+        return redirect('medication_list')
 
     return render(request, 'medication_list.html', {
         'children': children,
         'groups': groups,
-        'medications': medications
+        'medications': medications,
+        'child_id': child_id
     })
 
 @login_required

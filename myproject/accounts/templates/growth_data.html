@@ -49,7 +49,8 @@
                     <button onclick="window.location.href='{% url 'dental_record' child.id %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
                         Dental Records
                     </button>
-                    <button onclick="window.location.href='{% url 'medication_list' %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
+                    <button onclick="window.location.href='{% url 'child_medication_list' child.id %}'" 
+                            class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
                         Medication List
                     </button>
                     <button onclick="window.location.href='{% url 'illness_list' %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600">
