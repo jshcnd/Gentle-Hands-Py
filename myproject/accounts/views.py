@@ -169,13 +169,19 @@ def growth_data(request, child_id):
     return render(request, 'growth_data.html', {'child': child})
 
 @login_required
-def growth_record(request):
+def growth_record(request, child_id=None):
+    if child_id:
+        # Filter growth records for the specific child
+        growth_records = GrowthRecord.objects.filter(child_id=child_id)
+    else:
+        # Show all growth records
+        growth_records = GrowthRecord.objects.all()
+
     children = Child.objects.all()  # Fetch all registered children
-    growth_records = GrowthRecord.objects.all()  # Fetch all growth records
 
     if request.method == 'POST':
         GrowthRecord.objects.create(
-            child_id=request.POST.get('child_id'),  # Use the selected child ID
+            child_id=request.POST.get('child_id'),
             age=request.POST.get('age'),
             weight=request.POST.get('weight'),
             height=request.POST.get('height'),
