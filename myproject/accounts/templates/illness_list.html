@@ -28,8 +28,15 @@
             </div>
         </div>
 
+        <div class="text-center mb-6">
+            {% if child_id %}
+                <h2 class="text-3xl font-bold text-gray-800">Illness List for {{ illnesses.first.patient_name.first_name }} {{ illnesses.first.patient_name.last_name }}</h2>
+            {% else %}
+                <h2 class="text-3xl font-bold text-gray-800">Illness List</h2>
+            {% endif %}
+        </div>
+
         <div class="w-full overflow-x-auto">
-            <h1 class="text-3xl font-bold mb-4 mt-6 text-center text-gray-800">Illness List</h1>
             <table class="w-full border-collapse border border-gray-300 min-w-max">
                 <thead>
                     <tr class="bg-pink-500 text-white">
