@@ -42,6 +42,11 @@
                     <li><strong>Date of Birth:</strong> {{ child.date_of_birth }}</li>
                     <li><strong>Date of Admission:</strong> {{ child.date_of_admission }}</li>
                     <li><strong>Age of Admission:</strong> {{ child.age_of_admission }}</li>
+                    <li>
+                        <a href="{% url 'growth_record_child' child.id %}" class="text-pink-500 hover:underline font-bold text-lg">
+                            Health Profile
+                        </a>
+                    </li>
                 </ul>
             </div>
 
