@@ -7,9 +7,6 @@ urlpatterns = [
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('childrecord/', views.child_record, name='childrecord'),
     path('registerchild/', views.register_child, name='registerchild'),
-    path('medication/', views.medication_view, name='medication'),
-    path('illness/', views.illness_list, name='illness_list'),
-    path('appointment/', views.appointment_list, name='appointment_list'),
     path('immunization/', views.immunization_list, name='immunization_list'),
     path('medic/', views.medic, name='medic'),
     path('growth_data/', views.growth_data, name='growth_data'),
@@ -26,4 +23,5 @@ urlpatterns = [
     path('medication_list/<int:child_id>/', views.medication_list, name='child_medication_list'),
     path('illness_list/', views.illness_list, name='illness_list'),
     path('illness_list/<int:child_id>/', views.illness_list, name='child_illness_list'),
+    path('appointment_list/', views.appointment_list, name='appointment_list'),
 ]

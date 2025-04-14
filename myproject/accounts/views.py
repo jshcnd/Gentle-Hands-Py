@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
-from .models import Child, DentalRecord, Medication, Illness
+from .models import Child, DentalRecord, Medication, Illness, Appointment
 
 def home(request):
     return render(request, 'index.html')
@@ -112,7 +112,30 @@ def illness_list(request, child_id=None):
 
 @login_required
 def appointment_list(request):
-    return render(request, 'appointment_list.html')
+    category = request.GET.get('category', '')  # Get the selected category from the query string
+    if category:
+        appointments = Appointment.objects.filter(medical_type=category)
+    else:
+        appointments = Appointment.objects.all()
+
+    children = Child.objects.all()  # Fetch all registered children
+
+    if request.method == 'POST':
+        Appointment.objects.create(
+            patient_name_id=request.POST.get('patient_name'),  # Use the selected child ID
+            medical_type=request.POST.get('medical_type'),
+            appointment_date=request.POST.get('appointment_date'),
+            hospital_name=request.POST.get('hospital_name'),
+            medic_name=request.POST.get('medic_name'),
+            reason=request.POST.get('reason'),
+        )
+        return redirect('appointment_list')  # Redirect to refresh the page
+
+    return render(request, 'appointment_list.html', {
+        'appointments': appointments,
+        'selected_category': category,
+        'children': children,
+    })
 
 @login_required
 def immunization_list(request):

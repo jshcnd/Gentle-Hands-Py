@@ -49,3 +49,18 @@ class Illness(models.Model):
 
     def __str__(self):
         return f"{self.patient_name} - {self.reason}"
+
+class Appointment(models.Model):
+    patient_name = models.ForeignKey(Child, on_delete=models.CASCADE)
+    medical_type = models.CharField(max_length=100, choices=[
+        ('General Checkup', 'General Checkup'),
+        ('Dental', 'Dental'),
+        ('Pediatrics', 'Pediatrics'),
+    ])
+    appointment_date = models.DateField()
+    hospital_name = models.CharField(max_length=255, blank=True, null=True)
+    medic_name = models.CharField(max_length=255, blank=True, null=True)
+    reason = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.patient_name} - {self.medical_type}"
