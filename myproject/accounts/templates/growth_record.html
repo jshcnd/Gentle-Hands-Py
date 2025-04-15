@@ -18,105 +18,216 @@
                 <button id="backBtn" class="bg-pink-500 text-white px-6 py-3 rounded-xl text-lg font-semibold">
                     Back
                 </button>
-                <button id="openFilter" class="bg-pink-500 text-white px-6 py-3 rounded-xl text-lg font-semibold">
-                    Filter
+                <button id="openAddModal" class="bg-pink-500 text-white px-6 py-3 rounded-xl text-lg font-semibold">
+                    Add
                 </button>
             </div>
         </div>
         <h2 class="text-3xl md:text-4xl font-bold text-center py-6">
-            Growth Record for: <span class="text-black">Juan Batumbakal Jr.</span>
+            Growth Record
         </h2>
         <div class="overflow-x-auto">
             <table class="w-full border border-pink-500 text-lg md:text-xl">
                 <thead class="bg-pink-500 text-black">
                     <tr>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Date</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Age</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Weight</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Height</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">HC</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">CCT</th>
-                        <th class="border border-gray-500 px-6 py-4 font-semibold">Teeth</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Date</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Child Name</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Age</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Weight</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Height</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">HC</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">CCT</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Teeth</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for record in growth_records %}
                     <tr>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
-                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.date_recorded }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.child.first_name }} {{ record.child.last_name }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.age }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.weight }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.height }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.head_circumference }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.chest_circumference }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">{{ record.teeth_upper }}/{{ record.teeth_lower }}</td>
+                        <td class="border border-gray-500 px-6 py-4 text-center">
+                            <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 view-chart-btn" 
+                                data-child-id="{{ record.child.id }}" 
+                                data-child-name="{{ record.child.first_name }} {{ record.child.last_name }}">
+                                View Growth Chart
+                            </button>
+                        </td>
                     </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" class="border border-gray-500 px-6 py-4 text-center text-gray-500">No records found.</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
 
     </div>
-    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div id="addGrowthRecordModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/3">
-            <h2 class="text-2xl font-bold mb-4 text-center">Growth Data Form</h2>
-            
-            <label class="block mb-2">Group Name:</label>
-            <select class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500"></select>
-            
-            <label class="block mb-2">First Name:</label>
-            <input type="text" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
-            
-            <label class="block mb-2">Last Name:</label>
-            <input type="text" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+            <h2 class="text-2xl font-bold mb-4 text-center">Add Growth Record</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="child_id" class="block mb-2">Child:</label>
+                <select name="child_id" id="child_id" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500" required>
+                    <option value="" disabled selected>Select Child</option>
+                    {% for child in children %}
+                    <option value="{{ child.id }}" data-dob="{{ child.date_of_birth }}">{{ child.first_name }} {{ child.last_name }}</option>
+                    {% endfor %}
+                </select>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block mb-2">Age:</label>
-                    <input type="number" min="0" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Weight (kg):</label>
-                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Height (cm):</label>
-                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Head (cm):</label>
-                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Chest (cm):</label>
-                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
-                </div>
-                <div>
-                    <label class="block mb-2">Teeth:</label>
-                    <div class="flex gap-2">
-                        <input type="number" min="0" max="32" class="border w-1/2 px-4 py-2 rounded-lg border-pink-500" placeholder="Upper">
-                        <input type="number" min="0" max="32" class="border w-1/2 px-4 py-2 rounded-lg border-pink-500" placeholder="Lower">
-                    </div>
-                </div>
-            </div>
+                <label for="age" class="block mb-2">Age:</label>
+                <input type="number" name="age" id="age" min="0" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500" readonly required>
 
-            <div class="flex justify-center mt-6">
-                <button id="closeFilter" class="bg-pink-500 text-white px-8 py-3 rounded-lg font-semibold text-lg">Add</button>
+                <label for="weight" class="block mb-2">Weight (kg):</label>
+                <input type="number" name="weight" id="weight" min="0" step="0.1" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500" required>
+
+                <label for="height" class="block mb-2">Height (cm):</label>
+                <input type="number" name="height" id="height" min="0" step="0.1" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500" required>
+
+                <label for="head_circumference" class="block mb-2">Head Circumference (cm):</label>
+                <input type="number" name="head_circumference" id="head_circumference" min="0" step="0.1" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+                <label for="chest_circumference" class="block mb-2">Chest Circumference (cm):</label>
+                <input type="number" name="chest_circumference" id="chest_circumference" min="0" step="0.1" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+                <label for="teeth_upper" class="block mb-2">Teeth (Upper):</label>
+                <input type="number" name="teeth_upper" id="teeth_upper" min="0" max="32" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+                <label for="teeth_lower" class="block mb-2">Teeth (Lower):</label>
+                <input type="number" name="teeth_lower" id="teeth_lower" min="0" max="32" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" id="closeAddModal" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Cancel</button>
+                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-lg">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="growthChartModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-2/3">
+            <h2 id="growthChartTitle" class="text-2xl font-bold mb-4 text-center">Growth Chart</h2>
+            <canvas id="growthChart" class="w-full h-64"></canvas>
+            <div class="flex justify-end mt-4">
+                <button id="closeGrowthChartModal" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Close</button>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.getElementById("openFilter").addEventListener("click", function() {
-            document.getElementById("filterModal").classList.remove("hidden");
-        });
-        document.getElementById("closeFilter").addEventListener("click", function() {
-            document.getElementById("filterModal").classList.add("hidden");
-        });
-        document.getElementById("filterModal").addEventListener("click", function(event) {
-            if (event.target === this) {
-                this.classList.add("hidden");
+        const childSelect = document.getElementById("child_id");
+        const ageInput = document.getElementById("age");
+
+        function calculateAge(dob) {
+            const dobDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - dobDate.getFullYear();
+            const monthDiff = today.getMonth() - dobDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        childSelect.addEventListener("change", function () {
+            const selectedOption = childSelect.options[childSelect.selectedIndex];
+            const dob = selectedOption.getAttribute("data-dob");
+            if (dob) {
+                ageInput.value = calculateAge(dob);
+            } else {
+                ageInput.value = "";
             }
         });
-        document.getElementById("backBtn").addEventListener("click", function() {
+
+        document.getElementById("openAddModal").addEventListener("click", function () {
+            document.getElementById("addGrowthRecordModal").classList.remove("hidden");
+        });
+
+        document.getElementById("closeAddModal").addEventListener("click", function () {
+            document.getElementById("addGrowthRecordModal").classList.add("hidden");
+        });
+
+        document.getElementById("backBtn").addEventListener("click", function () {
             window.history.back();
+        });
+
+        const viewChartButtons = document.querySelectorAll('.view-chart-btn');
+        const growthChartModal = document.getElementById('growthChartModal');
+        const growthChartTitle = document.getElementById('growthChartTitle');
+        const closeGrowthChartModal = document.getElementById('closeGrowthChartModal');
+        const growthChartCanvas = document.getElementById('growthChart');
+        let growthChart;
+
+        viewChartButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const childId = this.getAttribute('data-child-id');
+                const childName = this.getAttribute('data-child-name');
+
+                growthChartTitle.textContent = `Growth Chart for ${childName}`;
+
+                const growthData = {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], //SAMPLE VALUES ONLY!
+                    bmi: [15, 16, 17, 18, 19], //SAMPLE VALUES ONLY!
+                };
+
+                if (growthChart) {
+                    growthChart.destroy();
+                }
+
+                growthChart = new Chart(growthChartCanvas, {
+                    type: 'line',
+                    data: {
+                        labels: growthData.labels,
+                        datasets: [{
+                            label: 'BMI',
+                            data: growthData.bmi,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Months',
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'BMI',
+                                },
+                                beginAtZero: true,
+                            },
+                        },
+                    },
+                });
+
+                growthChartModal.classList.remove('hidden');
+            });
+        });
+
+        closeGrowthChartModal.addEventListener('click', () => {
+            growthChartModal.classList.add('hidden');
         });
     </script>
 </body>

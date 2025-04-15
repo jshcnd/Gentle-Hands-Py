@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from .forms import RegisterForm, ChildRegistrationForm
-from .models import Child
+from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
+from .models import Child, DentalRecord, Medication, Illness, Appointment, Immunization, GrowthRecord
 
 def home(request):
     return render(request, 'index.html')
@@ -51,20 +51,113 @@ def medication_view(request):
     return render(request, 'medication.html')
 
 @login_required
-def medication_list(request):
-    return render(request, 'accounts/medication_list.html')
+def medication_list(request, child_id=None):
+    children = Child.objects.all()
+    groups = ['A', 'B', 'C']
+    medications = Medication.objects.all()
+
+    if child_id:
+        child = get_object_or_404(Child, id=child_id)
+        medications = medications.filter(patient_name=child)
+
+    if request.method == 'POST':
+        Medication.objects.create(
+            group=request.POST.get('group'),
+            patient_name_id=request.POST.get('patient_name'),
+            prescribed_by=request.POST.get('prescribed_by'),
+            medicine_name=request.POST.get('medicine_name'),
+            strength=request.POST.get('strength'),
+            mg_per_kg_per_day=request.POST.get('mg_per_kg_per_day'),
+            dose=request.POST.get('dose'),
+            frequency=request.POST.get('frequency'),
+            duration=request.POST.get('duration'),
+            dwm=request.POST.get('dwm'),
+        )
+        return redirect('medication_list')
+
+    return render(request, 'medication_list.html', {
+        'children': children,
+        'groups': groups,
+        'medications': medications,
+        'child_id': child_id
+    })
 
 @login_required
-def illness_list(request):
-    return render(request, 'accounts/illness_list.html')
+def illness_list(request, child_id=None):
+    children = Child.objects.all()
+    groups = ['A', 'B', 'C'] 
+
+    if child_id:
+        child = get_object_or_404(Child, id=child_id)
+        illnesses = Illness.objects.filter(patient_name=child)
+    else:
+        illnesses = Illness.objects.all()  
+
+    if request.method == 'POST':
+        Illness.objects.create(
+            group=request.POST.get('group'),
+            patient_name_id=request.POST.get('patient_name'),
+            reason=request.POST.get('reason'),
+            treatment=request.POST.get('treatment'),
+            date_logged=request.POST.get('date_logged'),
+        )
+        return redirect('illness_list', child_id=child_id)
+
+    return render(request, 'illness_list.html', {
+        'illnesses': illnesses,
+        'children': children,
+        'groups': groups,
+        'child_id': child_id
+    })
 
 @login_required
 def appointment_list(request):
-    return render(request, 'appointment_list.html')
+    category = request.GET.get('category', '')
+    if category:
+        appointments = Appointment.objects.filter(medical_type=category)
+    else:
+        appointments = Appointment.objects.all()
+
+    children = Child.objects.all() 
+
+    if request.method == 'POST':
+        Appointment.objects.create(
+            patient_name_id=request.POST.get('patient_name'),
+            medical_type=request.POST.get('medical_type'),
+            appointment_date=request.POST.get('appointment_date'),
+            hospital_name=request.POST.get('hospital_name'),
+            medic_name=request.POST.get('medic_name'),
+            reason=request.POST.get('reason'),
+        )
+        return redirect('appointment_list') 
+
+    return render(request, 'appointment_list.html', {
+        'appointments': appointments,
+        'selected_category': category,
+        'children': children,
+    })
 
 @login_required
 def immunization_list(request):
-    return render(request, 'immunization.html')
+    immunizations = Immunization.objects.all() 
+    children = Child.objects.all() 
+
+    if request.method == 'POST':
+        Immunization.objects.create(
+            patient_name_id=request.POST.get('patient_name'),  
+            group_name=request.POST.get('group_name'),
+            vaccine=request.POST.get('vaccine'),
+            dose_no=request.POST.get('dose_no'),
+            date_due=request.POST.get('date_due'),
+            age_when_due=request.POST.get('age_when_due'),
+            comments=request.POST.get('comments'),
+        )
+        return redirect('immunization_list')  
+
+    return render(request, 'immunization.html', {
+        'immunizations': immunizations,
+        'children': children,
+    })
 
 @login_required
 def medic(request):
@@ -76,12 +169,56 @@ def growth_data(request, child_id):
     return render(request, 'growth_data.html', {'child': child})
 
 @login_required
-def growth_record(request):
-    return render(request, 'growth_record.html')
+def growth_record(request, child_id=None):
+    if child_id:
+        # Filter growth records for the specific child
+        growth_records = GrowthRecord.objects.filter(child_id=child_id)
+    else:
+        # Show all growth records
+        growth_records = GrowthRecord.objects.all()
+
+    children = Child.objects.all()  # Fetch all registered children
+
+    if request.method == 'POST':
+        GrowthRecord.objects.create(
+            child_id=request.POST.get('child_id'),
+            age=request.POST.get('age'),
+            weight=request.POST.get('weight'),
+            height=request.POST.get('height'),
+            head_circumference=request.POST.get('head_circumference') or None,
+            chest_circumference=request.POST.get('chest_circumference') or None,
+            teeth_upper=request.POST.get('teeth_upper') or None,
+            teeth_lower=request.POST.get('teeth_lower') or None,
+        )
+        return redirect('growth_record')  # Redirect to refresh the page
+
+    return render(request, 'growth_record.html', {
+        'children': children,
+        'growth_records': growth_records,
+    })
 
 @login_required
 def change_user(request):
     return render(request, 'changeuser.html')
+
+@login_required
+def dental_record(request):
+    return render(request, 'dental_record.html')
+
+@login_required
+def dental_record_view(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+    if request.method == 'POST':
+        form = DentalRecordForm(request.POST)
+        if form.is_valid():
+            dental_record = form.save(commit=False)
+            dental_record.child = child
+            dental_record.save()
+            return redirect('dental_record', child_id=child.id)
+    else:
+        form = DentalRecordForm()
+        records = DentalRecord.objects.filter(child=child)
+    return render(request, 'dental_record.html', {'form': form, 'records': records, 'child': child})
 
 @login_required
 def change_username(request):
@@ -179,6 +316,3 @@ def edit_child(request):
         child.save()
 
         return redirect('childrecord')
-
-def dental_record(request, child_id):
-    return render(request, 'accounts/dental_record.html', {'child_id': child_id})

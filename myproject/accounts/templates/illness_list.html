@@ -28,8 +28,15 @@
             </div>
         </div>
 
+        <div class="text-center mb-6">
+            {% if child_id %}
+                <h2 class="text-3xl font-bold text-gray-800">Illness List for {{ illnesses.first.patient_name.first_name }} {{ illnesses.first.patient_name.last_name }}</h2>
+            {% else %}
+                <h2 class="text-3xl font-bold text-gray-800">Illness List</h2>
+            {% endif %}
+        </div>
+
         <div class="w-full overflow-x-auto">
-            <h1 class="text-3xl font-bold mb-4 mt-6 text-center text-gray-800">Illness List</h1>
             <table class="w-full border-collapse border border-gray-300 min-w-max">
                 <thead>
                     <tr class="bg-pink-500 text-white">
@@ -41,41 +48,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for illness in illnesses %}
                     <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">John Doe</td>
-                        <td class="p-3 border border-gray-300">Almuranas</td>
-                        <td class="p-3 border border-gray-300">Jerbaks</td>
-                        <td class="p-3 border border-gray-300">03/20/25</td>
+                        <td class="p-3 border border-gray-300">{{ illness.group }}</td>
+                        <td class="p-3 border border-gray-300">{{ illness.patient_name.first_name }} {{ illness.patient_name.last_name }}</td>
+                        <td class="p-3 border border-gray-300">{{ illness.reason }}</td>
+                        <td class="p-3 border border-gray-300">{{ illness.treatment }}</td>
+                        <td class="p-3 border border-gray-300">{{ illness.date_logged }}</td>
                     </tr>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Jessie Besa</td>
-                        <td class="p-3 border border-gray-300">Sugat</td>
-                        <td class="p-3 border border-gray-300">Tubig</td>
-                        <td class="p-3 border border-gray-300">03/17/25</td>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="p-3 border border-gray-300 text-center text-gray-500">No illnesses found.</td>
                     </tr>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Andrea Sistorias</td>
-                        <td class="p-3 border border-gray-300">Almuranas</td>
-                        <td class="p-3 border border-gray-300">Bioflu</td>
-                        <td class="p-3 border border-gray-300">03/10/25</td>
-                    </tr>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Elmar Panganiban</td>
-                        <td class="p-3 border border-gray-300">Almuranas</td>
-                        <td class="p-3 border border-gray-300">Mepenamic</td>
-                        <td class="p-3 border border-gray-300">03/11/25</td>
-                    </tr>
-                    <tr class="bg-gray-100 text-center">
-                        <td class="p-3 border border-gray-300">A</td>
-                        <td class="p-3 border border-gray-300">Justin Taneo</td>
-                        <td class="p-3 border border-gray-300">Almuranas</td>
-                        <td class="p-3 border border-gray-300">Lemon</td>
-                        <td class="p-3 border border-gray-300">03/12/25</td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -85,61 +70,40 @@
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
             <h2 class="text-3xl font-bold text-center mb-4">Input Illness</h2>
             
-            <input type="text" id="modalSearch" placeholder="Search for a patient..." 
-                class="border p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 w-full mb-3">
-            
-            <div class="space-y-3">
-                <label class="block text-gray-600 font-semibold">Group</label>
-                <select id="groupSelect" class="w-full border p-3 rounded-md">
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="space-y-3">
+                    <label class="block text-gray-600 font-semibold">Group</label>
+                    <select name="group" class="w-full border p-3 rounded-md">
+                        <option value="" disabled selected>Select Group</option>
+                        {% for group in groups %}
+                        <option value="{{ group }}">{{ group }}</option>
+                        {% endfor %}
+                    </select>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Patient Name</label>
-                        <input type="text" id="patientName" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Prescribed By</label>
-                        <input type="text" id="prescribedBy" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Medicine Name</label>
-                        <input type="text" id="medicineName" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Strength</label>
-                        <input type="text" id="strength" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">mg/kg/day</label>
-                        <input type="text" id="mgPerKgPerDay" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Dose</label>
-                        <input type="text" id="dose" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Freq</label>
-                        <input type="text" id="freq" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">Duration</label>
-                        <input type="text" id="duration" class="w-full border p-3 rounded-md">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 font-semibold">D/W/M</label>
-                        <input type="text" id="dwm" class="w-full border p-3 rounded-md">
-                    </div>
+                    <label class="block text-gray-600 font-semibold">Patient Name</label>
+                    <select name="patient_name" class="w-full border p-3 rounded-md">
+                        <option value="" disabled selected>Select Patient</option>
+                        {% for child in children %}
+                        <option value="{{ child.id }}">{{ child.first_name }} {{ child.last_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label class="block text-gray-600 font-semibold">Reason</label>
+                    <input type="text" name="reason" class="w-full border p-3 rounded-md">
+
+                    <label class="block text-gray-600 font-semibold">Treatment</label>
+                    <input type="text" name="treatment" class="w-full border p-3 rounded-md">
+
+                    <label class="block text-gray-600 font-semibold">Date Logged</label>
+                    <input type="date" name="date_logged" class="w-full border p-3 rounded-md">
                 </div>
-            </div>
 
-            <div class="mt-4 flex justify-between">
-                <button id="registerBtn" class="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600">Add</button>
-                <button id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancel</button>
-            </div>
+                <div class="mt-4 flex justify-between">
+                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600">Add</button>
+                    <button type="button" id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
