@@ -15,11 +15,10 @@ def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # Specify the backend explicitly
-            backend = get_backends()[0]  # Use the first backend in AUTHENTICATION_BACKENDS
-            login(request, user, backend=backend.__class__.__module__ + '.' + backend.__class__.__name__)
-            return redirect('home')
+            form.save()
+            messages.success(request, 'User registered successfully.')
+        else:
+            messages.error(request, 'There was an error registering the user.')
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
