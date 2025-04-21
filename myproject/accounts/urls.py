@@ -28,4 +28,5 @@ urlpatterns = [
     path('appointment_list/', views.appointment_list, name='appointment_list'),
     path('user_management/', views.user_management, name='user_management'),
     path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
+    path('children-data/', views.children_data, name='children_data'),
 ]

@@ -340,3 +340,8 @@ def edit_child(request):
         child.save()
 
         return redirect('childrecord')
+
+@login_required
+def children_data(request):
+    children = Child.objects.all()
+    return render(request, 'children_data.html', {'children': children})
