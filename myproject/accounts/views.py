@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, get_backends
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
@@ -16,7 +16,9 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            # Specify the backend explicitly
+            backend = get_backends()[0]  # Use the first backend in AUTHENTICATION_BACKENDS
+            login(request, user, backend=backend.__class__.__module__ + '.' + backend.__class__.__name__)
             return redirect('home')
     else:
         form = RegisterForm()
