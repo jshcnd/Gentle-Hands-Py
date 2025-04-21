@@ -55,6 +55,11 @@ def admin_dashboard(request):
     return render(request, 'admin_dashboard.html')
 
 @login_required
+def user_management(request):
+    users = User.objects.all()
+    return render(request, 'user_management.html', {'users': users})
+
+@login_required
 def medication_view(request):
     return render(request, 'medication.html')
 
