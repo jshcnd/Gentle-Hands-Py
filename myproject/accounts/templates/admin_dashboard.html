@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="relative w-full min-h-screen flex flex-col">
+        <div class="bg-white py-4 flex items-center px-6 shadow-md">
+            <button id="menu-toggle" class="text-black text-3xl focus:outline-none">&#9776;</button>
+            <div class="flex-grow flex justify-center">
+                <img src="{% static 'logo.jpg' %}" alt="Gentle Hands Logo" class="h-12 md:h-16">
+            </div>
+            <div class="w-8"></div>
+        </div>
+        <div class="relative flex-1 flex items-center justify-center bg-cover bg-center" style="background-image: url('{% static 'image.jpg' %}');">
+            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+        
+        <div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50">
+            <div class="flex justify-center py-6">
+                <img src="{% static 'logo.jpg' %}" alt="Gentle Hands Logo" class="h-16">
+            </div>
+            <nav class="flex flex-col space-y-4 px-6">
+                <a href="#" id="" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                    <span>👥</span> <span>User Management</span>
+                </a>
+                <a href="#" id="" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                    <span>📈</span> <span>Children Data</span>
+                </a>
+                <a href="#" id="userSettingsButton" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                    <span>⚙️</span> <span>User Settings</span>
+                </a>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                        <span>🚪</span> <span>Log Out</span>
+                    </button>
+                </form>
+            </nav>
+        </div>
+
+            <div class="relative text-center text-white px-4">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-pink-300">There's Hope in Love</h1>
+            </div>
+        </div>
+        <div id="overlay" class="fixed hidden inset-0 bg-black bg-opacity-50 z-40"></div>
+    </div>
+
+    <div id="childRecordsModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Child Records</h2>
+            <p class="text-gray-600 text-center mb-6">View and manage child records from here.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.location.href='{% url 'childrecord' %}'" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    View Records
+                </button>
+                <button class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="growthRecordsModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Growth Records</h2>
+            <p class="text-gray-600 text-center mb-6">View and manage growth records from here.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.location.href='{% url 'growth_record' %}'" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                        View Growth Records
+                </button>
+                <button class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="medicationListModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Medication List</h2>
+            <p class="text-gray-600 text-center mb-6">View and manage medication records from here.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.location.href='{% url 'medication_list' %}'" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    View Medications
+                </button>
+                <button class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="illnessListModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Illness List</h2>
+            <p class="text-gray-600 text-center mb-6">View and manage Illness List from here.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.location.href='{% url 'illness_list' %}'" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    View Illness List
+                </button>
+                <button class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="appointmentListModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Appointment List</h2>
+            <p class="text-gray-600 text-center mb-6">View and manage Appointment List from here.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.location.href='{% url 'appointment_list' %}'" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    View Appointment
+                </button>
+                <button class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="immunizationListModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Immunizations List</h2>
+            <p class="text-gray-600 text-center mb-6">View and manage Immunizations List from here.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.location.href='{% url 'immunization_list' %}'" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    View Immunizations List
+                </button>
+                <button class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="findMedicModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Find a Medic</h2>
+            <p class="text-gray-600 text-center mb-6">Search and find medical professionals from here.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.location.href='{% url 'medic' %}'" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    Find Medic
+                </button>
+                <button class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="userSettingsModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">User Settings</h2>
+            <p class="text-gray-600 text-center mb-6">Manage your user settings from here.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.location.href='{% url 'changeuser' %}'" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    Go to Settings
+                </button>
+                <button class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const menuToggle = document.getElementById("menu-toggle");
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("overlay");
+
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        });
+
+        overlay.addEventListener("click", () => {
+            sidebar.classList.add("-translate-x-full");
+            overlay.classList.add("hidden");
+        });
+
+        const buttons = [
+            { buttonId: "childRecordsButton", modalId: "childRecordsModal" },
+            { buttonId: "growthRecordsButton", modalId: "growthRecordsModal" },
+            { buttonId: "medicationListButton", modalId: "medicationListModal" },
+            { buttonId: "illnessListButton", modalId: "illnessListModal" },
+            { buttonId: "appointmentListButton", modalId: "appointmentListModal" },
+            { buttonId: "immunizationListButton", modalId: "immunizationListModal" },
+            { buttonId: "findMedicButton", modalId: "findMedicModal" },
+            { buttonId: "userSettingsButton", modalId: "userSettingsModal" },
+        ];
+
+        buttons.forEach(({ buttonId, modalId }) => {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButtons = modal.querySelectorAll(".close-modal");
+
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                modal.classList.remove("hidden");
+            });
+
+            closeButtons.forEach((closeButton) => {
+                closeButton.addEventListener("click", () => {
+                    modal.classList.add("hidden");
+                });
+            });
+        });
+    </script>
+</body>
+</html>
