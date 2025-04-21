@@ -61,6 +61,18 @@ def user_management(request):
     return render(request, 'user_management.html', {'users': users})
 
 @login_required
+def delete_user(request, user_id):
+    user_to_delete = get_object_or_404(User, id=user_id)
+    if request.user.id == user_to_delete.id:
+        messages.error(request, "You cannot delete your own account.")
+    elif request.method == 'POST':
+        user_to_delete.delete()
+        messages.success(request, "User deleted successfully.")
+    else:
+        messages.error(request, "Invalid request method.")
+    return redirect('user_management')
+
+@login_required
 def medication_view(request):
     return render(request, 'medication.html')
 
