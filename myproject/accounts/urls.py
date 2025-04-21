@@ -4,7 +4,8 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('login/', views.login_view, name='login'),
-    path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('childrecord/', views.child_record, name='childrecord'),
     path('registerchild/', views.register_child, name='registerchild'),
     path('immunization/', views.immunization_list, name='immunization_list'),
