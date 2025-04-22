@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, get_backends
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
@@ -15,16 +15,20 @@ def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
+            form.save()
+            messages.success(request, 'User registered successfully.')
+        else:
+            messages.error(request, 'There was an error registering the user.')
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        if request.user.is_staff:
+            return redirect('dashboard')
+        elif request.user.is_superuser:
+            return redirect('admin_dashboard')
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -33,7 +37,12 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('dashboard')
+                if user.is_superuser:
+                    return redirect('admin_dashboard')
+                elif user.is_staff:
+                    return redirect('dashboard')
+                else:
+                    return redirect('home')
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
@@ -43,8 +52,25 @@ def dashboard(request):
     return render(request, 'dashboard.html')
 
 @login_required
-def dashboard_view(request):
-    return render(request, 'dashboard.html')
+def admin_dashboard(request):
+    return render(request, 'admin_dashboard.html')
+
+@login_required
+def user_management(request):
+    users = User.objects.all()
+    return render(request, 'user_management.html', {'users': users})
+
+@login_required
+def delete_user(request, user_id):
+    user_to_delete = get_object_or_404(User, id=user_id)
+    if request.user.id == user_to_delete.id:
+        messages.error(request, "You cannot delete your own account.")
+    elif request.method == 'POST':
+        user_to_delete.delete()
+        messages.success(request, "User deleted successfully.")
+    else:
+        messages.error(request, "Invalid request method.")
+    return redirect('user_management')
 
 @login_required
 def medication_view(request):
@@ -171,13 +197,11 @@ def growth_data(request, child_id):
 @login_required
 def growth_record(request, child_id=None):
     if child_id:
-        # Filter growth records for the specific child
         growth_records = GrowthRecord.objects.filter(child_id=child_id)
     else:
-        # Show all growth records
         growth_records = GrowthRecord.objects.all()
 
-    children = Child.objects.all()  # Fetch all registered children
+    children = Child.objects.all()
 
     if request.method == 'POST':
         GrowthRecord.objects.create(
@@ -190,7 +214,7 @@ def growth_record(request, child_id=None):
             teeth_upper=request.POST.get('teeth_upper') or None,
             teeth_lower=request.POST.get('teeth_lower') or None,
         )
-        return redirect('growth_record')  # Redirect to refresh the page
+        return redirect('growth_record')
 
     return render(request, 'growth_record.html', {
         'children': children,
@@ -316,3 +340,8 @@ def edit_child(request):
         child.save()
 
         return redirect('childrecord')
+
+@login_required
+def children_data(request):
+    children = Child.objects.all()
+    return render(request, 'children_data.html', {'children': children})

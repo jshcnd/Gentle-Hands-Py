@@ -5,9 +5,25 @@ from .models import Child, DentalRecord
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    role = forms.ChoiceField(choices=[('staff', 'Staff'), ('admin', 'Admin')], required=True)
+
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2', 'role']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        role = self.cleaned_data['role']
+
+        if role == 'staff':
+            user.is_staff = True
+        elif role == 'admin':
+            user.is_superuser = True
+
+        if commit:
+            user.save()
+        return user
 
 class ChildRegistrationForm(forms.ModelForm):
     class Meta:

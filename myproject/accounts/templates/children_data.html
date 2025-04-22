@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Children Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white-100 flex flex-col items-center min-h-screen p-6 w-full">
+    <div class="w-full p-6">
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center">
+                <img src="{% static 'logo.jpg' %}" alt="Logo" class="h-16 mr-4">
+                <input type="text" id="search" placeholder="Search by Name or ID"
+                    class="border border-pink-500 p-3 rounded-md text-gray-700 flex-grow w-1/2 focus:outline-none focus:ring-2 focus:ring-pink-500">
+            </div>
+            <div class="flex items-center">
+                <button onclick="window.location.href='{% url 'admin_dashboard' %}'" 
+                    class="bg-pink-500 text-white px-6 py-3 rounded hover:bg-pink-600">
+                    Back
+                </button>
+            </div>
+        </div>
+        <h3 class="text-2xl font-bold mt-4 text-center text-gray-800 text-3xl">
+            Children Data
+        </h3>
+    </div>
+    
+    <div class="w-full bg-white p-6">
+        <table class="w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-pink-500 text-white">
+                    <th class="p-3 border border-gray-300">First Name</th>
+                    <th class="p-3 border border-gray-300">Middle Name</th>
+                    <th class="p-3 border border-gray-300">Last Name</th>
+                    <th class="p-3 border border-gray-300">Category</th>
+                    <th class="p-3 border border-gray-300">Gender</th>
+                    <th class="p-3 border border-gray-300">Date of Birth</th>
+                    <th class="p-3 border border-gray-300">Current Age</th>
+                    <th class="p-3 border border-gray-300">Date of Admission</th>
+                    <th class="p-3 border border-gray-300">Age of Admission</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                {% for child in children %}
+                <tr class="bg-gray-100 text-center">
+                    <td class="p-3 border border-gray-300">{{ child.first_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.middle_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.last_name }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.category }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.gender }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.date_of_birth }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.current_age }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.date_of_admission }}</td>
+                    <td class="p-3 border border-gray-300">{{ child.age_of_admission }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="p-3 border border-gray-300 text-center text-gray-500">No records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('search').addEventListener('input', function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#table-body tr");
+
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>
