@@ -304,6 +304,13 @@ def register_child(request):
         date_of_admission = request.POST.get('date_of_admission')
         age_of_admission = request.POST.get('age_of_admission')
 
+        if gender == 'Male':
+            profile_picture = 'profile_pictures/default_boy.jpg'
+        elif gender == 'Female':
+            profile_picture = 'profile_pictures/default_girl.jpg'
+        else:
+            profile_picture = 'profile_pictures/default-profile.jpg'
+
         Child.objects.create(
             first_name=first_name,
             last_name=last_name,
@@ -313,7 +320,8 @@ def register_child(request):
             date_of_birth=date_of_birth,
             current_age=current_age,
             date_of_admission=date_of_admission,
-            age_of_admission=age_of_admission
+            age_of_admission=age_of_admission,
+            profile_picture=profile_picture
         )
 
         return redirect('childrecord')
