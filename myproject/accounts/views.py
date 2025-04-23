@@ -334,8 +334,6 @@ def edit_child(request, child_id):
         child.last_name = request.POST.get('last_name')
         child.category = request.POST.get('category')
         child.gender = request.POST.get('gender')
-
-        # Convert date_of_birth and date_of_admission to datetime.date objects
         date_of_birth_str = request.POST.get('date_of_birth')
         date_of_admission_str = request.POST.get('date_of_admission')
 
@@ -343,7 +341,6 @@ def edit_child(request, child_id):
             dob = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
             child.date_of_birth = dob
 
-            # Calculate current_age
             today = date.today()
             child.current_age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
@@ -351,11 +348,9 @@ def edit_child(request, child_id):
             doa = datetime.strptime(date_of_admission_str, '%Y-%m-%d').date()
             child.date_of_admission = doa
 
-            # Calculate age_of_admission
             if child.date_of_birth:
                 child.age_of_admission = doa.year - dob.year - ((doa.month, doa.day) < (dob.month, dob.day))
 
-        # Save profile picture if provided
         if 'profile_picture' in request.FILES:
             child.profile_picture = request.FILES['profile_picture']
 
