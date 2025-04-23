@@ -23,7 +23,9 @@
         </div>
 
         <div class="flex items-center gap-12 border-b pb-8">
-            <img src="{{ child.profile_picture.url }}" alt="Profile Picture" 
+            <img 
+                src="{% if child.profile_picture %}{{ child.profile_picture.url }}{% else %}/static/default-profile.jpg{% endif %}" 
+                alt="Profile Picture" 
                 class="rounded-lg w-48 h-48 border-4 border-pink-500 object-cover">
             <div>
                 <h1 class="text-5xl font-bold text-gray-800">{{ child.first_name }} {{ child.last_name }}</h1>
