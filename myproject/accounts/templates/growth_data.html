@@ -14,7 +14,7 @@
                     class="bg-gray-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-gray-600">
                 Back
             </button>
-            <button class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600 edit-btn">
+            <button id="editBtn" class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
                 Edit
             </button>
             <button class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
@@ -23,7 +23,7 @@
         </div>
 
         <div class="flex items-center gap-12 border-b pb-8">
-            <img src="https://via.placeholder.com/200" alt="Profile Pic" 
+            <img src="{{ child.profile_picture.url }}" alt="Profile Pic" 
                 class="rounded-lg w-48 h-48 border-4 border-pink-500 object-cover">
             <div>
                 <h1 class="text-5xl font-bold text-gray-800">{{ child.first_name }} {{ child.last_name }}</h1>
@@ -75,5 +75,75 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+            <h2 class="text-2xl font-bold mb-4 text-center">Edit Child Information</h2>
+            <form method="POST" enctype="multipart/form-data" action="{% url 'edit_child' child.id %}">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold">First Name</label>
+                        <input type="text" name="first_name" value="{{ child.first_name }}" 
+                               class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Last Name</label>
+                        <input type="text" name="last_name" value="{{ child.last_name }}" 
+                               class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Middle Name</label>
+                        <input type="text" name="middle_name" value="{{ child.middle_name }}" 
+                               class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Category</label>
+                        <select name="category" class="w-full border p-3 rounded-md">
+                            <option value="Pre-School" {% if child.category == "Pre-School" %}selected{% endif %}>Pre-School</option>
+                            <option value="Nursery" {% if child.category == "Nursery" %}selected{% endif %}>Nursery</option>
+                            <option value="Big Boys" {% if child.category == "Big Boys" %}selected{% endif %}>Big Boys</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Gender</label>
+                        <select name="gender" class="w-full border p-3 rounded-md">
+                            <option value="Male" {% if child.gender == "Male" %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if child.gender == "Female" %}selected{% endif %}>Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Date of Birth</label>
+                        <input type="date" name="date_of_birth" value="{{ child.date_of_birth|date:'Y-m-d' }}" 
+                               class="w-full border p-3 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Date of Admission</label>
+                        <input type="date" name="date_of_admission" value="{{ child.date_of_admission|date:'Y-m-d' }}" 
+                               class="w-full border p-3 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Profile Picture</label>
+                        <input type="file" name="profile_picture" class="w-full border p-3 rounded-md">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="button" id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
+                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("editBtn").addEventListener("click", function () {
+            document.getElementById("editModal").classList.remove("hidden");
+        });
+
+        document.getElementById("closeModal").addEventListener("click", function () {
+            document.getElementById("editModal").classList.add("hidden");
+        });
+    </script>
 </body>
 </html>

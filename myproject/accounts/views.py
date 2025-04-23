@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
 from .models import Child, DentalRecord, Medication, Illness, Appointment, Immunization, GrowthRecord
+from datetime import date, datetime
 
 def home(request):
     return render(request, 'index.html')
@@ -323,23 +324,45 @@ def child_record(request):
     children = Child.objects.all()
     return render(request, 'childrecord.html', {'children': children})
 
-def edit_child(request):
-    if request.method == 'POST':
-        child_id = request.POST.get('child_id')
-        child = get_object_or_404(Child, id=child_id)
+@login_required
+def edit_child(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
 
+    if request.method == 'POST':
         child.first_name = request.POST.get('first_name')
         child.middle_name = request.POST.get('middle_name')
         child.last_name = request.POST.get('last_name')
         child.category = request.POST.get('category')
         child.gender = request.POST.get('gender')
-        child.date_of_birth = request.POST.get('date_of_birth')
-        child.date_of_admission = request.POST.get('date_of_admission')
-        child.current_age = request.POST.get('current_age')
-        child.age_of_admission = request.POST.get('age_of_admission')
-        child.save()
 
-        return redirect('childrecord')
+        # Convert date_of_birth and date_of_admission to datetime.date objects
+        date_of_birth_str = request.POST.get('date_of_birth')
+        date_of_admission_str = request.POST.get('date_of_admission')
+
+        if date_of_birth_str:
+            dob = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+            child.date_of_birth = dob
+
+            # Calculate current_age
+            today = date.today()
+            child.current_age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+        if date_of_admission_str:
+            doa = datetime.strptime(date_of_admission_str, '%Y-%m-%d').date()
+            child.date_of_admission = doa
+
+            # Calculate age_of_admission
+            if child.date_of_birth:
+                child.age_of_admission = doa.year - dob.year - ((doa.month, doa.day) < (dob.month, dob.day))
+
+        # Save profile picture if provided
+        if 'profile_picture' in request.FILES:
+            child.profile_picture = request.FILES['profile_picture']
+
+        child.save()
+        return redirect('growth_data', child_id=child.id)
+
+    return render(request, 'growth_data.html', {'child': child})
 
 @login_required
 def children_data(request):
