@@ -10,10 +10,10 @@
 
     <div class="w-full max-w-7xl bg-white shadow-lg rounded-lg p-12 relative">
         <div class="absolute top-6 right-6 flex gap-6">
-            <button onclick="window.location.href='{% url 'childrecord' %}'" 
-                    class="bg-gray-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-gray-600">
+            <a href="{% if request.GET.from == 'growth_data' %}{% url 'growth_data' child_id %}{% else %}{% url 'dashboard' %}{% endif %}" 
+               class="bg-gray-500 text-white px-6 py-3 rounded-md hover:bg-gray-600 transition text-center">
                 Back
-            </button>
+            </a>
             <button id="editBtn" class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
                 Edit
             </button>
@@ -60,7 +60,7 @@
                         </button>
                     </li>
                     <li>
-                        <button onclick="window.location.href='{% url 'child_medication_list' child.id %}'" 
+                        <button onclick="window.location.href='{% url 'child_medication_list' child.id %}?from=growth_data'" 
                                 class="bg-pink-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-pink-600">
                             Medication List
                         </button>
