@@ -102,6 +102,14 @@ The HTML templates for the application are located in the `accounts/templates` d
 
 The custom user model is registered with the Django admin site in `accounts/admin.py`.
 
+## System Manual
+
+The full system manual for the Gentle Hands Orphanage System is available in the `manual` directory. You can access it using the link below:
+
+[Gentle Hands Orphanage System Manual (PDF)](./myproject/manual/Gentle%20Hands%20Orphanage%20System%20Manual.pdf)
+
+For detailed instructions, features, and troubleshooting, refer to the manual.
+
 ## License
 
 This project is licensed under the MIT License.
