@@ -87,6 +87,7 @@ The HTML templates for the application are located in the `accounts/templates` d
 - `dental_record.html`: Dental Records template
 - `medic.html`: Medic Finder template
 - `dashboard.html`: Dashboard template
+- `login.html`: Login template
 - `logout.html`: Logout template
 - `changeuser.html`: Change User Information template
 - `user_management.html`: User Management Dashboard template
