@@ -112,13 +112,13 @@ def medication_list(request, child_id=None):
 @login_required
 def illness_list(request, child_id=None):
     children = Child.objects.all()
-    groups = ['A', 'B', 'C'] 
+    groups = ['A', 'B', 'C']
 
     if child_id:
         child = get_object_or_404(Child, id=child_id)
         illnesses = Illness.objects.filter(patient_name=child)
     else:
-        illnesses = Illness.objects.all()  
+        illnesses = Illness.objects.all()
 
     if request.method == 'POST':
         Illness.objects.create(
@@ -128,7 +128,10 @@ def illness_list(request, child_id=None):
             treatment=request.POST.get('treatment'),
             date_logged=request.POST.get('date_logged'),
         )
-        return redirect('illness_list', child_id=child_id)
+        if child_id:
+            return redirect('child_illness_list', child_id=child_id)
+        else:
+            return redirect('illness_list')
 
     return render(request, 'illness_list.html', {
         'illnesses': illnesses,
