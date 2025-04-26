@@ -109,7 +109,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-700 font-semibold">Gender</label>
-                        <select name="gender" class="w-full border p-3 rounded-md">
+                        <select name="gender" id="editGender" class="w-full border p-3 rounded-md">
                             <option value="Male" {% if child.gender == "Male" %}selected{% endif %}>Male</option>
                             <option value="Female" {% if child.gender == "Female" %}selected{% endif %}>Female</option>
                         </select>
@@ -126,7 +126,11 @@
                     </div>
                     <div>
                         <label class="block text-gray-700 font-semibold">Profile Picture</label>
-                        <input type="file" name="profile_picture" class="w-full border p-3 rounded-md">
+                        <input type="file" name="profile_picture" id="editProfilePicture" class="w-full border p-3 rounded-md">
+                        <img id="profilePreview" 
+                             src="{% if child.profile_picture %}{{ child.profile_picture.url }}{% else %}/static/default-profile.jpg{% endif %}" 
+                             alt="Profile Preview" 
+                             class="mt-4 w-32 h-32 rounded-lg border-2 border-gray-300 object-cover">
                     </div>
                 </div>
                 <div class="flex justify-end gap-4 mt-6">
@@ -138,12 +142,53 @@
     </div>
 
     <script>
-        document.getElementById("editBtn").addEventListener("click", function () {
-            document.getElementById("editModal").classList.remove("hidden");
+        const editBtn = document.getElementById("editBtn");
+        const editModal = document.getElementById("editModal");
+        const closeModal = document.getElementById("closeModal");
+
+        // Show the modal when the "Edit" button is clicked
+        editBtn.addEventListener("click", function () {
+            editModal.classList.remove("hidden");
         });
 
-        document.getElementById("closeModal").addEventListener("click", function () {
-            document.getElementById("editModal").classList.add("hidden");
+        // Hide the modal when the "Cancel" button is clicked
+        closeModal.addEventListener("click", function () {
+            editModal.classList.add("hidden");
+        });
+
+        const genderSelect = document.getElementById("editGender");
+        const profilePictureInput = document.getElementById("editProfilePicture");
+        const profilePreview = document.getElementById("profilePreview");
+
+        const defaultMalePicture = "/media/profile_pictures/default_boy.jpg"; // Path to default boy picture
+        const defaultFemalePicture = "/media/profile_pictures/default_girl.jpg"; // Path to default girl picture
+
+        let isCustomPicture = false;
+
+        // Update profile picture based on gender selection
+        genderSelect.addEventListener("change", function () {
+            if (!isCustomPicture) {
+                if (this.value === "Male") {
+                    profilePreview.src = defaultMalePicture;
+                } else if (this.value === "Female") {
+                    profilePreview.src = defaultFemalePicture;
+                }
+            }
+        });
+
+        // Detect if a custom profile picture is uploaded
+        profilePictureInput.addEventListener("change", function () {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profilePreview.src = e.target.result;
+                    isCustomPicture = true;
+                };
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                isCustomPicture = false;
+                genderSelect.dispatchEvent(new Event("change")); // Reset to gender-based picture
+            }
         });
     </script>
 </body>

@@ -359,9 +359,14 @@ def edit_child(request, child_id):
             if child.date_of_birth:
                 child.age_of_admission = doa.year - dob.year - ((doa.month, doa.day) < (dob.month, dob.day))
 
-        if 'profile_picture' in request.FILES:
-            child.profile_picture = request.FILES['profile_picture']
-
+        if "profile_picture" in request.FILES:
+            child.profile_picture = request.FILES["profile_picture"]
+        else:
+            if child.gender == "Male":
+                child.profile_picture = "profile_pictures/default_boy.jpg"
+            elif child.gender == "Female":
+                child.profile_picture = "profile_pictures/default_girl.jpg"
+                
         child.save()
         return redirect('growth_data', child_id=child.id)
 
