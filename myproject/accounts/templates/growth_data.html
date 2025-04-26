@@ -17,8 +17,8 @@
             <button id="editBtn" class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
                 Edit
             </button>
-            <button class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
-                Remove
+            <button id="printBtn" class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
+                Print
             </button>
         </div>
 
@@ -146,12 +146,10 @@
         const editModal = document.getElementById("editModal");
         const closeModal = document.getElementById("closeModal");
 
-        // Show the modal when the "Edit" button is clicked
         editBtn.addEventListener("click", function () {
             editModal.classList.remove("hidden");
         });
 
-        // Hide the modal when the "Cancel" button is clicked
         closeModal.addEventListener("click", function () {
             editModal.classList.add("hidden");
         });
@@ -160,12 +158,11 @@
         const profilePictureInput = document.getElementById("editProfilePicture");
         const profilePreview = document.getElementById("profilePreview");
 
-        const defaultMalePicture = "/media/profile_pictures/default_boy.jpg"; // Path to default boy picture
-        const defaultFemalePicture = "/media/profile_pictures/default_girl.jpg"; // Path to default girl picture
+        const defaultMalePicture = "/media/profile_pictures/default_boy.jpg";
+        const defaultFemalePicture = "/media/profile_pictures/default_girl.jpg";
 
         let isCustomPicture = false;
 
-        // Update profile picture based on gender selection
         genderSelect.addEventListener("change", function () {
             if (!isCustomPicture) {
                 if (this.value === "Male") {
@@ -176,7 +173,6 @@
             }
         });
 
-        // Detect if a custom profile picture is uploaded
         profilePictureInput.addEventListener("change", function () {
             if (this.files && this.files[0]) {
                 const reader = new FileReader();
@@ -187,8 +183,14 @@
                 reader.readAsDataURL(this.files[0]);
             } else {
                 isCustomPicture = false;
-                genderSelect.dispatchEvent(new Event("change")); // Reset to gender-based picture
+                genderSelect.dispatchEvent(new Event("change"));
             }
+        });
+
+        const printBtn = document.getElementById("printBtn");
+
+        printBtn.addEventListener("click", function () {
+            window.print();
         });
     </script>
 </body>
