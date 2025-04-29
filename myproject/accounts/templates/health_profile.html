@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Health and Medical Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <header class="bg-pink-500 flex justify-center py-6">
+        <img
+            alt="Gentle Hands Inc. logo with two handprints, one pink and one green, above the text Gentle Hands, Inc."
+            class="h-10"
+            src="{% static 'logo.jpg' %}"
+        />
+    </header>
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="font-extrabold text-2xl tracking-wide">HEALTH AND MEDICAL PROFILE</h1>
+        </div>
+        <section class="flex flex-col md:flex-row md:space-x-8 mb-8">
+            <div class="flex-shrink-0 w-48 h-64 bg-gray-300 rounded-md overflow-hidden">
+                <img
+                    alt="Placeholder silhouette of a child profile photo with gray background"
+                    class="w-full h-full object-cover"
+                    src="https://storage.googleapis.com/a1aa/image/7092ccbe-9ed2-4e30-23e6-0481b02fea15.jpg"
+                />
+            </div>
+            <div class="flex-1 flex flex-col md:flex-row md:space-x-6 mt-6 md:mt-0">
+                <div class="flex-1 space-y-3 pr-4 border-r border-pink-500">
+                    <h2 class="font-bold text-base mb-2">I. CHILD IDENTIFICATION</h2>
+                    <p>
+                        <span>Name of Child: <strong>Espanola, Cherry</strong></span>
+                    </p>
+                    <p>
+                        <span>Date of Birth: <strong>November 25, 2014</strong></span>
+                    </p>
+                    <p>
+                        <span>Age: <strong>4 yrs, 0 Mths</strong></span>
+                    </p>
+                    <p>
+                        <span>Sex: <strong>Female</strong></span>
+                    </p>
+                    <p>
+                        <span>Date of Admission/Referral: <strong>Dec 02, 2014</strong></span>
+                    </p>
+                    <p>
+                        <span>Age on Admission/Referral: <strong>0 yrs, 0 Mths</strong></span>
+                    </p>
+                    <p>
+                        <span>Status: <strong>Surrendered</strong></span>
+                    </p>
+                </div>
+                <div class="flex-1 space-y-3 pl-4 mt-6 md:mt-0">
+                    <p>
+                        <span>Weight: <strong>12.1 kg</strong></span>
+                    </p>
+                    <p>
+                        <span>Height: <strong>95.1 cm</strong></span>
+                    </p>
+                    <p>Head Circumference:</p>
+                    <p>Chest Circumference:</p>
+                    <p>
+                        <span>Hair: <strong>Black</strong></span>
+                    </p>
+                    <p>
+                        <span>Eyes: <strong>Dark Brown</strong></span>
+                    </p>
+                    <p>
+                        <span>Skin: <strong>Light Brown</strong></span>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <p class="mb-8">
+            Present Location of Child:
+            <strong>Gentle Hands Inc., 27 F. Catillio Street, Project 4, Quezon City</strong>
+        </p>
+        <section class="mb-8">
+            <h3 class="font-bold mb-6 text-base">II. PHYSICAL DESCRIPTION OF THE CHILD</h3>
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                <div class="md:w-1/2 space-y-4">
+                    <p>
+                        Present Appearance:
+                        <strong>pale skin color, thin brown hair, wide eyes, narrow long face, slight build</strong>
+                    </p>
+                    <p>
+                        Appearance on Admission:
+                        <strong>pink in colour, eye discharge both eyes, irritable, failure to thrive</strong>
+                    </p>
+                </div>
+                <div class="md:w-48 md:h-48 bg-pink-500 mt-6 md:mt-0"></div>
+            </div>
+        </section>
+        <section>
+            <p class="italic font-semibold mb-1">GROWTH RECORD</p>
+            <p class="mb-6">See table 1 for full details</p>
+            <p class="mb-6">
+                The following chart height and weight compared to WHO median and 10 and 90 percentile:
+            </p>
+            <div class="flex flex-col md:flex-row md:space-x-12 space-y-8 md:space-y-0 justify-center">
+                <img
+                    alt="Bar chart showing height and weight compared to WHO median and 10 and 90 percentile"
+                    class="w-full max-w-xs"
+                />
+                <img
+                    alt="Bar chart showing height and weight compared to WHO median and 10 and 90 percentile"
+                    class="w-full max-w-xs"
+                />
+            </div>
+        </section>
+    </main>
+</body>
+</html>
