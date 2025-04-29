@@ -30,4 +30,5 @@ urlpatterns = [
     path('user_management/', views.user_management, name='user_management'),
     path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('children-data/', views.children_data, name='children_data'),
+    path('health-profile/<int:child_id>/', views.health_profile, name='health_profile'),
 ]

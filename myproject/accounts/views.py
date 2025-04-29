@@ -379,3 +379,7 @@ def edit_child(request, child_id):
 def children_data(request):
     children = Child.objects.all()
     return render(request, 'children_data.html', {'children': children})
+
+def health_profile(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+    return render(request, 'health_profile.html', {'child': child})
