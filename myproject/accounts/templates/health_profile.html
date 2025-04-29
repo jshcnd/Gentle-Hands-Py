@@ -20,11 +20,11 @@
         <h1 class="text-2xl tracking-wide font-bold">HEALTH AND MEDICAL PROFILE</h1>
     </div>
     <section class="flex flex-col md:flex-row md:space-x-8 mb-8">
-        <div class="flex-shrink-0 w-48 h-64 bg-gray-300 rounded-md overflow-hidden">
+        <div class="flex items-center gap-12 border-b pb-8">
             <img
-                alt="Placeholder"
-                class="w-full h-full object-cover"
-                src="https://storage.googleapis.com/a1aa/image/7092ccbe-9ed2-4e30-23e6-0481b02fea15.jpg"
+                alt="{{ child.first_name }} {{ child.last_name }}"
+                class="rounded-lg w-48 h-48 border-4 border-pink-500 object-cover"
+                src="{% if child.profile_picture %}{{ child.profile_picture.url }}{% else %}{% static 'default-profile.jpg' %}{% endif %}"
             />
         </div>
         <div class="flex-1 flex flex-col md:flex-row md:space-x-6 mt-6 md:mt-0">
@@ -43,10 +43,10 @@
                     <span>Sex: <strong>{{ child.gender }}</strong></span>
                 </p>
                 <p>
-                    <span>Date of Admission/Referral: <strong>{{ child.date_of_admission|date:"M d, Y" }}</strong></span>
+                    <span>Date of Admission: <strong>{{ child.date_of_admission|date:"M d, Y" }}</strong></span>
                 </p>
                 <p>
-                    <span>Age on Admission/Referral: <strong>{{ child.age_of_admission }}</strong></span>
+                    <span>Age on Admission: <strong>{{ child.age_of_admission }}</strong></span>
                 </p>
                 <p>
                     <span>Status:</span>

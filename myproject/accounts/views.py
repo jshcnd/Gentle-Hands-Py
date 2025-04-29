@@ -381,15 +381,16 @@ def children_data(request):
     children = Child.objects.all()
     return render(request, 'children_data.html', {'children': children})
 
+@login_required
 def health_profile(request, child_id):
-    child = Child.objects.get(id=child_id)
+    child = get_object_or_404(Child, id=child_id)
     try:
         latest_growth_record = GrowthRecord.objects.filter(child_id=child_id).latest('date_recorded')
         weight = latest_growth_record.weight
         height = latest_growth_record.height
         head_circumference = latest_growth_record.head_circumference
         chest_circumference = latest_growth_record.chest_circumference
-    except ObjectDoesNotExist:
+    except GrowthRecord.DoesNotExist:
         weight = "N/A"
         height = "N/A"
         head_circumference = "N/A"
