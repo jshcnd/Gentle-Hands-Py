@@ -8,6 +8,7 @@ from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
 from .models import Child, DentalRecord, Medication, Illness, Appointment, Immunization, GrowthRecord
 from datetime import date, datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 def home(request):
     return render(request, 'index.html')
@@ -381,5 +382,23 @@ def children_data(request):
     return render(request, 'children_data.html', {'children': children})
 
 def health_profile(request, child_id):
-    child = get_object_or_404(Child, id=child_id)
-    return render(request, 'health_profile.html', {'child': child})
+    child = Child.objects.get(id=child_id)
+    try:
+        latest_growth_record = GrowthRecord.objects.filter(child_id=child_id).latest('date_recorded')
+        weight = latest_growth_record.weight
+        height = latest_growth_record.height
+        head_circumference = latest_growth_record.head_circumference
+        chest_circumference = latest_growth_record.chest_circumference
+    except ObjectDoesNotExist:
+        weight = "N/A"
+        height = "N/A"
+        head_circumference = "N/A"
+        chest_circumference = "N/A"
+
+    return render(request, 'health_profile.html', {
+        'child': child,
+        'weight': weight,
+        'height': height,
+        'head_circumference': head_circumference,
+        'chest_circumference': chest_circumference,
+    })

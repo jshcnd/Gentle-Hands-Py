@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
-    <header class="bg-pink-500 flex justify-center items-center h-20">
+    <header class="bg-pink-500 flex justify-center items-center h-20 sticky top-0">
         <img
             alt="Gentle Hands"
             class="h-16"
@@ -17,12 +17,12 @@
     </header>
 <main class="max-w-7xl mx-auto px-6 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl tracking-wide">HEALTH AND MEDICAL PROFILE</h1>
+        <h1 class="text-2xl tracking-wide font-bold">HEALTH AND MEDICAL PROFILE</h1>
     </div>
     <section class="flex flex-col md:flex-row md:space-x-8 mb-8">
         <div class="flex-shrink-0 w-48 h-64 bg-gray-300 rounded-md overflow-hidden">
             <img
-                alt="Placeholder silhouette of a child profile photo with gray background"
+                alt="Placeholder"
                 class="w-full h-full object-cover"
                 src="https://storage.googleapis.com/a1aa/image/7092ccbe-9ed2-4e30-23e6-0481b02fea15.jpg"
             />
@@ -31,44 +31,48 @@
             <div class="flex-1 space-y-3 pr-4 border-r border-pink-500">
                 <h2 class="text-base mb-2 font-bold">I. CHILD IDENTIFICATION</h2>
                 <p>
-                    <span>Name of Child: <strong>Espanola, Cherry</strong></span>
+                    <span>Name of Child: <strong>{{ child.first_name }} {{ child.last_name }}</strong></span>
                 </p>
                 <p>
-                    <span>Date of Birth: <strong>November 25, 2014</strong></span>
+                    <span>Date of Birth: <strong>{{ child.date_of_birth|date:"F d, Y" }}</strong></span>
                 </p>
                 <p>
-                    <span>Age: <strong>4 yrs, 0 Mths</strong></span>
+                    <span>Age: <strong>{{ child.current_age }}</strong></span>
                 </p>
                 <p>
-                    <span>Sex: <strong>Female</strong></span>
+                    <span>Sex: <strong>{{ child.gender }}</strong></span>
                 </p>
                 <p>
-                    <span>Date of Admission/Referral: <strong>Dec 02, 2014</strong></span>
+                    <span>Date of Admission/Referral: <strong>{{ child.date_of_admission|date:"M d, Y" }}</strong></span>
                 </p>
                 <p>
-                    <span>Age on Admission/Referral: <strong>0 yrs, 0 Mths</strong></span>
+                    <span>Age on Admission/Referral: <strong>{{ child.age_of_admission }}</strong></span>
                 </p>
                 <p>
-                    <span>Status: <strong>Surrendered</strong></span>
+                    <span>Status:</span>
                 </p>
             </div>
             <div class="flex-1 space-y-3 pl-4 mt-6 md:mt-0">
                 <p>
-                    <span>Weight: <strong>12.1 kg</strong></span>
+                    <span>Weight: <strong>{{ weight }} kg</strong></span>
                 </p>
                 <p>
-                    <span>Height: <strong>95.1 cm</strong></span>
-                </p>
-                <p>Head Circumference:</p>
-                <p>Chest Circumference:</p>
-                <p>
-                    <span>Hair: <strong>Black</strong></span>
+                    <span>Height: <strong>{{ height }} cm</strong></span>
                 </p>
                 <p>
-                    <span>Eyes: <strong>Dark Brown</strong></span>
+                    <span>Head Circumference: <strong>{{ head_circumference }} cm</strong></span>
                 </p>
                 <p>
-                    <span>Skin: <strong>Light Brown</strong></span>
+                    <span>Chest Circumference: <strong>{{ chest_circumference }} cm</strong></span>
+                </p>
+                <p>
+                    <span>Hair: </span>
+                </p>
+                <p>
+                    <span>Eyes: </span>
+                </p>
+                <p>
+                    <span>Skin: </span>
                 </p>
             </div>
         </div>
