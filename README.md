@@ -20,11 +20,14 @@ This is a Django-based web application for user registration, login, and homepag
 - Homepage
 - Dashboard
 - Child Records
+- Growth Records
+- Dental Records
 - Medication Management
 - Illness Tracking
 - Appointment Scheduling
 - Immunization Records
 - Medic Finder
+- User Management
 
 ## Setup Instructions
 
@@ -77,23 +80,36 @@ The project uses a custom user model defined in `accounts/models.py`. The custom
 The HTML templates for the application are located in the `accounts/templates` directory.
 
 - `home.html`: Homepage template
-- `register.html`: Registration template
-- `login.html`: Login template
-- `dashboard.html`: Dashboard template
-- `logout.html`: Logout template
-- `childrecord.html`: Child Records Dashboard template
 - `registerChild.html`: Child Registration template
-- `medication.html`: Medication Management template
-- `medication_list.html`: Medication List template
-- `illness_list.html`: Illness List template
+- `childrecord.html`: Child Records Dashboard template
+- `growth_record.html`: Growth Records template
+- `growth_data.html`: Growth Data template
+- `dental_record.html`: Dental Records template
+- `medic.html`: Medic Finder template
+- `dashboard.html`: Dashboard template
+- `login.html`: Login template
+- `logout.html`: Logout template
+- `changeuser.html`: Change User Information template
+- `user_management.html`: User Management Dashboard template
 - `appointment_list.html`: Appointment List template
 - `immunization.html`: Immunization Records template
-- `growth_data.html`: Growth Data template
-- `medic.html`: Medic Finder template
+- `medication_list.html`: Medication List template
+- `illness_list.html`: Illness Tracking template
+- `bmi.html`: BMI Records template
+- `children_data.html`: Children Data template
+- `admin_dashboard.html`: Admin Dashboard template
 
 ## Admin
 
 The custom user model is registered with the Django admin site in `accounts/admin.py`.
+
+## System Manual
+
+The full system manual for the Gentle Hands Orphanage System is available in the `manual` directory. You can access it using the link below:
+
+[Gentle Hands Orphanage System Manual (PDF)](./myproject/manual/Gentle%20Hands%20Orphanage%20System%20Manual.pdf)
+
+For detailed instructions, features, and troubleshooting, refer to the manual.
 
 ## License
 

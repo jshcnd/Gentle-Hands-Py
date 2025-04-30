@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ChildRegistrationForm, DentalRecordForm
 from .models import Child, DentalRecord, Medication, Illness, Appointment, Immunization, GrowthRecord
+from datetime import date, datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 def home(request):
     return render(request, 'index.html')
@@ -111,13 +113,13 @@ def medication_list(request, child_id=None):
 @login_required
 def illness_list(request, child_id=None):
     children = Child.objects.all()
-    groups = ['A', 'B', 'C'] 
+    groups = ['A', 'B', 'C']
 
     if child_id:
         child = get_object_or_404(Child, id=child_id)
         illnesses = Illness.objects.filter(patient_name=child)
     else:
-        illnesses = Illness.objects.all()  
+        illnesses = Illness.objects.all()
 
     if request.method == 'POST':
         Illness.objects.create(
@@ -127,7 +129,10 @@ def illness_list(request, child_id=None):
             treatment=request.POST.get('treatment'),
             date_logged=request.POST.get('date_logged'),
         )
-        return redirect('illness_list', child_id=child_id)
+        if child_id:
+            return redirect('child_illness_list', child_id=child_id)
+        else:
+            return redirect('illness_list')
 
     return render(request, 'illness_list.html', {
         'illnesses': illnesses,
@@ -303,6 +308,13 @@ def register_child(request):
         date_of_admission = request.POST.get('date_of_admission')
         age_of_admission = request.POST.get('age_of_admission')
 
+        if gender == 'Male':
+            profile_picture = 'profile_pictures/default_boy.jpg'
+        elif gender == 'Female':
+            profile_picture = 'profile_pictures/default_girl.jpg'
+        else:
+            profile_picture = 'profile_pictures/default-profile.jpg'
+
         Child.objects.create(
             first_name=first_name,
             last_name=last_name,
@@ -312,7 +324,8 @@ def register_child(request):
             date_of_birth=date_of_birth,
             current_age=current_age,
             date_of_admission=date_of_admission,
-            age_of_admission=age_of_admission
+            age_of_admission=age_of_admission,
+            profile_picture=profile_picture
         )
 
         return redirect('childrecord')
@@ -323,25 +336,70 @@ def child_record(request):
     children = Child.objects.all()
     return render(request, 'childrecord.html', {'children': children})
 
-def edit_child(request):
-    if request.method == 'POST':
-        child_id = request.POST.get('child_id')
-        child = get_object_or_404(Child, id=child_id)
+@login_required
+def edit_child(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
 
+    if request.method == 'POST':
         child.first_name = request.POST.get('first_name')
         child.middle_name = request.POST.get('middle_name')
         child.last_name = request.POST.get('last_name')
         child.category = request.POST.get('category')
         child.gender = request.POST.get('gender')
-        child.date_of_birth = request.POST.get('date_of_birth')
-        child.date_of_admission = request.POST.get('date_of_admission')
-        child.current_age = request.POST.get('current_age')
-        child.age_of_admission = request.POST.get('age_of_admission')
-        child.save()
+        date_of_birth_str = request.POST.get('date_of_birth')
+        date_of_admission_str = request.POST.get('date_of_admission')
 
-        return redirect('childrecord')
+        if date_of_birth_str:
+            dob = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+            child.date_of_birth = dob
+
+            today = date.today()
+            child.current_age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+        if date_of_admission_str:
+            doa = datetime.strptime(date_of_admission_str, '%Y-%m-%d').date()
+            child.date_of_admission = doa
+
+            if child.date_of_birth:
+                child.age_of_admission = doa.year - dob.year - ((doa.month, doa.day) < (dob.month, dob.day))
+
+        if "profile_picture" in request.FILES:
+            child.profile_picture = request.FILES["profile_picture"]
+        else:
+            if child.gender == "Male":
+                child.profile_picture = "profile_pictures/default_boy.jpg"
+            elif child.gender == "Female":
+                child.profile_picture = "profile_pictures/default_girl.jpg"
+                
+        child.save()
+        return redirect('growth_data', child_id=child.id)
+
+    return render(request, 'growth_data.html', {'child': child})
 
 @login_required
 def children_data(request):
     children = Child.objects.all()
     return render(request, 'children_data.html', {'children': children})
+
+@login_required
+def health_profile(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+    try:
+        latest_growth_record = GrowthRecord.objects.filter(child_id=child_id).latest('date_recorded')
+        weight = latest_growth_record.weight
+        height = latest_growth_record.height
+        head_circumference = latest_growth_record.head_circumference
+        chest_circumference = latest_growth_record.chest_circumference
+    except GrowthRecord.DoesNotExist:
+        weight = "N/A"
+        height = "N/A"
+        head_circumference = "N/A"
+        chest_circumference = "N/A"
+
+    return render(request, 'health_profile.html', {
+        'child': child,
+        'weight': weight,
+        'height': height,
+        'head_circumference': head_circumference,
+        'chest_circumference': chest_circumference,
+    })

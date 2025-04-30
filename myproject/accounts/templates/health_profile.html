@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Health and Medical Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <header class="bg-pink-500 flex justify-center items-center h-20 sticky top-0">
+        <img
+            alt="Gentle Hands"
+            class="h-16"
+            src="{% static 'logo-no-bg.png' %}"
+        />
+    </header>
+<main class="max-w-7xl mx-auto px-6 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl tracking-wide font-bold">HEALTH AND MEDICAL PROFILE</h1>
+    </div>
+    <section class="flex flex-col md:flex-row md:space-x-8 mb-8">
+        <div class="flex items-center gap-12 border-b pb-8">
+            <img
+                alt="{{ child.first_name }} {{ child.last_name }}"
+                class="rounded-lg w-48 h-48 border-4 border-pink-500 object-cover"
+                src="{% if child.profile_picture %}{{ child.profile_picture.url }}{% else %}{% static 'default-profile.jpg' %}{% endif %}"
+            />
+        </div>
+        <div class="flex-1 flex flex-col md:flex-row md:space-x-6 mt-6 md:mt-0">
+            <div class="flex-1 space-y-3 pr-4 border-r border-pink-500">
+                <h2 class="text-base mb-2 font-bold">I. CHILD IDENTIFICATION</h2>
+                <p>
+                    <span>Name of Child: <strong>{{ child.first_name }} {{ child.last_name }}</strong></span>
+                </p>
+                <p>
+                    <span>Date of Birth: <strong>{{ child.date_of_birth|date:"F d, Y" }}</strong></span>
+                </p>
+                <p>
+                    <span>Age: <strong>{{ child.current_age }}</strong></span>
+                </p>
+                <p>
+                    <span>Sex: <strong>{{ child.gender }}</strong></span>
+                </p>
+                <p>
+                    <span>Date of Admission: <strong>{{ child.date_of_admission|date:"M d, Y" }}</strong></span>
+                </p>
+                <p>
+                    <span>Age on Admission: <strong>{{ child.age_of_admission }}</strong></span>
+                </p>
+                <p>
+                    <span>Status:</span>
+                </p>
+            </div>
+            <div class="flex-1 space-y-3 pl-4 mt-6 md:mt-0">
+                <p>
+                    <span>Weight: <strong>{{ weight }} kg</strong></span>
+                </p>
+                <p>
+                    <span>Height: <strong>{{ height }} cm</strong></span>
+                </p>
+                <p>
+                    <span>Head Circumference: <strong>{{ head_circumference }} cm</strong></span>
+                </p>
+                <p>
+                    <span>Chest Circumference: <strong>{{ chest_circumference }} cm</strong></span>
+                </p>
+                <p>
+                    <span>Hair: </span>
+                </p>
+                <p>
+                    <span>Eyes: </span>
+                </p>
+                <p>
+                    <span>Skin: </span>
+                </p>
+            </div>
+        </div>
+    </section>
+    <p class="mb-8">
+        Present Location of Child:
+        <strong>Gentle Hands Inc., 27 F. Catillio Street, Project 4, Quezon City</strong>
+    </p>
+    <section class="mb-8">
+        <h3 class="text-base mb-6 font-bold">II. PHYSICAL DESCRIPTION OF THE CHILD</h3>
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+            <div class="md:w-1/2 space-y-4">
+                <p>
+                    Present Appearance:
+                    <strong>pale skin color, thin brown hair, wide eyes, narrow long face, slight build</strong>
+                </p>
+                <p>
+                    Appearance on Admission:
+                    <strong>pink in colour, eye discharge both eyes, irritable, failure to thrive</strong>
+                </p>
+            </div>
+            <div class="md:w-48 md:h-48 bg-pink-500 mt-6 md:mt-0"></div>
+        </div>
+    </section>
+    <section>
+        <p class="font-bold italic mb-1">GROWTH RECORD</p>
+        <p class="mb-6">See table 1 for full details</p>
+        <p class="mb-6">
+            The following chart height and weight compared to WHO median and 10 and 90 percentile:
+        </p>
+        <div class="flex flex-col md:flex-row md:space-x-12 space-y-8 md:space-y-0 justify-center">
+            <img
+                alt="Bar chart showing height and weight compared to WHO median and 10 and 90 percentile"
+                class="w-full max-w-xs"
+            />
+            <img
+                alt="Bar chart showing height and weight compared to WHO median and 10 and 90 percentile"
+                class="w-full max-w-xs"
+            />
+        </div>
+    </section>
+</main>
+</body>
+</html>

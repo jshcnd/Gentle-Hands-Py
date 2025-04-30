@@ -20,6 +20,7 @@ urlpatterns = [
     path('change-password/', views.change_password, name='change_password'),
     path('register/', views.register, name='register'),
     path('edit_child/', views.edit_child, name='edit_child'),
+    path('edit_child/<int:child_id>/', views.edit_child, name='edit_child'),
     path('dental-record/<int:child_id>/', views.dental_record_view, name='dental_record'),
     path("medication_list/", views.medication_list, name="medication_list"),
     path('medication_list/<int:child_id>/', views.medication_list, name='child_medication_list'),
@@ -29,4 +30,5 @@ urlpatterns = [
     path('user_management/', views.user_management, name='user_management'),
     path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('children-data/', views.children_data, name='children_data'),
+    path('health-profile/<int:child_id>/', views.health_profile, name='health_profile'),
 ]

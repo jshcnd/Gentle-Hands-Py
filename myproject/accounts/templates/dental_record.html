@@ -16,8 +16,10 @@
         </div>
 
         <div class="flex justify-between items-center mt-4">
-            <button id="filterBtn" class="bg-pink-500 text-white px-6 py-2 rounded-lg font-semibold">FILTER</button>
-            <button id="addRecordBtn" class="bg-pink-500 text-white px-6 py-2 rounded-lg font-semibold">Add Record</button>
+            <button onclick="window.location.href='{% url 'growth_data' child.id %}'" class="bg-gray-500 text-white px-6 py-3 rounded-md hover:bg-gray-600 transition text-center">
+                Back
+            </button>
+            <button id="addRecordBtn" class="bg-pink-500 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition text-center">Add Record</button>
         </div>
 
         <div class="mt-6 overflow-x-auto">
@@ -50,39 +52,6 @@
         </div>
     </div>
 
-    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <h2 class="text-xl font-bold mb-4">Filter Records</h2>
-            <label class="block mb-2">DATE:</label>
-            <input type="date" class="border border-pink-500 p-3 rounded-md w-full mb-3">
-            
-            <label class="block mb-2">DENTAL CENTER & DEPT/MEDIC:</label>
-            <select class="border border-pink-500 p-3 rounded-md w-full mb-3">
-                <option>Select</option>
-            </select>
-
-            <label class="block mb-2">REASON:</label>
-            <select class="border border-pink-500 p-3 rounded-md w-full mb-3">
-                <option>Select</option>
-            </select>
-
-            <label class="block mb-2">INVESTIGATION:</label>
-            <select class="border border-pink-500 p-3 rounded-md w-full mb-3">
-                <option>Select</option>
-            </select>
-
-            <label class="block mb-2">OUTCOME:</label>
-            <select class="border border-pink-500 p-3 rounded-md w-full mb-3">
-                <option>Select</option>
-            </select>
-
-            <div class="flex justify-end mt-4">
-                <button id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
-                <button class="bg-pink-500 text-white px-4 py-2 rounded-md ml-2">FILTER</button>
-            </div>
-        </div>
-    </div>
-
     <div id="addRecordModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Add Dental Record</h2>
@@ -109,22 +78,14 @@
                     <input type="text" name="outcome" class="w-full border p-3 rounded-md" required>
                 </div>
                 <div class="flex justify-end gap-2 mt-4">
-                    <button type="button" id="closeAddModal" class="bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
-                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Save</button>
+                    <button type="button" id="closeAddModal" class="bg-gray-500 text-white px-6 py-3 rounded-md hover:bg-gray-600 transition text-center">Cancel</button>
+                    <button type="submit" class="bg-pink-500 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition text-center">Save</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        document.getElementById("filterBtn").addEventListener("click", function() {
-            document.getElementById("filterModal").classList.remove("hidden");
-        });
-        
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("filterModal").classList.add("hidden");
-        });
-
         document.getElementById("addRecordBtn").addEventListener("click", function () {
             document.getElementById("addRecordModal").classList.remove("hidden");
         });

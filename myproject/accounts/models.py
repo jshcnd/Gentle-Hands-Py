@@ -10,9 +10,15 @@ class Child(models.Model):
     current_age = models.IntegerField()
     date_of_admission = models.DateField()
     age_of_admission = models.IntegerField()
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def save(self, *args, **kwargs):
+        if not self.profile_picture:
+            self.profile_picture = 'profile_pictures/default-profile.jpg'
+        super().save(*args, **kwargs)
 
 class GrowthRecord(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE)

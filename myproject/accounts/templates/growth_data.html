@@ -10,20 +10,22 @@
 
     <div class="w-full max-w-7xl bg-white shadow-lg rounded-lg p-12 relative">
         <div class="absolute top-6 right-6 flex gap-6">
-            <button onclick="window.location.href='{% url 'childrecord' %}'" 
-                    class="bg-gray-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-gray-600">
+            <a href="{% if request.GET.from == 'growth_data' %}{% url 'growth_data' child_id %}{% else %}{% url 'childrecord' %}{% endif %}" 
+               class="bg-gray-500 text-white px-6 py-3 rounded-md hover:bg-gray-600 transition text-center">
                 Back
-            </button>
-            <button class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600 edit-btn">
+            </a>
+            <button id="editBtn" class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
                 Edit
             </button>
-            <button class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
-                Remove
+            <button id="printBtn" class="bg-pink-500 text-white px-8 py-3 rounded-lg text-lg hover:bg-pink-600">
+                Print
             </button>
         </div>
 
         <div class="flex items-center gap-12 border-b pb-8">
-            <img src="https://via.placeholder.com/200" alt="Profile Pic" 
+            <img 
+                src="{% if child.profile_picture %}{{ child.profile_picture.url }}{% else %}/static/default-profile.jpg{% endif %}" 
+                alt="Profile Picture" 
                 class="rounded-lg w-48 h-48 border-4 border-pink-500 object-cover">
             <div>
                 <h1 class="text-5xl font-bold text-gray-800">{{ child.first_name }} {{ child.last_name }}</h1>
@@ -43,7 +45,8 @@
                     <li><strong>Date of Admission:</strong> {{ child.date_of_admission }}</li>
                     <li><strong>Age of Admission:</strong> {{ child.age_of_admission }}</li>
                     <li>
-                        <a href="{% url 'growth_record_child' child.id %}" class="text-pink-500 hover:underline font-bold text-lg">
+                        <a href="{% url 'health_profile' child.id %}?weight={{ growth_record.weight }}&height={{ growth_record.height }}&head_circumference={{ growth_record.head_circumference }}&chest_circumference={{ growth_record.chest_circumference }}&hair={{ child.hair_color }}&eyes={{ child.eye_color }}&skin={{ child.skin_color }}" 
+                           class="text-pink-500 hover:underline font-bold text-lg">
                             Health Profile
                         </a>
                     </li>
@@ -60,7 +63,7 @@
                         </button>
                     </li>
                     <li>
-                        <button onclick="window.location.href='{% url 'child_medication_list' child.id %}'" 
+                        <button onclick="window.location.href='{% url 'child_medication_list' child.id %}?from=growth_data'" 
                                 class="bg-pink-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-pink-600">
                             Medication List
                         </button>
@@ -71,9 +74,131 @@
                             Illness List
                         </button>
                     </li>
+                    <li>
+                        <button onclick="window.location.href='{% url 'growth_record_child' child.id %}?from=growth_data'" 
+                                class="bg-pink-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-pink-600">
+                            Growth Record
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
+
+    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+            <h2 class="text-2xl font-bold mb-4 text-center">Edit Child Information</h2>
+            <form method="POST" enctype="multipart/form-data" action="{% url 'edit_child' child.id %}">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold">First Name</label>
+                        <input type="text" name="first_name" value="{{ child.first_name }}" 
+                               class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Last Name</label>
+                        <input type="text" name="last_name" value="{{ child.last_name }}" 
+                               class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Middle Name</label>
+                        <input type="text" name="middle_name" value="{{ child.middle_name }}" 
+                               class="w-full border p-3 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Category</label>
+                        <select name="category" class="w-full border p-3 rounded-md">
+                            <option value="Pre-School" {% if child.category == "Pre-School" %}selected{% endif %}>Pre-School</option>
+                            <option value="Nursery" {% if child.category == "Nursery" %}selected{% endif %}>Nursery</option>
+                            <option value="Big Boys" {% if child.category == "Big Boys" %}selected{% endif %}>Big Boys</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Gender</label>
+                        <select name="gender" id="editGender" class="w-full border p-3 rounded-md">
+                            <option value="Male" {% if child.gender == "Male" %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if child.gender == "Female" %}selected{% endif %}>Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Date of Birth</label>
+                        <input type="date" name="date_of_birth" value="{{ child.date_of_birth|date:'Y-m-d' }}" 
+                               class="w-full border p-3 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Date of Admission</label>
+                        <input type="date" name="date_of_admission" value="{{ child.date_of_admission|date:'Y-m-d' }}" 
+                               class="w-full border p-3 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Profile Picture</label>
+                        <input type="file" name="profile_picture" id="editProfilePicture" class="w-full border p-3 rounded-md">
+                        <img id="profilePreview" 
+                             src="{% if child.profile_picture %}{{ child.profile_picture.url }}{% else %}/static/default-profile.jpg{% endif %}" 
+                             alt="Profile Preview" 
+                             class="mt-4 w-32 h-32 rounded-lg border-2 border-gray-300 object-cover">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="button" id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
+                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded-md">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const editBtn = document.getElementById("editBtn");
+        const editModal = document.getElementById("editModal");
+        const closeModal = document.getElementById("closeModal");
+
+        editBtn.addEventListener("click", function () {
+            editModal.classList.remove("hidden");
+        });
+
+        closeModal.addEventListener("click", function () {
+            editModal.classList.add("hidden");
+        });
+
+        const genderSelect = document.getElementById("editGender");
+        const profilePictureInput = document.getElementById("editProfilePicture");
+        const profilePreview = document.getElementById("profilePreview");
+
+        const defaultMalePicture = "/media/profile_pictures/default_boy.jpg";
+        const defaultFemalePicture = "/media/profile_pictures/default_girl.jpg";
+
+        let isCustomPicture = false;
+
+        genderSelect.addEventListener("change", function () {
+            if (!isCustomPicture) {
+                if (this.value === "Male") {
+                    profilePreview.src = defaultMalePicture;
+                } else if (this.value === "Female") {
+                    profilePreview.src = defaultFemalePicture;
+                }
+            }
+        });
+
+        profilePictureInput.addEventListener("change", function () {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profilePreview.src = e.target.result;
+                    isCustomPicture = true;
+                };
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                isCustomPicture = false;
+                genderSelect.dispatchEvent(new Event("change"));
+            }
+        });
+
+        const printBtn = document.getElementById("printBtn");
+
+        printBtn.addEventListener("click", function () {
+            window.print();
+        });
+    </script>
 </body>
 </html>
